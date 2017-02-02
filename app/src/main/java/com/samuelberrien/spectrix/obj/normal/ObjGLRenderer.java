@@ -32,6 +32,7 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
     private float[] mCameraDirection = new float[3];
     private float phi = 0f;
     private float theta = 0f;
+    private float maxRange = 1f;
 
     /**
      *
@@ -85,10 +86,15 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
                 this.theta += Math.PI * 2;
             }
         }*/
-        float maxRange = 1f;
-        this.mCameraDirection[0] = maxRange * (float) (Math.cos(this.phi) * Math.sin(this.theta)) + this.mCameraX;
-        this.mCameraDirection[1] = maxRange * (float) Math.sin(this.phi) + this.mCameraY;
-        this.mCameraDirection[2] = maxRange * (float) (Math.cos(this.phi) * Math.cos(this.theta)) + this.mCameraZ;
+
+        this.mCameraDirection[0] = this.maxRange * (float) (Math.cos(this.phi) * Math.sin(this.theta)) + this.mCameraX;
+        this.mCameraDirection[1] = this.maxRange * (float) Math.sin(this.phi) + this.mCameraY;
+        this.mCameraDirection[2] = this.maxRange * (float) (Math.cos(this.phi) * Math.cos(this.theta)) + this.mCameraZ;
+    }
+
+    public void updateZoom(float dist){
+        this.maxRange += dist;
+        this.maxRange = Math.max(1.0f, this.maxRange);
     }
 
     /**

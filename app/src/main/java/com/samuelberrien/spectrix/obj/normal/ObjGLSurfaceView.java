@@ -110,7 +110,16 @@ public class ObjGLSurfaceView extends GLSurfaceView {
                     mPreviousY1 = e.getY(e.getPointerId(0));
                     mPreviousY2 = e.getY(e.getPointerId(1));
                 case MotionEvent.ACTION_MOVE:
+                    float dx1 = x1 - mPreviousX1;
+                    float dx2 = x2 - mPreviousX2;
+                    float dy1 = y1 - mPreviousY1;
+                    float dy2 = y2 - mPreviousY2;
+                    mRenderer.updateZoom((float) Math.sqrt(dx1 * dx2 + dy1 * dy2));
             }
+            mPreviousX1 = x1;
+            mPreviousX2 = x2;
+            mPreviousY1 = y1;
+            mPreviousY2 = y2;
 
         }
         return true;
