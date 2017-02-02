@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1919C0</color>
+    <color name="colorTest1">#3F91E5</color>
+    <color name="colorTMP">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#003366</color>
+    <color name="black">#000000</color>
+    <color name="colorButton">@color/synthBlue1</color>
+    <color name="colorNight">#191970</color>
+    <color name="synthBlue1">#00BFFF</color>
+    <color name="synthBlue2">#33B5E5</color>
+    <color name="colorAnneSo">#061820</color>
+    <color name="grey">#909090</color>
+    <color name="colorText">@color/black</color>
+</resources>
