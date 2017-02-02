@@ -137,7 +137,6 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         // Set the camera position (View matrix)
-        //Matrix.setLookAtM(mViewMatrix, 0, 0f, 0f, 0f, 0f, 0f, 0f,0f, 1f, 0f);
         Matrix.setLookAtM(mViewMatrix, 0, this.mCameraX, this.mCameraY, this.mCameraZ, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, 1f, 0f);
     }
 
