@@ -99,7 +99,6 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
         if(this.theta < 0) {
             this.theta += Math.PI * 2;
         }
-
         if((this.phi > Math.toRadians(80) && this.phi < Math.toRadians(100)) || (this.phi > Math.toRadians(260) && this.phi < Math.toRadians(280))) {
             this.phi -= phi * 2;
         }
