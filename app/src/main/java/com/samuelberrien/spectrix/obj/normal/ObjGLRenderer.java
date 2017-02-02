@@ -87,6 +87,23 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
             }
         }*/
 
+        if(this.phi > Math.PI * 2){
+            this.phi -= Math.PI * 2;
+        }
+        if(this.phi < 0){
+            this.phi += Math.PI * 2;
+        }
+        if(this.theta > Math.PI * 2){
+            this.theta -= Math.PI * 2;
+        }
+        if(this.theta < 0) {
+            this.theta += Math.PI * 2;
+        }
+
+        if((this.phi > Math.toRadians(80) && this.phi < Math.toRadians(100)) || (this.phi > Math.toRadians(260) && this.phi < Math.toRadians(280))) {
+            this.phi -= phi * 2;
+        }
+
         this.mCameraDirection[0] = this.maxRange * (float) (Math.cos(this.phi) * Math.sin(this.theta)) + this.mCameraX;
         this.mCameraDirection[1] = this.maxRange * (float) Math.sin(this.phi) + this.mCameraY;
         this.mCameraDirection[2] = this.maxRange * (float) (Math.cos(this.phi) * Math.cos(this.theta)) + this.mCameraZ;

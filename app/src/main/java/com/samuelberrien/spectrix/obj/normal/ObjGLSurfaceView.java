@@ -80,6 +80,7 @@ public class ObjGLSurfaceView extends GLSurfaceView {
     private float mPreviousX2;
     private float mPreviousY1;
     private float mPreviousY2;
+    private float mPreviousZoom;
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
@@ -99,6 +100,27 @@ public class ObjGLSurfaceView extends GLSurfaceView {
             mPreviousX = x;
             mPreviousY = y;
         } else if(e.getPointerCount() == 2) {
+            /*float x1 = e.getX(e.getPointerId(0));
+            float x2 = e.getX(e.getPointerId(1));
+            float y1 = e.getY(e.getPointerId(0));
+            float y2 = e.getY(e.getPointerId(1));
+            switch (e.getAction()) {
+                case MotionEvent.ACTION_DOWN:
+                    mPreviousX1 = e.getX(e.getPointerId(0));
+                    mPreviousX2 = e.getX(e.getPointerId(1));
+                    mPreviousY1 = e.getY(e.getPointerId(0));
+                    mPreviousY2 = e.getY(e.getPointerId(1));
+                case MotionEvent.ACTION_MOVE:
+                    float dx1 = x1 - mPreviousX1;
+                    float dx2 = x2 - mPreviousX2;
+                    float dy1 = y1 - mPreviousY1;
+                    float dy2 = y2 - mPreviousY2;
+                    mRenderer.updateZoom((float) Math.sqrt(dx1 * dx2 + dy1 * dy2) * TOUCH_SCALE_FACTOR);
+            }
+            mPreviousX1 = x1;
+            mPreviousX2 = x2;
+            mPreviousY1 = y1;
+            mPreviousY2 = y2;*/
 
         }
         return true;
