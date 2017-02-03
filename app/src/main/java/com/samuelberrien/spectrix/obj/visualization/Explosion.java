@@ -124,7 +124,7 @@ public class Explosion {
             int tmpFreqIndex = i / this.nbSameCenter;
             float tmpMagn = freqArray[tmpFreqIndex] + freqArray[tmpFreqIndex] * tmpFreqIndex * this.mFreqAugmentation;
             if(tmpMagn > 0.1f) {
-                int nbNewOct = (int) tmpMagn * this.nbMaxOctagonePerExplosion;
+                int nbNewOct = (int) (freqArray[tmpFreqIndex] * (float) this.nbMaxOctagonePerExplosion);
                 for (int j = 0; j < nbNewOct; j++) {
                     this.addNewOctagone(this.mCenterPoint[i], tmpMagn, tmpFreqIndex, i);
                 }
