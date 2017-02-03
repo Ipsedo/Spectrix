@@ -94,7 +94,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         this.idVusalisation = (String) parent.getItemAtPosition(pos);
-        if(pos > 1){
+        if(pos > 1 || pos == 5){
             CheckBox useVRCheckBox = (CheckBox) findViewById(R.id.use_vr_check_box);
             useVRCheckBox.setEnabled(true);
             this.useVR = ((CheckBox) findViewById(R.id.use_vr_check_box)).isChecked();

@@ -4,6 +4,7 @@
     <string name="snow">Snow (IN WORK)</string>
     <string name="monkey">Monkey (IN WORK)</string>
     <string name="room">Room</string>
+    <string name="explosion">Explosion</string>
     <string name="visualization_instruction">Choose your Visualisation :</string>
     <string name="music_instruction">Visualize streaming Music or Sample</string>
     <string name="use_sample_check_box">Use Music Sample</string>
@@ -15,6 +16,7 @@
         <item>@string/icosahedron</item>
         <item>@string/snow</item>
         <item>@string/room</item>
+        <item>@string/explosion</item>
     </string-array>
     <string name="title_activity_icosahedron_rotation">IcosahedronRotationActivity</string>
 </resources>

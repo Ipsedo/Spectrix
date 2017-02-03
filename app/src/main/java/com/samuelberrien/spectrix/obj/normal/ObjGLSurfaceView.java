@@ -9,6 +9,7 @@ import android.os.AsyncTask;
 import android.view.MotionEvent;
 
 import com.samuelberrien.spectrix.R;
+import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererExplosion;
 import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererIcosahedron;
 import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererRoom;
 import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererSnow;
@@ -46,6 +47,8 @@ public class ObjGLSurfaceView extends GLSurfaceView {
             this.mRenderer = new ObjGLRendererRoom(context);
         }else if(id_visualisation.equals(context.getString(R.string.icosahedron))){
             this.mRenderer = new ObjGLRendererIcosahedron(context);
+        }else if(id_visualisation.equals(context.getString(R.string.explosion))){
+            this.mRenderer = new ObjGLRendererExplosion(context);
         }
 
         setRenderer(this.mRenderer);

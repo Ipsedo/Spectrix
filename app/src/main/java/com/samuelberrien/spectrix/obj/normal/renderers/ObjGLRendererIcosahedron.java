@@ -18,7 +18,6 @@ public class ObjGLRendererIcosahedron extends ObjGLRenderer {
 
     public ObjGLRendererIcosahedron(Context context){
         super(context);
-        this.mCameraY = 2f;
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
