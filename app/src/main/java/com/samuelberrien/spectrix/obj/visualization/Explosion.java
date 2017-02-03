@@ -33,6 +33,7 @@ public class Explosion {
     private int nbCenter;
     private int nbSameCenter;
     private float[][] mCenterPoint;
+    private FloatBuffer[] mCenterColorBuffer;
 
     private int nbMaxOctagonePerExplosion;
     private float mFreqAugmentation = 0.3f;
@@ -54,6 +55,7 @@ public class Explosion {
         this.rangeDist = rangeDist;
         this.nbCenter = nbCenter;
         this.nbSameCenter = nbSameCenter;
+        this.mCenterColorBuffer = new FloatBuffer[this.nbSameCenter * this.nbCenter];
         this.nbMaxOctagonePerExplosion = nbMaxOctagonePerExplosion;
         this.mCenterPoint = new float[this.nbCenter * this.nbSameCenter][3];
         this.octagone = new ObjModel(this.context, R.raw.octagone, 1f, 1f, 1f, LIGHTAUGMENTATION);
@@ -84,10 +86,27 @@ public class Explosion {
             this.mCenterPoint[i][0] = maxRange * (float) (Math.cos(phi) * Math.sin(theta));
             this.mCenterPoint[i][1] = maxRange * (float) Math.sin(phi);
             this.mCenterPoint[i][2] = maxRange * (float) (Math.cos(phi) * Math.cos(theta));
+
+            float[] color = new float[this.octagone.getVertexDrawListLength() * 4 / 3];
+            float red = rand.nextFloat();
+            float green = rand.nextFloat();
+            float blue = rand.nextFloat();
+            for(int j=0; j < color.length; j+=4){
+                color[j] = red;
+                color[j + 1] = green;
+                color[j + 2] = blue;
+                color[j + 3] = 1f;
+            }
+            FloatBuffer tmp = ByteBuffer.allocateDirect(color.length * 4)
+                    .order(ByteOrder.nativeOrder())
+                    .asFloatBuffer();
+            tmp.put(color)
+                    .position(0);
+            this.mCenterColorBuffer[i] = tmp;
         }
     }
 
-    private void addNewOctagone(float[] center, float magn, int indiceFreq){
+    private void addNewOctagone(float[] center, float magn, int indiceFreq, int indCenter){
         this.mOctagoneAngle.add(rand.nextFloat() * 360f);
         this.mOctagoneRotationOrientation.add(new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f});
         this.mOctagoneRotationMatrix.add(new float[16]);
@@ -96,22 +115,8 @@ public class Explosion {
         this.mOctagoneModelMatrix.add(new float[16]);
         this.mOctagoneScale.add((this.nbCenter - indiceFreq) * 0.005f + 0.2f);
 
-        float[] color = new float[this.octagone.getVertexDrawListLength() * 4 / 3];
-        float red = rand.nextFloat();
-        float green = rand.nextFloat();
-        float blue = rand.nextFloat();
-        for(int j=0; j < color.length; j+=4){
-            color[j] = red;
-            color[j + 1] = green;
-            color[j + 2] = blue;
-            color[j + 3] = 1f;
-        }
-        FloatBuffer tmp = ByteBuffer.allocateDirect(color.length * 4)
-                .order(ByteOrder.nativeOrder())
-                .asFloatBuffer();
-        tmp.put(color)
-                .position(0);
-        this.mOctagoneColorBuffer.add(tmp);
+
+        this.mOctagoneColorBuffer.add(this.mCenterColorBuffer[indCenter]);
     }
 
     private void createNewOctagone(float[] freqArray){
@@ -121,7 +126,7 @@ public class Explosion {
             if(tmpMagn > 0.1f) {
                 int nbNewOct = (int) tmpMagn * this.nbMaxOctagonePerExplosion;
                 for (int j = 0; j < nbNewOct; j++) {
-                    this.addNewOctagone(this.mCenterPoint[i], tmpMagn, tmpFreqIndex);
+                    this.addNewOctagone(this.mCenterPoint[i], tmpMagn, tmpFreqIndex, i);
                 }
             }
         }
@@ -130,7 +135,7 @@ public class Explosion {
     private void deleteOldOctagone(){
         for(int i=0; i < this.mOctagoneModelMatrix.size(); i++){
             double tmpSpeed = Math.sqrt(this.mOctagoneSpeedVector.get(i)[0] * this.mOctagoneSpeedVector.get(i)[0] + this.mOctagoneSpeedVector.get(i)[1] * this.mOctagoneSpeedVector.get(i)[1] + this.mOctagoneSpeedVector.get(i)[2] * this.mOctagoneSpeedVector.get(i)[2]);
-            if(tmpSpeed < 0d){
+            if(tmpSpeed < 0.1d){
                 this.mOctagoneScale.remove(i);
                 this.mOctagoneAngle.remove(i);
                 this.mOctagoneRotationOrientation.remove(i);
