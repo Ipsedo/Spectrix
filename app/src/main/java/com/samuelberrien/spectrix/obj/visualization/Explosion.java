@@ -114,8 +114,6 @@ public class Explosion {
         this.mOctagoneSpeedVector.add(new float[]{rand.nextFloat() * magn, rand.nextFloat() * magn, rand.nextFloat() * magn});
         this.mOctagoneModelMatrix.add(new float[16]);
         this.mOctagoneScale.add((this.nbCenter - indiceFreq) * 0.005f + 0.2f);
-
-
         this.mOctagoneColorBuffer.add(this.mCenterColorBuffer[indCenter]);
     }
 
@@ -175,7 +173,7 @@ public class Explosion {
     }
 
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace){
-        for(int i=0; i<this.mOctagoneModelMatrix.size() ; i++){
+        for(int i=0; i<this.mOctagoneModelMatrix.size() && i < this.mOctagoneColorBuffer.size(); i++){
             float[] tmpModelViewMatrix = new float[16];
             float[] tmpModelViewProjectionMatrix = new float[16];
             Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mOctagoneModelMatrix.get(i), 0);
