@@ -1,31 +1,33 @@
-package com.samuelberrien.spectrix.obj.normal.renderers;
+package com.samuelberrien.spectrix.obj.vr.renderers;
 
 import android.content.Context;
 
-import com.samuelberrien.spectrix.obj.normal.ObjGLRenderer;
+import com.google.vr.sdk.base.Eye;
 import com.samuelberrien.spectrix.obj.visualization.Explosion;
+import com.samuelberrien.spectrix.obj.visualization.Icosahedron;
+import com.samuelberrien.spectrix.obj.vr.ObjStereoRenderer;
 
 import javax.microedition.khronos.egl.EGLConfig;
-import javax.microedition.khronos.opengles.GL10;
 
 /**
- * Created by samuel on 03/02/17.
+ * Created by samuel on 04/02/17.
  * Copyright samuel, 2016 - 2017.
  * Toute reproduction ou utilisation sans l'autorisation
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class ObjGLRendererExplosion extends ObjGLRenderer {
+public class ObjStereoRendererExplosion extends ObjStereoRenderer {
 
     private Explosion explosionVisualization;
 
-    public ObjGLRendererExplosion(Context context){
+    public ObjStereoRendererExplosion(Context context){
         super(context);
+        this.mCameraY = 2f;
     }
 
-    public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-        super.onSurfaceCreated(unused, config);
-        this.explosionVisualization = new Explosion(this.context, 256, 2, 5, 20f, 20f);
+    public void onSurfaceCreated(EGLConfig config) {
+        super.onSurfaceCreated(config);
+        this.explosionVisualization = new Explosion(this.context, 128, 2, 5, 10f, 10f);
     }
 
     public void update(float[] freqArray) {
@@ -35,8 +37,8 @@ public class ObjGLRendererExplosion extends ObjGLRenderer {
         this.updateLight(0f, 0f, 0f);
     }
 
-    public void onDrawFrame(GL10 unused) {
-        super.onDrawFrame(unused);
+    public void onDrawEye(Eye eye) {
+        super.onDrawEye(eye);
         this.explosionVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
     }
 }

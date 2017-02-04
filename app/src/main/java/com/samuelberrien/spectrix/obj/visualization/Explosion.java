@@ -35,8 +35,12 @@ public class Explosion {
     private float[][] mCenterPoint;
     private FloatBuffer[] mCenterColorBuffer;
 
+    private float maxOctagonSpeed;
+
     private int nbMaxOctagonePerExplosion;
     private float mFreqAugmentation = 0.3f;
+
+    private float[] freqArray = new float[1024];
 
     private ObjModel octagone;
     /*private ArrayList<Float> mOctagoneScale;
@@ -68,6 +72,7 @@ public class Explosion {
         this.mOctagoneSpeedVector = new ArrayList<>();
         this.mOctagoneModelMatrix = new ArrayList<>();
         this.mOctagoneColorBuffer = new ArrayList<>();*/
+        this.maxOctagonSpeed = 5f;
         this.mOctagone = new ArrayList<>();
 
         this.setupCenter();
@@ -117,7 +122,12 @@ public class Explosion {
         this.mOctagoneModelMatrix.add(new float[16]);
         this.mOctagoneScale.add((this.nbCenter - indiceFreq) * 0.005f + 0.2f);
         this.mOctagoneColorBuffer.add(this.mCenterColorBuffer[indCenter]);*/
-        this.mOctagone.add(new Octagone((this.nbCenter - indiceFreq) * 0.005f + 0.2f, rand.nextFloat() * 360f, new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f}, center, new float[]{rand.nextFloat() * magn, rand.nextFloat() * magn, rand.nextFloat() * magn},this.mCenterColorBuffer[indCenter]));
+        double phi = rand.nextDouble() * Math.PI * 2;
+        double theta = rand.nextDouble() * Math.PI * 2;
+        float xSpeed = magn * this.maxOctagonSpeed * (float) (Math.cos(phi) * Math.sin(theta));
+        float ySpeed = magn * this.maxOctagonSpeed * (float) (Math.sin(phi));
+        float zSpeed = magn * this.maxOctagonSpeed * (float) (Math.cos(phi) * Math.cos(theta));
+        this.mOctagone.add(new Octagone((this.nbCenter - indiceFreq) * 0.005f + 0.2f, rand.nextFloat() * 360f, new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f}, center, new float[]{xSpeed, ySpeed, zSpeed},this.mCenterColorBuffer[indCenter]));
     }
 
     private void createNewOctagone(float[] freqArray){
@@ -148,7 +158,7 @@ public class Explosion {
             }
         }*/
         for(int i=0; i<this.mOctagone.size(); i++){
-            if(this.mOctagone.get(i).isAlive()){
+            if(this.mOctagone.get(i).getVectorLength() < 0.2f){
                 this.mOctagone.remove(i);
             }
         }
@@ -180,7 +190,7 @@ public class Explosion {
     }
 
     public void update(float[] freqArray){
-        this.createNewOctagone(freqArray);
+        this.freqArray = freqArray;
     }
 
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace){
@@ -194,6 +204,7 @@ public class Explosion {
             this.octagone.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
         }*/
         this.deleteOldOctagone();
+        this.createNewOctagone(freqArray);
         this.updateOctagone();
         for(int i=0; i<this.mOctagone.size(); i++){
             float[] tmpModelViewMatrix = new float[16];
@@ -207,7 +218,7 @@ public class Explosion {
     }
 
     private class Octagone{
-        private final int NBFRAMELIVE = 6000;
+        private final int NBFRAMELIVE = 100000;
         private int live = NBFRAMELIVE;
         private float mOctagoneScale;
         private float mOctagoneAngle;
