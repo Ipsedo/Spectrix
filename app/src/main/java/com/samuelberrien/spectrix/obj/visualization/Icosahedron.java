@@ -83,13 +83,13 @@ public class Icosahedron {
             float maxRange = rand.nextFloat() * rangeDist + minDist;
             double phi;
             double theta;
-            if(Math.sin(90) == 1){
+            /*if(Math.sin(90) == 1){
                 phi = rand.nextDouble() * 360d;
                 theta = rand.nextDouble() * 360d;
-            }else{
+            }else{*/
                 phi = rand.nextDouble() * Math.PI * 2;
                 theta = rand.nextDouble() * Math.PI * 2;
-            }
+            //}
             float x = maxRange * (float) (Math.cos(phi) * Math.sin(theta));
             float y = maxRange * (float) Math.sin(phi);
             float z = maxRange * (float) (Math.cos(phi) * Math.cos(theta));
