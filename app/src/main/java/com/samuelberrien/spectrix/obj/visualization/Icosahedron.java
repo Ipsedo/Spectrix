@@ -98,9 +98,9 @@ public class Icosahedron {
             this.mTranslateVector[i][2] = z;
 
             this.mAngle[i] = rand.nextFloat() * 360f;
-            this.mRotationOrientation[i][0] = rand.nextFloat();
-            this.mRotationOrientation[i][1] = rand.nextFloat();
-            this.mRotationOrientation[i][2] = rand.nextFloat();
+            this.mRotationOrientation[i][0] = rand.nextFloat() * 2f - 1f;
+            this.mRotationOrientation[i][1] = rand.nextFloat() * 2f - 1f;
+            this.mRotationOrientation[i][2] = rand.nextFloat() * 2f - 1f;
         }
     }
 
