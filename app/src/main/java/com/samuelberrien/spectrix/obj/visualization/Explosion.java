@@ -65,15 +65,8 @@ public class Explosion {
     private void setupCenter() {
         for (int i = 0; i < this.nbCenter * this.nbSameCenter; i++) {
             float maxRange = rand.nextFloat() * rangeDist + minDist;
-            double phi;
-            double theta;
-            /*if(Math.sin(90) == 1){
-                phi = rand.nextDouble() * 360d;
-                theta = rand.nextDouble() * 360d;
-            }else{*/
-            phi = rand.nextDouble() * Math.PI * 2;
-            theta = rand.nextDouble() * Math.PI * 2;
-            //}
+            double phi = rand.nextDouble() * Math.PI * 2;
+            double theta = rand.nextDouble() * Math.PI * 2;
             this.mCenterPoint[i][0] = maxRange * (float) (Math.cos(phi) * Math.sin(theta));
             this.mCenterPoint[i][1] = maxRange * (float) Math.sin(phi);
             this.mCenterPoint[i][2] = maxRange * (float) (Math.cos(phi) * Math.cos(theta));
@@ -101,7 +94,7 @@ public class Explosion {
         double phi = rand.nextDouble() * Math.PI * 2;
         double theta = rand.nextDouble() * Math.PI * 2;
         float xSpeed = magn * this.maxOctagonSpeed * (float) (Math.cos(phi) * Math.sin(theta));
-        float ySpeed = magn * this.maxOctagonSpeed * (float) (Math.sin(phi));
+        float ySpeed = magn * this.maxOctagonSpeed * (float) Math.sin(phi);
         float zSpeed = magn * this.maxOctagonSpeed * (float) (Math.cos(phi) * Math.cos(theta));
         this.mOctagone.add(new Octagone((this.nbCenter - indiceFreq) * 0.002f + 0.02f, rand.nextFloat() * 360f, new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f}, center, new float[]{xSpeed, ySpeed, zSpeed}, this.mCenterColorBuffer[indCenter]));
     }
