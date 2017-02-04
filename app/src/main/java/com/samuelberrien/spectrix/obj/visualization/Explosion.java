@@ -121,7 +121,7 @@ public class Explosion {
 
     private void deleteOldOctagone() {
         for (int i = 0; i < this.mOctagone.size(); i++) {
-            if (this.mOctagone.get(i).getVectorLength() < 0.2f) {
+            if (this.mOctagone.get(i).getSpeedVectorNorm() < 0.2f) {
                 this.mOctagone.remove(i);
             }
         }
@@ -201,7 +201,7 @@ public class Explosion {
             return this.mOctagoneColorBuffer;
         }
 
-        public double getVectorLength() {
+        public double getSpeedVectorNorm() {
             return Math.sqrt(this.mOctagoneSpeedVector[0] * this.mOctagoneSpeedVector[0] + this.mOctagoneSpeedVector[1] * this.mOctagoneSpeedVector[1] + this.mOctagoneSpeedVector[2] * this.mOctagoneSpeedVector[2]);
         }
     }
