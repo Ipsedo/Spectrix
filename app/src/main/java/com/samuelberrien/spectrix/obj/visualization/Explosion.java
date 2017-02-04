@@ -43,17 +43,9 @@ public class Explosion {
     private float[] freqArray = new float[1024];
 
     private ObjModel octagone;
-    /*private ArrayList<Float> mOctagoneScale;
-    private ArrayList<Float> mOctagoneAngle;
-    private ArrayList<float[]> mOctagoneRotationOrientation;
-    private ArrayList<float[]> mOctagoneRotationMatrix;
-    private ArrayList<float[]> mOctagoneTranslateVector;
-    private ArrayList<float[]> mOctagoneSpeedVector;
-    private ArrayList<float[]> mOctagoneModelMatrix;
-    private ArrayList<FloatBuffer> mOctagoneColorBuffer;*/
     private ArrayList<Octagone> mOctagone;
 
-    public Explosion(Context context, int nbCenter, int nbSameCenter, int nbMaxOctagonePerExplosion, float minDist, float rangeDist){
+    public Explosion(Context context, int nbCenter, int nbSameCenter, int nbMaxOctagonePerExplosion, float minDist, float rangeDist) {
         this.context = context;
         this.rand = new Random(System.currentTimeMillis());
         this.minDist = minDist;
@@ -64,22 +56,14 @@ public class Explosion {
         this.nbMaxOctagonePerExplosion = nbMaxOctagonePerExplosion;
         this.mCenterPoint = new float[this.nbCenter * this.nbSameCenter][3];
         this.octagone = new ObjModel(this.context, R.raw.octagone, 1f, 1f, 1f, LIGHTAUGMENTATION);
-        /*this.mOctagoneScale = new ArrayList<>();
-        this.mOctagoneAngle = new ArrayList<>();
-        this.mOctagoneRotationOrientation = new ArrayList<>();
-        this.mOctagoneRotationMatrix = new ArrayList<>();
-        this.mOctagoneTranslateVector = new ArrayList<>();
-        this.mOctagoneSpeedVector = new ArrayList<>();
-        this.mOctagoneModelMatrix = new ArrayList<>();
-        this.mOctagoneColorBuffer = new ArrayList<>();*/
-        this.maxOctagonSpeed = 5f;
+        this.maxOctagonSpeed = 2.5f;
         this.mOctagone = new ArrayList<>();
 
         this.setupCenter();
     }
 
-    private void setupCenter(){
-        for(int i = 0; i < this.nbCenter * this.nbSameCenter; i++){
+    private void setupCenter() {
+        for (int i = 0; i < this.nbCenter * this.nbSameCenter; i++) {
             float maxRange = rand.nextFloat() * rangeDist + minDist;
             double phi;
             double theta;
@@ -87,8 +71,8 @@ public class Explosion {
                 phi = rand.nextDouble() * 360d;
                 theta = rand.nextDouble() * 360d;
             }else{*/
-                phi = rand.nextDouble() * Math.PI * 2;
-                theta = rand.nextDouble() * Math.PI * 2;
+            phi = rand.nextDouble() * Math.PI * 2;
+            theta = rand.nextDouble() * Math.PI * 2;
             //}
             this.mCenterPoint[i][0] = maxRange * (float) (Math.cos(phi) * Math.sin(theta));
             this.mCenterPoint[i][1] = maxRange * (float) Math.sin(phi);
@@ -98,7 +82,7 @@ public class Explosion {
             float red = rand.nextFloat();
             float green = rand.nextFloat();
             float blue = rand.nextFloat();
-            for(int j=0; j < color.length; j+=4){
+            for (int j = 0; j < color.length; j += 4) {
                 color[j] = red;
                 color[j + 1] = green;
                 color[j + 2] = blue;
@@ -113,28 +97,20 @@ public class Explosion {
         }
     }
 
-    private void addNewOctagone(float[] center, float magn, int indiceFreq, int indCenter){
-        /*this.mOctagoneAngle.add(rand.nextFloat() * 360f);
-        this.mOctagoneRotationOrientation.add(new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f});
-        this.mOctagoneRotationMatrix.add(new float[16]);
-        this.mOctagoneTranslateVector.add(center);
-        this.mOctagoneSpeedVector.add(new float[]{rand.nextFloat() * magn, rand.nextFloat() * magn, rand.nextFloat() * magn});
-        this.mOctagoneModelMatrix.add(new float[16]);
-        this.mOctagoneScale.add((this.nbCenter - indiceFreq) * 0.005f + 0.2f);
-        this.mOctagoneColorBuffer.add(this.mCenterColorBuffer[indCenter]);*/
+    private void addNewOctagone(float[] center, float magn, int indiceFreq, int indCenter) {
         double phi = rand.nextDouble() * Math.PI * 2;
         double theta = rand.nextDouble() * Math.PI * 2;
         float xSpeed = magn * this.maxOctagonSpeed * (float) (Math.cos(phi) * Math.sin(theta));
         float ySpeed = magn * this.maxOctagonSpeed * (float) (Math.sin(phi));
         float zSpeed = magn * this.maxOctagonSpeed * (float) (Math.cos(phi) * Math.cos(theta));
-        this.mOctagone.add(new Octagone((this.nbCenter - indiceFreq) * 0.002f + 0.02f, rand.nextFloat() * 360f, new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f}, center, new float[]{xSpeed, ySpeed, zSpeed},this.mCenterColorBuffer[indCenter]));
+        this.mOctagone.add(new Octagone((this.nbCenter - indiceFreq) * 0.002f + 0.02f, rand.nextFloat() * 360f, new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f}, center, new float[]{xSpeed, ySpeed, zSpeed}, this.mCenterColorBuffer[indCenter]));
     }
 
-    private void createNewOctagone(float[] freqArray){
-        for(int i = 0; i < this.nbSameCenter * this.nbCenter; i++){
+    private void createNewOctagone(float[] freqArray) {
+        for (int i = 0; i < this.nbSameCenter * this.nbCenter; i++) {
             int tmpFreqIndex = i / this.nbSameCenter;
             float tmpMagn = freqArray[tmpFreqIndex] + freqArray[tmpFreqIndex] * tmpFreqIndex * this.mFreqAugmentation;
-            if(tmpMagn > 0.1f) {
+            if (tmpMagn > 0.1f) {
                 int nbNewOct = (int) (tmpMagn * (float) this.nbMaxOctagonePerExplosion);
                 for (int j = 0; j < nbNewOct; j++) {
                     this.addNewOctagone(this.mCenterPoint[i], tmpMagn, tmpFreqIndex, i);
@@ -143,70 +119,31 @@ public class Explosion {
         }
     }
 
-    private void deleteOldOctagone(){
-        /*for(int i=0; i < this.mOctagoneModelMatrix.size(); i++){
-            double tmpSpeed = Math.sqrt(this.mOctagoneSpeedVector.get(i)[0] * this.mOctagoneSpeedVector.get(i)[0] + this.mOctagoneSpeedVector.get(i)[1] * this.mOctagoneSpeedVector.get(i)[1] + this.mOctagoneSpeedVector.get(i)[2] * this.mOctagoneSpeedVector.get(i)[2]);
-            if(tmpSpeed < 0.1d){
-                this.mOctagoneScale.remove(i);
-                this.mOctagoneAngle.remove(i);
-                this.mOctagoneRotationOrientation.remove(i);
-                this.mOctagoneRotationMatrix.remove(i);
-                this.mOctagoneTranslateVector.remove(i);
-                this.mOctagoneSpeedVector.remove(i);
-                this.mOctagoneModelMatrix.remove(i);
-                this.mOctagoneColorBuffer.remove(i);
-            }
-        }*/
-        for(int i=0; i<this.mOctagone.size(); i++){
-            if(this.mOctagone.get(i).getVectorLength() < 0.2f){
+    private void deleteOldOctagone() {
+        for (int i = 0; i < this.mOctagone.size(); i++) {
+            if (this.mOctagone.get(i).getVectorLength() < 0.2f) {
                 this.mOctagone.remove(i);
             }
         }
     }
 
-    private void updateOctagone(){
-        /*for(int i=0; i<this.mOctagoneModelMatrix.size(); i++){
-            float[] tmp = this.mOctagoneSpeedVector.get(i);
-            this.mOctagoneSpeedVector.set(i, new float[]{tmp[0] * 0.9f, tmp[1] * 0.9f, tmp[2] * 0.9f});
-            tmp = this.mOctagoneTranslateVector.get(i);
-            this.mOctagoneTranslateVector.set(i, new float[]{tmp[0] + this.mOctagoneSpeedVector.get(i)[0], tmp[1] + this.mOctagoneSpeedVector.get(i)[1], tmp[2] + this.mOctagoneSpeedVector.get(i)[2]});
-            this.mOctagoneAngle.set(i, this.mOctagoneAngle.get(i) + 1f);
-
-            float[] mModelMatrix = new float[16];
-            Matrix.setIdentityM(mModelMatrix, 0);
-            Matrix.translateM(mModelMatrix, 0, this.mOctagoneTranslateVector.get(i)[0], this.mOctagoneTranslateVector.get(i)[1], this.mOctagoneTranslateVector.get(i)[2]);
-            Matrix.setRotateM(this.mOctagoneRotationMatrix.get(i), 0, this.mOctagoneAngle.get(i), this.mOctagoneRotationOrientation.get(i)[0], this.mOctagoneRotationOrientation.get(i)[1], this.mOctagoneRotationOrientation.get(i)[2]);
-            float[] tmpMat = mModelMatrix.clone();
-            Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, this.mOctagoneRotationMatrix.get(i), 0);
-            Matrix.scaleM(mModelMatrix, 0, this.mOctagoneScale.get(i), this.mOctagoneScale.get(i), this.mOctagoneScale.get(i));
-
-            this.mOctagoneModelMatrix.set(i, mModelMatrix);
-        }*/
-        for(int i=0; i<this.mOctagone.size(); i++){
+    private void updateOctagone() {
+        for (int i = 0; i < this.mOctagone.size(); i++) {
             Octagone tmpOct = this.mOctagone.get(i);
             tmpOct.update();
             this.mOctagone.set(i, tmpOct);
         }
     }
 
-    public void update(float[] freqArray){
+    public void update(float[] freqArray) {
         this.freqArray = freqArray;
     }
 
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace){
-        /*for(int i=0; i<this.mOctagoneModelMatrix.size() && i < this.mOctagoneColorBuffer.size(); i++){
-            float[] tmpModelViewMatrix = new float[16];
-            float[] tmpModelViewProjectionMatrix = new float[16];
-            Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mOctagoneModelMatrix.get(i), 0);
-            Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-
-            this.octagone.setColor(this.mOctagoneColorBuffer.get(i));
-            this.octagone.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
-        }*/
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace) {
         this.deleteOldOctagone();
         this.createNewOctagone(freqArray);
         this.updateOctagone();
-        for(int i=0; i<this.mOctagone.size(); i++){
+        for (int i = 0; i < this.mOctagone.size(); i++) {
             float[] tmpModelViewMatrix = new float[16];
             float[] tmpModelViewProjectionMatrix = new float[16];
             Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mOctagone.get(i).getmOctagoneModelMatrix(), 0);
@@ -217,7 +154,7 @@ public class Explosion {
         }
     }
 
-    private class Octagone{
+    private class Octagone {
         private float mOctagoneScale;
         private float mOctagoneAngle;
         private float[] mOctagoneRotationOrientation;
@@ -227,7 +164,7 @@ public class Explosion {
         private float[] mOctagoneModelMatrix;
         private FloatBuffer mOctagoneColorBuffer;
 
-        public Octagone(float mOctagoneScale, float mOctagoneAngle, float[] mOctagoneRotationOrientation, float[] mOctagoneTranslateVector, float[] mOctagoneSpeedVector, FloatBuffer mOctagoneColorBuffer){
+        public Octagone(float mOctagoneScale, float mOctagoneAngle, float[] mOctagoneRotationOrientation, float[] mOctagoneTranslateVector, float[] mOctagoneSpeedVector, FloatBuffer mOctagoneColorBuffer) {
             this.mOctagoneAngle = mOctagoneAngle;
             this.mOctagoneScale = mOctagoneScale;
             this.mOctagoneRotationOrientation = mOctagoneRotationOrientation;
@@ -238,7 +175,7 @@ public class Explosion {
             this.mOctagoneModelMatrix = new float[16];
         }
 
-        public void update(){
+        public void update() {
             float[] tmp = this.mOctagoneSpeedVector;
             this.mOctagoneSpeedVector = new float[]{tmp[0] * 0.5f, tmp[1] * 0.5f, tmp[2] * 0.5f};
             tmp = this.mOctagoneTranslateVector;
@@ -256,15 +193,15 @@ public class Explosion {
             this.mOctagoneModelMatrix = mModelMatrix.clone();
         }
 
-        public float[] getmOctagoneModelMatrix(){
+        public float[] getmOctagoneModelMatrix() {
             return this.mOctagoneModelMatrix;
         }
 
-        public FloatBuffer getmOctagoneColorBuffer(){
+        public FloatBuffer getmOctagoneColorBuffer() {
             return this.mOctagoneColorBuffer;
         }
 
-        public double getVectorLength(){
+        public double getVectorLength() {
             return Math.sqrt(this.mOctagoneSpeedVector[0] * this.mOctagoneSpeedVector[0] + this.mOctagoneSpeedVector[1] * this.mOctagoneSpeedVector[1] + this.mOctagoneSpeedVector[2] * this.mOctagoneSpeedVector[2]);
         }
     }
