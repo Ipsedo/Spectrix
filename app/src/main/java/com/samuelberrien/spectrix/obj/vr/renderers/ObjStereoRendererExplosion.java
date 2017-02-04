@@ -27,7 +27,7 @@ public class ObjStereoRendererExplosion extends ObjStereoRenderer {
 
     public void onSurfaceCreated(EGLConfig config) {
         super.onSurfaceCreated(config);
-        this.explosionVisualization = new Explosion(this.context, 128, 2, 5, 10f, 10f);
+        this.explosionVisualization = new Explosion(this.context, 128, 2, 2, 10f, 10f);
     }
 
     public void update(float[] freqArray) {
