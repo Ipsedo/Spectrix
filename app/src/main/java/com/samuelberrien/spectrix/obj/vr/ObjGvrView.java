@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 
 import com.google.vr.sdk.base.GvrView;
 import com.samuelberrien.spectrix.R;
+import com.samuelberrien.spectrix.obj.vr.renderers.ObjStereoRendererExplosion;
 import com.samuelberrien.spectrix.obj.vr.renderers.ObjStereoRendererIcosahedron;
 import com.samuelberrien.spectrix.obj.vr.renderers.ObjStereoRendererRoom;
 import com.samuelberrien.spectrix.obj.vr.renderers.ObjStereoRendererSnow;
@@ -43,6 +44,8 @@ public class ObjGvrView extends GvrView {
             this.mRenderer = new ObjStereoRendererRoom(context);
         }else if(idVisualisation.equals(context.getString(R.string.snow))){
             this.mRenderer = new ObjStereoRendererSnow(context);
+        }else if(idVisualisation.equals(context.getString(R.string.explosion))){
+            this.mRenderer = new ObjStereoRendererExplosion(context);
         }
 
         setRenderer(this.mRenderer);
