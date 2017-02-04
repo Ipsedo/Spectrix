@@ -120,11 +120,11 @@ public class Snow {
         for(int i=0; i < this.nbTree; i++){
             double r = 5d * rand.nextDouble();
             double theta;
-            if(Math.sin(90) == 1){
+            /*if(Math.sin(90) == 1){
                 theta = rand.nextDouble() * 360d;
-            }else{
+            }else{*/
                 theta = rand.nextDouble() * Math.PI * 2d;
-            }
+            //}
 
             float up = rand.nextFloat() * 0.5f;
 
@@ -141,11 +141,11 @@ public class Snow {
         for(int i=0; i < nbPing; i++) {
             double r = 5d * rand.nextDouble();
             double theta;
-            if(Math.sin(90) == 1){
+            /*if(Math.sin(90) == 1){
                 theta = rand.nextDouble() * 360d;
-            }else{
+            }else{*/
                 theta = rand.nextDouble() * Math.PI * 2d;
-            }
+            //}
 
             this.mPingTranslateVector[i][0] = (float) ((5d + r) * Math.cos(theta));
             this.mPingTranslateVector[i][1] = 0f;
@@ -162,19 +162,19 @@ public class Snow {
             double r1 = 20d;
             double r2 = rand.nextDouble() * 5d;
 
-            if(Math.cos(90) == 0){
+            /*if(Math.cos(90) == 0){
                 theta = rand.nextDouble() * 360f;
                 phi = rand.nextDouble() * 135f + 22.5f;
                 this.mOctagoneAngle[i] = rand.nextFloat() * 360f;
-            }else{
+            }else{*/
                 theta = rand.nextDouble() * Math.PI * 2d;
                 phi = rand.nextDouble() * Math.PI * 6 / 8 + Math.PI / 8;
-                this.mOctagoneAngle[i] = (float) (rand.nextDouble() * Math.PI * 2d);
-            }
+                this.mOctagoneAngle[i] = (float) (rand.nextDouble() * 360f);
+            //}
 
-            this.mOctagoneRotationOrientation[i][0] = rand.nextFloat();
-            this.mOctagoneRotationOrientation[i][1] = rand.nextFloat();
-            this.mOctagoneRotationOrientation[i][2] = rand.nextFloat();
+            this.mOctagoneRotationOrientation[i][0] = rand.nextFloat() * 2f - 1f;
+            this.mOctagoneRotationOrientation[i][1] = rand.nextFloat() * 2f - 1f;
+            this.mOctagoneRotationOrientation[i][2] = rand.nextFloat() * 2f - 1f;
 
             this.mOctagoneTranslateVector[i][0] = (float) ((r1 + r2) * Math.cos(phi) * Math.sin(theta));
             this.mOctagoneTranslateVector[i][1] = (float) ((r1 + r2) * Math.sin(phi));
@@ -189,11 +189,11 @@ public class Snow {
         for(int i=0; i < this.nbIgloo; i++) {
             double r = 5d * rand.nextDouble();
             double theta;
-            if (Math.sin(90) == 1) {
+            /*if (Math.sin(90) == 1) {
                 theta = rand.nextDouble() * 360d;
-            } else {
+            } else {*/
                 theta = rand.nextDouble() * Math.PI * 2d;
-            }
+            //}
             this.mIglooTranslateVector[i][0] = (float) ((5d + r) * Math.cos(theta));
             this.mIglooTranslateVector[i][1] = -1f;
             this.mIglooTranslateVector[i][2] = (float) ((5d + r) * Math.sin(theta));
