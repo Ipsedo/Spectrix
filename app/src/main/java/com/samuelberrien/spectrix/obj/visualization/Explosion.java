@@ -148,7 +148,7 @@ public class Explosion {
             }
         }*/
         for(int i=0; i<this.mOctagone.size(); i++){
-            if(this.mOctagone.get(i).getVectorLength() < 0.1d){
+            if(this.mOctagone.get(i).isAlive()){
                 this.mOctagone.remove(i);
             }
         }
@@ -207,6 +207,8 @@ public class Explosion {
     }
 
     private class Octagone{
+        private final int NBFRAMELIVE = 6000;
+        private int live = NBFRAMELIVE;
         private float mOctagoneScale;
         private float mOctagoneAngle;
         private float[] mOctagoneRotationOrientation;
@@ -228,8 +230,9 @@ public class Explosion {
         }
 
         public void update(){
+            this.live--;
             float[] tmp = this.mOctagoneSpeedVector;
-            this.mOctagoneSpeedVector = new float[]{tmp[0] * 0.9f, tmp[1] * 0.9f, tmp[2] * 0.9f};
+            this.mOctagoneSpeedVector = new float[]{tmp[0] * 0.5f, tmp[1] * 0.5f, tmp[2] * 0.5f};
             tmp = this.mOctagoneTranslateVector;
             this.mOctagoneTranslateVector = new float[]{tmp[0] + this.mOctagoneSpeedVector[0], tmp[1] + this.mOctagoneSpeedVector[1], tmp[2] + this.mOctagoneSpeedVector[2]};
             this.mOctagoneAngle = this.mOctagoneAngle + 1f;
@@ -255,6 +258,10 @@ public class Explosion {
 
         public double getVectorLength(){
             return Math.sqrt(this.mOctagoneSpeedVector[0] * this.mOctagoneSpeedVector[0] + this.mOctagoneSpeedVector[1] * this.mOctagoneSpeedVector[1] + this.mOctagoneSpeedVector[2] * this.mOctagoneSpeedVector[2]);
+        }
+
+        public boolean isAlive(){
+            return this.live > 0;
         }
     }
 }
