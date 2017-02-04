@@ -218,8 +218,6 @@ public class Explosion {
     }
 
     private class Octagone{
-        private final int NBFRAMELIVE = 100000;
-        private int live = NBFRAMELIVE;
         private float mOctagoneScale;
         private float mOctagoneAngle;
         private float[] mOctagoneRotationOrientation;
@@ -241,7 +239,6 @@ public class Explosion {
         }
 
         public void update(){
-            this.live--;
             float[] tmp = this.mOctagoneSpeedVector;
             this.mOctagoneSpeedVector = new float[]{tmp[0] * 0.5f, tmp[1] * 0.5f, tmp[2] * 0.5f};
             tmp = this.mOctagoneTranslateVector;
@@ -269,10 +266,6 @@ public class Explosion {
 
         public double getVectorLength(){
             return Math.sqrt(this.mOctagoneSpeedVector[0] * this.mOctagoneSpeedVector[0] + this.mOctagoneSpeedVector[1] * this.mOctagoneSpeedVector[1] + this.mOctagoneSpeedVector[2] * this.mOctagoneSpeedVector[2]);
-        }
-
-        public boolean isAlive(){
-            return this.live > 0;
         }
     }
 }
