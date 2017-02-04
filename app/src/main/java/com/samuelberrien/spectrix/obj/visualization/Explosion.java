@@ -45,7 +45,7 @@ public class Explosion {
     private ObjModel octagone;
     private ArrayList<Octagone> mOctagone;
 
-    public Explosion(Context context, int nbCenter, int nbSameCenter, int nbMaxOctagonePerExplosion, float minDist, float rangeDist) {
+    public Explosion(Context context, int nbCenter, int nbSameCenter, int nbMaxOctagonePerExplosion, float maxOctagonSpeed, float minDist, float rangeDist) {
         this.context = context;
         this.rand = new Random(System.currentTimeMillis());
         this.minDist = minDist;
@@ -56,7 +56,7 @@ public class Explosion {
         this.nbMaxOctagonePerExplosion = nbMaxOctagonePerExplosion;
         this.mCenterPoint = new float[this.nbCenter * this.nbSameCenter][3];
         this.octagone = new ObjModel(this.context, R.raw.octagone, 1f, 1f, 1f, LIGHTAUGMENTATION);
-        this.maxOctagonSpeed = 2.5f;
+        this.maxOctagonSpeed = maxOctagonSpeed;
         this.mOctagone = new ArrayList<>();
 
         this.setupCenter();
@@ -96,7 +96,7 @@ public class Explosion {
         float xSpeed = magn * this.maxOctagonSpeed * (float) (Math.cos(phi) * Math.sin(theta));
         float ySpeed = magn * this.maxOctagonSpeed * (float) Math.sin(phi);
         float zSpeed = magn * this.maxOctagonSpeed * (float) (Math.cos(phi) * Math.cos(theta));
-        this.mOctagone.add(new Octagone((this.nbCenter - indiceFreq) * 0.002f + 0.02f, rand.nextFloat() * 360f, new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f}, center, new float[]{xSpeed, ySpeed, zSpeed}, this.mCenterColorBuffer[indCenter]));
+        this.mOctagone.add(new Octagone((this.nbCenter - indiceFreq) * 0.002f + 0.03f, rand.nextFloat() * 360f, new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f}, center, new float[]{xSpeed, ySpeed, zSpeed}, this.mCenterColorBuffer[indCenter]));
     }
 
     private void createNewOctagone(float[] freqArray) {
