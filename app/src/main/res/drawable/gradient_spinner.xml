@@ -3,9 +3,9 @@
     <item><layer-list>
         <item><shape>
             <gradient
-                android:startColor="@color/colorPrimary"
+                android:startColor="@color/colorPrimaryDark"
                 android:centerColor="@color/colorButton"
-                android:endColor="@color/colorPrimary"
+                android:endColor="@color/colorPrimaryDark"
                 android:angle="270" />
 
             <stroke android:width="2dp" android:color="@color/black" />
