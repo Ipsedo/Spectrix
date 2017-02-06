@@ -25,7 +25,7 @@ public class ObjGLRendererExplosion extends ObjGLRenderer {
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         super.onSurfaceCreated(unused, config);
-        this.explosionVisualization = new Explosion(this.context, 256, 2, 5, 2.5f, 20f, 20f);
+        this.explosionVisualization = new Explosion(this.context, 256, 3, 5, 2.5f, 20f, 5f);
     }
 
     public void update(float[] freqArray) {
