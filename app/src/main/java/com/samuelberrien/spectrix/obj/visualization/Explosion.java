@@ -5,6 +5,7 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.spectrix.R;
 import com.samuelberrien.spectrix.obj.ObjModel;
+import com.samuelberrien.spectrix.obj.TextCube;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -46,6 +47,11 @@ public class Explosion {
     private ObjModel octagone;
     private ArrayList<Octagone> mOctagone;
 
+    private TextCube textCube;
+    private float mCubeScale = 1f;
+    private float[] mCubeTranslateVector = new float[3];
+    private float[] mCubeModelMatrix = new float[16];
+
     public Explosion(Context context, int nbCenter, int nbSameCenter, int nbMaxOctagonePerExplosion, float maxOctagonSpeed, float minDist, float rangeDist) {
         this.context = context;
         this.rand = new Random(System.currentTimeMillis());
@@ -60,7 +66,17 @@ public class Explosion {
         this.maxOctagonSpeed = maxOctagonSpeed;
         this.mOctagone = new ArrayList<>();
 
+
+        this.textCube = new TextCube(this.context);
+
         this.setupCenter();
+        this.setupTextCube();
+    }
+
+    private void setupTextCube(){
+        this.mCubeTranslateVector[0] = 0f;
+        this.mCubeTranslateVector[1] = 0f;
+        this.mCubeTranslateVector[2] = 2f;
     }
 
     private void setupCenter() {
@@ -129,6 +145,15 @@ public class Explosion {
         }
     }
 
+    private void updateCube(){
+        float[] mModelMatrix = new float[16];
+        Matrix.setIdentityM(mModelMatrix, 0);
+        Matrix.translateM(mModelMatrix, 0, this.mCubeTranslateVector[0], this.mCubeTranslateVector[1], this.mCubeTranslateVector[2]);
+        Matrix.scaleM(mModelMatrix, 0, this.mCubeScale, this.mCubeScale, this.mCubeScale);
+
+        this.mCubeModelMatrix = mModelMatrix.clone();
+    }
+
     public void update(float[] freqArray) {
         this.freqArray = freqArray;
     }
@@ -137,14 +162,20 @@ public class Explosion {
         this.deleteOldOctagone();
         this.createNewOctagone(freqArray);
         this.updateOctagone();
+        float[] tmpModelViewMatrix = new float[16];
+        float[] tmpModelViewProjectionMatrix = new float[16];
         for (int i = 0; i < this.mOctagone.size(); i++) {
-            float[] tmpModelViewMatrix = new float[16];
-            float[] tmpModelViewProjectionMatrix = new float[16];
             Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mOctagone.get(i).getmOctagoneModelMatrix(), 0);
             Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
 
             this.octagone.setColor(this.mOctagone.get(i).getmOctagoneColorBuffer());
             this.octagone.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
+        }
+        if(this.mOctagone.isEmpty()){
+            this.updateCube();
+            Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mCubeModelMatrix, 0);
+            Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
+            this.textCube.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
         }
     }
 
