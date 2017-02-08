@@ -22,7 +22,8 @@ public class Snow {
     private final int MAXCPT = 16;
     private int cpt = MAXCPT;
 
-    private final float LIGHTAUGMENTATION = 10.0f;
+    private final float LIGHTAUGMENTATION = 2.0f;
+    private final float DISTANCECOEFF = 0.0001f;
 
     private final float SCALE = 0.2f;
 
@@ -116,7 +117,7 @@ public class Snow {
     }
 
     private void setupTree(){
-        this.tree = new ObjModelMtl(this.context, R.raw.snow_tree_obj, R.raw.snow_tree_mtl, LIGHTAUGMENTATION);
+        this.tree = new ObjModelMtl(this.context, R.raw.snow_tree_obj, R.raw.snow_tree_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
         for(int i=0; i < this.nbTree; i++){
             double r = 5d * rand.nextDouble();
             double theta;
@@ -137,7 +138,7 @@ public class Snow {
     }
 
     private void setupPinguin() {
-        this.ping = new ObjModelMtl(this.context, R.raw.snow_pingouin_obj, R.raw.snow_pingouin_mtl, LIGHTAUGMENTATION);
+        this.ping = new ObjModelMtl(this.context, R.raw.snow_pingouin_obj, R.raw.snow_pingouin_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
         for(int i=0; i < nbPing; i++) {
             double r = 5d * rand.nextDouble();
             double theta;
@@ -155,7 +156,7 @@ public class Snow {
     }
 
     private void setupOctagone() {
-        this.octagone = new ObjModel(this.context, R.raw.octagone, 1f, 0.8f, 0.8f, LIGHTAUGMENTATION);
+        this.octagone = new ObjModel(this.context, R.raw.octagone, 1f, 0.8f, 0.8f, LIGHTAUGMENTATION, DISTANCECOEFF);
         for(int i=0; i<this.nbOctagone; i++){
             double theta;
             double phi;
@@ -185,7 +186,7 @@ public class Snow {
     }
 
     private void setupIgloo() {
-        this.igloo = new ObjModelMtl(this.context, R.raw.snow_igloo_obj, R.raw.snow_igloo_mtl, LIGHTAUGMENTATION);
+        this.igloo = new ObjModelMtl(this.context, R.raw.snow_igloo_obj, R.raw.snow_igloo_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
         for(int i=0; i < this.nbIgloo; i++) {
             double r = 5d * rand.nextDouble();
             double theta;
@@ -206,7 +207,7 @@ public class Snow {
         this.mWhaleTranslateVector[1] = 3f;
         this.mWhaleTranslateVector[2] = 10f;
         this.mWhaleAngle = 0f;
-        this.whale = new ObjModelMtl(this.context, R.raw.snow_baleine_obj, R.raw.snow_baleine_mtl, LIGHTAUGMENTATION);
+        this.whale = new ObjModelMtl(this.context, R.raw.snow_baleine_obj, R.raw.snow_baleine_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
         this.whale.setColors(this.whale.makeColor(rand));
     }
 
@@ -214,7 +215,7 @@ public class Snow {
         this.mMountainsTranslateVector[0] = 0f;
         this.mMountainsTranslateVector[1] = -3f;
         this.mMountainsTranslateVector[2] = 0f;
-        this.mountains = new ObjModelMtl(this.context, R.raw.snow_mountains_obj, R.raw.snow_mountains_mtl, LIGHTAUGMENTATION);
+        this.mountains = new ObjModelMtl(this.context, R.raw.snow_mountains_obj, R.raw.snow_mountains_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
     }
 
     private void updateTree(float[] freqArray){

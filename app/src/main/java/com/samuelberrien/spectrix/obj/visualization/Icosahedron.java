@@ -19,7 +19,8 @@ public class Icosahedron {
 
     private Context context;
 
-    private final float LIGHTAUGMENTATION = 10f;
+    private final float LIGHTAUGMENTATION = 1f;
+    private final float DISTANCECOEFF = 0.001f;
 
     private Random rand;
 
@@ -60,7 +61,7 @@ public class Icosahedron {
     }
 
     private void setupIcosahedrons(){
-        this.icosahedron = new ObjModel(this.context, R.raw.icosahedron, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
+        this.icosahedron = new ObjModel(this.context, R.raw.icosahedron, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
         for(int i=0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++){
             float[] color = new float[this.icosahedron.getVertexDrawListLength() * 4 / 3];
             float red = rand.nextFloat();

@@ -1,13 +1,49 @@
 package com.samuelberrien.spectrix;
 
+import android.content.Context;
 import android.opengl.GLES20;
 import android.util.Log;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * Created by samuel on 14/01/17.
  */
 
 public class ShaderLoader {
+
+    /**
+     *
+     * @param context
+     * @param resId
+     * @return
+     */
+    public static String openShader(Context context, int resId){
+        String shader = new String("");
+
+        InputStream inputStream = context.getResources().openRawResource(resId);
+        BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+
+        String line;
+        try {
+            while ((line = reader.readLine()) != null) {
+                shader += line;
+            }
+            if(inputStream != null){
+                inputStream.close();
+            }
+            if(reader != null){
+                reader.close();
+            }
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+        return shader;
+    }
 
     /**
      * Utility method for compiling a OpenGL shader.

@@ -18,7 +18,8 @@ public class Room {
 
     private float scale;
 
-    private final float LIGHTAUGMENTATION = 2f;
+    private final float LIGHTAUGMENTATION = 1f;
+    private final float DISTANCECOEFF = 0.01f;
 
     private Random rand;
 
@@ -101,23 +102,23 @@ public class Room {
         this.rand = new Random(System.currentTimeMillis());
         this.context = context;
         this.scale = scale;
-        this.cadreD = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.cadreG = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.cadreM = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.cadreAD = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.cadreAG = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.cadreAM = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.lampeChevetD = new ObjModel(this.context, R.raw.room_lampe_chevet, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.lampeChevetG = new ObjModel(this.context, R.raw.room_lampe_chevet, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.lampePlafond = new ObjModel(this.context, R.raw.room_lampe_plafond, 1f, 1f, 1f, LIGHTAUGMENTATION);
-        this.lit2Places = new ObjModel(this.context, R.raw.room_lit_2_places, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.murs = new ObjModel(this.context, R.raw.room_murs, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.oreillerD = new ObjModel(this.context, R.raw.room_oreiller, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.oreillerG = new ObjModel(this.context, R.raw.room_oreiller, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.porte = new ObjModel(this.context, R.raw.room_porte, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.stores = new ObjModel(this.context, R.raw.room_stores, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.tableChevetD = new ObjModel(this.context, R.raw.room_table_chevet, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
-        this.tableChevetG = new ObjModel(this.context, R.raw.room_table_chevet, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION);
+        this.cadreD = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.cadreG = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.cadreM = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.cadreAD = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.cadreAG = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.cadreAM = new ObjModel(this.context, R.raw.room_cadre, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.lampeChevetD = new ObjModel(this.context, R.raw.room_lampe_chevet, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.lampeChevetG = new ObjModel(this.context, R.raw.room_lampe_chevet, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.lampePlafond = new ObjModel(this.context, R.raw.room_lampe_plafond, 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.lit2Places = new ObjModel(this.context, R.raw.room_lit_2_places, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.murs = new ObjModel(this.context, R.raw.room_murs, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.oreillerD = new ObjModel(this.context, R.raw.room_oreiller, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.oreillerG = new ObjModel(this.context, R.raw.room_oreiller, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.porte = new ObjModel(this.context, R.raw.room_porte, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.stores = new ObjModel(this.context, R.raw.room_stores, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.tableChevetD = new ObjModel(this.context, R.raw.room_table_chevet, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.tableChevetG = new ObjModel(this.context, R.raw.room_table_chevet, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
     }
 
     private void updateCadreD(float[] freqArray) {

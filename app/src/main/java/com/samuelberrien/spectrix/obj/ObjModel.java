@@ -3,6 +3,7 @@ package com.samuelberrien.spectrix.obj;
 import android.content.Context;
 import android.opengl.GLES20;
 
+import com.samuelberrien.spectrix.R;
 import com.samuelberrien.spectrix.ShaderLoader;
 import com.samuelberrien.spectrix.obj.normal.ObjGLRenderer;
 
@@ -61,6 +62,10 @@ public class ObjModel {
     private int mMVPMatrixHandle;
     private int mLightPosHandle;
     private int mMVMatrixHandle;
+    private int mDistanceCoefHandle;
+    private float distanceCoef;
+    private int mLightCoefHandle;
+    private float lightCoef;
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
@@ -79,7 +84,10 @@ public class ObjModel {
      * @param blue
      * @param lightAugmentation
      */
-    public ObjModel(Context context, int resId, float red, float green, float blue, float lightAugmentation){
+    public ObjModel(Context context, int resId, float red, float green, float blue, float lightAugmentation, float distanceCoef){
+
+        this.lightCoef = lightAugmentation;
+        this.distanceCoef = distanceCoef;
 
         InputStream inputStream = context.getResources().openRawResource(resId);
         InputStreamReader inputreader = new InputStreamReader(inputStream);
@@ -184,12 +192,12 @@ public class ObjModel {
                         "    float distance = length(u_LightPos - v_Position);\n"+
                         "    vec3 lightVector = normalize(u_LightPos - v_Position);\n" +
                         "    float diffuse = max(dot(v_Normal, lightVector), 0.1);\n" +
-                        "    diffuse = diffuse * (" + Float.toString(lightAugmentation) + " / (1.0 + (0.025 * distance * distance)));\n" +
+                        "    diffuse = diffuse * (1.0 / (1.0 + (0.025 * distance)));\n" +
                         "    gl_FragColor = v_Color * diffuse;\n" +
                         "}";
 
-        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
-        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
+        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.vertex_shader_diffuse));
+        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.fragment_shader_diffuse));
 
         this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
         GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
@@ -241,6 +249,12 @@ public class ObjModel {
         mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
         ShaderLoader.checkGlError("glGetUniformLocation");
 
+        mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
+        ShaderLoader.checkGlError("glGetUniformLocation");
+
+        mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
+        ShaderLoader.checkGlError("glGetUniformLocation");
+
         this.normalsBuffer.position(0);
         mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
         ShaderLoader.checkGlError("glGetAttribLocation");
@@ -265,6 +279,12 @@ public class ObjModel {
         ShaderLoader.checkGlError("glUniformMatrix4fv");
 
         GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0); //mLightPosInEyeSpace[0], mLightPosInEyeSpace[1], mLightPosInEyeSpace[2]);
+
+        GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoef);
+        ShaderLoader.checkGlError("glUniform1f");
+
+        GLES20.glUniform1f(mLightCoefHandle, this.lightCoef);
+        ShaderLoader.checkGlError("glUniform1f");
 
         // Draw the polygon
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.coords.length / 3);

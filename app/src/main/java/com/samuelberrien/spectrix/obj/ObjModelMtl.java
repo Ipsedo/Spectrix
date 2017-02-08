@@ -3,6 +3,7 @@ package com.samuelberrien.spectrix.obj;
 import android.content.Context;
 import android.opengl.GLES20;
 
+import com.samuelberrien.spectrix.R;
 import com.samuelberrien.spectrix.ShaderLoader;
 
 import java.io.BufferedReader;
@@ -34,6 +35,10 @@ public class ObjModelMtl {
     private int mMVPMatrixHandle;
     private int mLightPosHandle;
     private int mMVMatrixHandle;
+    private int mDistanceCoefHandle;
+    private float distanceCoef;
+    private int mLightCoefHandle;
+    private float lightCoef;
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
@@ -48,42 +53,16 @@ public class ObjModelMtl {
      * @param mtlResId
      * @param lightAugmentation
      */
-    public ObjModelMtl(Context context, int objResId, int mtlResId, float lightAugmentation){
+    public ObjModelMtl(Context context, int objResId, int mtlResId, float lightAugmentation, float distanceCoef){
 
         this.parseMtl(context, mtlResId);
         this.parseObj(context, objResId);
 
-        String vertexShaderCode =
-                "uniform mat4 u_MVPMatrix;\n" +
-                        "uniform mat4 u_MVMatrix;\n" +
-                        "attribute vec4 a_Position;\n" +
-                        "attribute vec4 a_Color;\n" +
-                        "attribute vec3 a_Normal;\n" +
-                        "varying vec3 v_Position;\n" +
-                        "varying vec4 v_Color;\n" +
-                        "varying vec3 v_Normal;\n" +
-                        "void main(){\n" +
-                        "    v_Position = vec3(u_MVMatrix * a_Position);\n" +
-                        "    v_Color = a_Color;\n" +
-                        "    v_Normal = vec3(u_MVMatrix * vec4(a_Normal, 0.0));\n" +
-                        "    gl_Position = u_MVPMatrix * a_Position;\n" +
-                        "}";
-         String fragmentShaderCode =
-                "precision mediump float;\n" +
-                        "uniform vec3 u_LightPos;\n" +
-                        "varying vec3 v_Position;\n" +
-                        "varying vec4 v_Color;\n" +
-                        "varying vec3 v_Normal;\n" +
-                        "void main(){\n" +
-                        "    float distance = length(u_LightPos - v_Position);\n"+
-                        "    vec3 lightVector = normalize(u_LightPos - v_Position);\n" +
-                        "    float diffuse = max(dot(v_Normal, lightVector), 0.1);\n" +
-                        "    diffuse = diffuse * (" + Float.toString(lightAugmentation) + " / (1.0 + (0.005 * distance * distance)));\n" +
-                        "    gl_FragColor = v_Color * diffuse;\n" +
-                        "}";
+        this.lightCoef = lightAugmentation;
+        this.distanceCoef = distanceCoef;
 
-        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, vertexShaderCode);
-        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, fragmentShaderCode);
+        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.vertex_shader_diffuse));
+        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.fragment_shader_diffuse));
 
         this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
         GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
@@ -282,6 +261,12 @@ public class ObjModelMtl {
             mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
             ShaderLoader.checkGlError("glGetAttribLocation");
 
+            mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
+            ShaderLoader.checkGlError("glGetUniformLocation");
+
+            mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
+            ShaderLoader.checkGlError("glGetUniformLocation");
+
             // Enable a handle to the triangle vertices
             GLES20.glEnableVertexAttribArray(mPositionHandle);
             // Prepare the triangle coordinate data
@@ -293,7 +278,6 @@ public class ObjModelMtl {
             GLES20.glEnableVertexAttribArray(mNormalHandle);
             GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.allNormalsBuffer.get(i));
 
-
             // get handle to shape's transformation matrix
             GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
 
@@ -302,6 +286,12 @@ public class ObjModelMtl {
             ShaderLoader.checkGlError("glUniformMatrix4fv");
 
             GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
+
+            GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoef);
+            ShaderLoader.checkGlError("glUniform1f");
+
+            GLES20.glUniform1f(mLightCoefHandle, this.lightCoef);
+            ShaderLoader.checkGlError("glUniform1f");
 
             // Draw the polygon
             GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.allCoords.get(i).length / 3);

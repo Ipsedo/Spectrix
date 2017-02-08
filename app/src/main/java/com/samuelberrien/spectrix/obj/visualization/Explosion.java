@@ -23,7 +23,8 @@ public class Explosion {
 
     private Context context;
 
-    private final float LIGHTAUGMENTATION = 20f;
+    private final float LIGHTAUGMENTATION = 1f;
+    private final float DISTANCECOEFF = 0.0001f;
 
     private Random rand;
 
@@ -55,7 +56,7 @@ public class Explosion {
         this.mCenterColorBuffer = new FloatBuffer[this.nbSameCenter * this.nbCenter];
         this.nbMaxOctagonePerExplosion = nbMaxOctagonePerExplosion;
         this.mCenterPoint = new float[this.nbCenter * this.nbSameCenter][3];
-        this.octagone = new ObjModel(this.context, R.raw.octagone, 1f, 1f, 1f, LIGHTAUGMENTATION);
+        this.octagone = new ObjModel(this.context, R.raw.octagone, 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
         this.maxOctagonSpeed = maxOctagonSpeed;
         this.mOctagone = new ArrayList<>();
 
