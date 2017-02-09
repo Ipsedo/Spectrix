@@ -18,7 +18,6 @@ public class ObjStereoRendererIcosahedron extends ObjStereoRenderer {
 
     public ObjStereoRendererIcosahedron(Context context){
         super(context);
-        this.mCameraY = 2f;
     }
 
     public void onSurfaceCreated(EGLConfig config) {

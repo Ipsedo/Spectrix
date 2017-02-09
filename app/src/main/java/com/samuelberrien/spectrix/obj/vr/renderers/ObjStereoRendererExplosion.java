@@ -22,7 +22,6 @@ public class ObjStereoRendererExplosion extends ObjStereoRenderer {
 
     public ObjStereoRendererExplosion(Context context){
         super(context);
-        this.mCameraY = 2f;
     }
 
     public void onSurfaceCreated(EGLConfig config) {
