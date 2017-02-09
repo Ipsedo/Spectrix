@@ -48,9 +48,10 @@ public class Explosion {
     private ArrayList<Octagone> mOctagone;
 
     private TextCube textCube;
-    private float mCubeScale = 0.5f;
-    private float[] mCubeTranslateVector = new float[3];
-    private float[] mCubeModelMatrix = new float[16];
+    //private ObjModel text;
+    private float mTextScale = 0.5f;
+    private float[] mTextTranslateVector = new float[3];
+    private float[] mTextModelMatrix = new float[16];
     private long firstTimeMillisWithoutMusic = System.currentTimeMillis();
 
     /**
@@ -79,6 +80,7 @@ public class Explosion {
 
 
         this.textCube = new TextCube(this.context);
+        //this.text = new ObjModel(this.context, R.raw.best_experience_with_playing_music_obj, 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
 
         this.setupCenter();
         this.setupTextCube();
@@ -88,9 +90,9 @@ public class Explosion {
      *
      */
     private void setupTextCube(){
-        this.mCubeTranslateVector[0] = 0f;
-        this.mCubeTranslateVector[1] = 0f;
-        this.mCubeTranslateVector[2] = 0f;
+        this.mTextTranslateVector[0] = 0f;
+        this.mTextTranslateVector[1] = 0f;
+        this.mTextTranslateVector[2] = 0f;
     }
 
     /**
@@ -180,13 +182,13 @@ public class Explosion {
     /**
      *
      */
-    private void updateCube(){
+    private void updateText(){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
-        Matrix.translateM(mModelMatrix, 0, this.mCubeTranslateVector[0], this.mCubeTranslateVector[1], this.mCubeTranslateVector[2]);
-        Matrix.scaleM(mModelMatrix, 0, this.mCubeScale, this.mCubeScale, this.mCubeScale);
+        Matrix.translateM(mModelMatrix, 0, this.mTextTranslateVector[0], this.mTextTranslateVector[1], this.mTextTranslateVector[2]);
+        Matrix.scaleM(mModelMatrix, 0, this.mTextScale, this.mTextScale, this.mTextScale);
 
-        this.mCubeModelMatrix = mModelMatrix.clone();
+        this.mTextModelMatrix = mModelMatrix.clone();
     }
 
     /**
@@ -197,9 +199,9 @@ public class Explosion {
      * @param cubeZ
      */
     public void update(float[] freqArray, float cubeX, float cubeY, float cubeZ) {
-        this.mCubeTranslateVector[0] = cubeX * 5;
-        this.mCubeTranslateVector[1] = cubeY * 5;
-        this.mCubeTranslateVector[2] = cubeZ * 5;
+        this.mTextTranslateVector[0] = cubeX * 5;
+        this.mTextTranslateVector[1] = cubeY * 5;
+        this.mTextTranslateVector[2] = cubeZ * 5;
         this.freqArray = freqArray;
     }
 
@@ -210,7 +212,7 @@ public class Explosion {
         this.deleteOldOctagone();
         this.createNewOctagone(freqArray);
         this.moveOctagone();
-        this.updateCube();
+        this.updateText();
     }
 
     /**
@@ -233,7 +235,7 @@ public class Explosion {
             this.firstTimeMillisWithoutMusic = System.currentTimeMillis();
         }
         if(System.currentTimeMillis() - this.firstTimeMillisWithoutMusic > 3000){
-            Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mCubeModelMatrix, 0);
+            Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mTextModelMatrix, 0);
             Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
             this.textCube.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
         }
