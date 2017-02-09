@@ -276,8 +276,8 @@ public class TextCube {
     }
 
     public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace){
-        GLES20.glEnable(GLES20.GL_TEXTURE);
-        GLES20.glUseProgram(mProgram);
+        GLES20.glUseProgram(this.mProgram);
+        ShaderLoader.checkGlError("glUniformMatrix4fv");
 
         // Set program handles for cube drawing.
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
@@ -300,7 +300,7 @@ public class TextCube {
         GLES20.glUniform1i(mTextureUniformHandle, 0);
 
 
-        GLES20.glEnableVertexAttribArray(mPositionHandle);
+        /*GLES20.glEnableVertexAttribArray(mPositionHandle);
         mCubePositions.position(0);
         GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false,
                 3 * 4, mCubePositions);
@@ -320,7 +320,34 @@ public class TextCube {
         GLES20.glEnableVertexAttribArray(mTextureCoordinateHandle);
         mCubeTextureCoordinates.position(0);
         GLES20.glVertexAttribPointer(mTextureCoordinateHandle, 2, GLES20.GL_FLOAT, false,
-                2 * 4, mCubeTextureCoordinates);
+                2 * 4, mCubeTextureCoordinates);*/
+
+        mCubePositions.position(0);
+        GLES20.glVertexAttribPointer(mPositionHandle, mPositionDataSize, GLES20.GL_FLOAT, false,
+                0, mCubePositions);
+
+        GLES20.glEnableVertexAttribArray(mPositionHandle);
+
+        // Pass in the color information
+        mCubeColors.position(0);
+        GLES20.glVertexAttribPointer(mColorHandle, mColorDataSize, GLES20.GL_FLOAT, false,
+                0, mCubeColors);
+
+        GLES20.glEnableVertexAttribArray(mColorHandle);
+
+        // Pass in the normal information
+        mCubeNormals.position(0);
+        GLES20.glVertexAttribPointer(mNormalHandle, mNormalDataSize, GLES20.GL_FLOAT, false,
+                0, mCubeNormals);
+
+        GLES20.glEnableVertexAttribArray(mNormalHandle);
+
+        // Pass in the texture coordinate information
+        mCubeTextureCoordinates.position(0);
+        GLES20.glVertexAttribPointer(mTextureCoordinateHandle, mTextureCoordinateDataSize, GLES20.GL_FLOAT, false,
+                0, mCubeTextureCoordinates);
+
+        GLES20.glEnableVertexAttribArray(mTextureCoordinateHandle);
 
         // get handle to shape's transformation matrix
         GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);

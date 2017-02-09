@@ -29,7 +29,7 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
     protected float mCameraX = 0f;
     protected float mCameraY = 0f;
     protected float mCameraZ = 0f;
-    private float[] mCameraDirection = new float[3];
+    protected float[] mCameraDirection = new float[3];
     private float phi = 0f;
     private float theta = 0f;
     private float maxRange = 1f;

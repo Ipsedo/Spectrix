@@ -47,11 +47,21 @@ public class Explosion {
     private ObjModel octagone;
     private ArrayList<Octagone> mOctagone;
 
-    private TextCube textCube;
-    private float mCubeScale = 1f;
+    private TextCube textCube; //gygfftftftyfty
+    private float mCubeScale = 0.5f;
     private float[] mCubeTranslateVector = new float[3];
     private float[] mCubeModelMatrix = new float[16];
 
+    /**
+     *
+     * @param context
+     * @param nbCenter
+     * @param nbSameCenter
+     * @param nbMaxOctagonePerExplosion
+     * @param maxOctagonSpeed
+     * @param minDist
+     * @param rangeDist
+     */
     public Explosion(Context context, int nbCenter, int nbSameCenter, int nbMaxOctagonePerExplosion, float maxOctagonSpeed, float minDist, float rangeDist) {
         this.context = context;
         this.rand = new Random(System.currentTimeMillis());
@@ -76,7 +86,7 @@ public class Explosion {
     private void setupTextCube(){
         this.mCubeTranslateVector[0] = 0f;
         this.mCubeTranslateVector[1] = 0f;
-        this.mCubeTranslateVector[2] = 2f;
+        this.mCubeTranslateVector[2] = 0f;
     }
 
     private void setupCenter() {
@@ -154,7 +164,10 @@ public class Explosion {
         this.mCubeModelMatrix = mModelMatrix.clone();
     }
 
-    public void update(float[] freqArray) {
+    public void update(float[] freqArray, float cubeX, float cubeY, float cubeZ) {
+        this.mCubeTranslateVector[0] = cubeX * 5;
+        this.mCubeTranslateVector[1] = cubeY * 5;
+        this.mCubeTranslateVector[2] = cubeZ * 5;
         this.freqArray = freqArray;
     }
 
