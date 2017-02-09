@@ -39,6 +39,14 @@ public class Icosahedron {
     private float[][] mModelMatrix;
     private float mFreqAugmentation = 0.3f;
 
+    /**
+     *
+     * @param context
+     * @param nbIcosahedron
+     * @param nbSameIcosahedron
+     * @param minDist
+     * @param rangeDist
+     */
     public Icosahedron(Context context, int nbIcosahedron, int nbSameIcosahedron, float minDist, float rangeDist){
         this.context = context;
 
@@ -60,6 +68,9 @@ public class Icosahedron {
         this.setupIcosahedrons();
     }
 
+    /**
+     *
+     */
     private void setupIcosahedrons(){
         this.icosahedron = new ObjModel(this.context, R.raw.icosahedron, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
         for(int i=0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++){
@@ -105,6 +116,10 @@ public class Icosahedron {
         }
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     public void updateIcosahedrons(float[] freqArray){
         for(int i=0; i<this.nbIcosahedron * this.nbSameIcosahedron; i++) {
             float[] mModelMatrix = new float[16];
@@ -127,6 +142,12 @@ public class Icosahedron {
         }
     }
 
+    /**
+     *
+     * @param mProjectionMatrix
+     * @param mViewMatrix
+     * @param mLightPosInEyeSpace
+     */
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace){
         for(int i=0; i<this.nbIcosahedron * this.nbSameIcosahedron; i++){
             float[] tmpModelViewMatrix = new float[16];

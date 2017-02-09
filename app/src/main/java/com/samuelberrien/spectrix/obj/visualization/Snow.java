@@ -71,6 +71,14 @@ public class Snow {
     private float[] mMountainsTranslateVector = new float[3];
     private float[] mMountainsModelMatrix = new float[16];
 
+    /**
+     *
+     * @param context
+     * @param nbPing
+     * @param nbOctagone
+     * @param nbIgloo
+     * @param nbTree
+     */
     public Snow(Context context, int nbPing, int nbOctagone, int nbIgloo, int nbTree){
         this.context = context;
 
@@ -116,6 +124,9 @@ public class Snow {
         this.setupMountains();
     }
 
+    /**
+     *
+     */
     private void setupTree(){
         this.tree = new ObjModelMtl(this.context, R.raw.snow_tree_obj, R.raw.snow_tree_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
         for(int i=0; i < this.nbTree; i++){
@@ -137,6 +148,9 @@ public class Snow {
         }
     }
 
+    /**
+     *
+     */
     private void setupPinguin() {
         this.ping = new ObjModelMtl(this.context, R.raw.snow_pingouin_obj, R.raw.snow_pingouin_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
         for(int i=0; i < nbPing; i++) {
@@ -155,6 +169,9 @@ public class Snow {
         }
     }
 
+    /**
+     *
+     */
     private void setupOctagone() {
         this.octagone = new ObjModel(this.context, R.raw.octagone, 1f, 0.8f, 0.8f, LIGHTAUGMENTATION, DISTANCECOEFF);
         for(int i=0; i<this.nbOctagone; i++){
@@ -185,6 +202,9 @@ public class Snow {
         }
     }
 
+    /**
+     *
+     */
     private void setupIgloo() {
         this.igloo = new ObjModelMtl(this.context, R.raw.snow_igloo_obj, R.raw.snow_igloo_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
         for(int i=0; i < this.nbIgloo; i++) {
@@ -202,6 +222,9 @@ public class Snow {
         }
     }
 
+    /**
+     *
+     */
     private void setupWhale(){
         this.mWhaleTranslateVector[0] = 0f;
         this.mWhaleTranslateVector[1] = 3f;
@@ -211,6 +234,9 @@ public class Snow {
         this.whale.setColors(this.whale.makeColor(rand));
     }
 
+    /**
+     *
+     */
     private void setupMountains() {
         this.mMountainsTranslateVector[0] = 0f;
         this.mMountainsTranslateVector[1] = -3f;
@@ -218,6 +244,10 @@ public class Snow {
         this.mountains = new ObjModelMtl(this.context, R.raw.snow_mountains_obj, R.raw.snow_mountains_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateTree(float[] freqArray){
         for(int i=0; i<this.nbTree; i++){
             float[] mModelMatrix = new float[16];
@@ -235,6 +265,10 @@ public class Snow {
         }
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updatePing(float[] freqArray) {
         for(int i=0; i<nbPing; i++) {
             float[] mModelMatrix = new float[16];
@@ -262,6 +296,10 @@ public class Snow {
         }
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateOctagone(float[] freqArray) {
         for(int i=0; i<this.nbOctagone; i++){
             float[] mModelMatrix = new float[16];
@@ -286,6 +324,10 @@ public class Snow {
         }
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateIgloo(float[] freqArray) {
         for(int i=0; i<this.nbIgloo; i++) {
             float[] mModelMatrix = new float[16];
@@ -300,6 +342,10 @@ public class Snow {
         }
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateWhale(float[] freqArray){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -323,6 +369,9 @@ public class Snow {
         this.mWhaleModelMatrix = mModelMatrix.clone();
     }
 
+    /**
+     *
+     */
     private void updateMountains(){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -342,6 +391,10 @@ public class Snow {
         }
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     public void update(float[] freqArray){
         this.updatePing(freqArray);
         this.updateIgloo(freqArray);
@@ -352,6 +405,12 @@ public class Snow {
         this.count();
     }
 
+    /**
+     *
+     * @param mProjectionMatrix
+     * @param mViewMatrix
+     * @param mLightPosInEyeSpace
+     */
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace){
         float[] tmpMVMatrix = new float[16];
         float[] tmpMVPMatrix = new float[16];

@@ -98,6 +98,11 @@ public class Room {
     private float[] mTableChevetGTranslateVector = new float[]{-5f, 1.3321f, -6.1209f};
     private float[] mTableChevetGModel = new float[16];
 
+    /**
+     *
+     * @param context
+     * @param scale
+     */
     public Room(Context context, float scale){
         this.rand = new Random(System.currentTimeMillis());
         this.context = context;
@@ -121,6 +126,10 @@ public class Room {
         this.tableChevetG = new ObjModel(this.context, R.raw.room_table_chevet, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateCadreD(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -139,6 +148,10 @@ public class Room {
         this.mCadreDModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateCadreG(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -157,6 +170,10 @@ public class Room {
         this.mCadreGModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateCadreM(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -175,6 +192,10 @@ public class Room {
         this.mCadreMModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateCadreAD(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -199,6 +220,10 @@ public class Room {
         this.mCadreADModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateCadreAG(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -223,6 +248,10 @@ public class Room {
         this.mCadreAGModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateCadreAM(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -247,6 +276,10 @@ public class Room {
         this.mCadreAMModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateLampeChevetD(float[] freqArray){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -273,6 +306,10 @@ public class Room {
         this.mLampeChevetDModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateLampeChevetG(float[] freqArray){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -299,6 +336,10 @@ public class Room {
         this.mLampeChevetGModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateLampePlafond(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -317,6 +358,10 @@ public class Room {
         this.mLampePlafondModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateLit2Places(float[] freqArray){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -334,6 +379,10 @@ public class Room {
         this.mLit2PlacesModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateMurs(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -342,6 +391,10 @@ public class Room {
         this.mMursModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateOreillerD(float[] freqArray){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -360,6 +413,10 @@ public class Room {
         this.mOreillerDModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateOreillerG(float[] freqArray){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -378,6 +435,10 @@ public class Room {
         this.mOreillerGModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updatePorte(float[] freqArray){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -395,6 +456,10 @@ public class Room {
         this.mPorteModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateStores(float[] freqArray){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -412,6 +477,10 @@ public class Room {
         this.mStoresModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateTableChevetD(float[] freqArray){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -430,6 +499,10 @@ public class Room {
         this.mTableChevetDModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     private void updateTableChevetG(float[] freqArray){
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -448,6 +521,9 @@ public class Room {
         this.mTableChevetGModel = mModelMatrix.clone();
     }
 
+    /**
+     *
+     */
     private void count(){
         this.mCounter --;
         if(this.mCounter <= 0){
@@ -455,6 +531,10 @@ public class Room {
         }
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     public void update(float[] freqArray) {
         this.updateMurs(freqArray);
 
@@ -485,10 +565,20 @@ public class Room {
         this.count();
     }
 
+    /**
+     *
+     * @return
+     */
     public float[] getLightPos(){
         return new float[]{0f * scale, 7f * scale, 0f * scale};
     }
 
+    /**
+     * 
+     * @param mProjectionMatrix
+     * @param mViewMatrix
+     * @param mLightPosInEyeSpace
+     */
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace){
         float[] tmpModelViewMatrix = new float[16];
         float[] tmpModelViewProjectionMatrix = new float[16];
