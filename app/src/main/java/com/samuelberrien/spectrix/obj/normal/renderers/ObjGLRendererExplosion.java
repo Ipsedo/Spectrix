@@ -37,6 +37,7 @@ public class ObjGLRendererExplosion extends ObjGLRenderer {
 
     public void onDrawFrame(GL10 unused) {
         super.onDrawFrame(unused);
+        this.explosionVisualization.updateVisualization();
         this.explosionVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
     }
 }

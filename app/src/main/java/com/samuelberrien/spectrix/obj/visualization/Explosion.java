@@ -24,8 +24,8 @@ public class Explosion {
 
     private Context context;
 
-    private final float LIGHTAUGMENTATION = 1f;
-    private final float DISTANCECOEFF = 0.0001f;
+    private final float LIGHTAUGMENTATION = 2f;
+    private final float DISTANCECOEFF = 0f;
 
     private Random rand;
 
@@ -47,10 +47,11 @@ public class Explosion {
     private ObjModel octagone;
     private ArrayList<Octagone> mOctagone;
 
-    private TextCube textCube; //gygfftftftyfty
+    private TextCube textCube;
     private float mCubeScale = 0.5f;
     private float[] mCubeTranslateVector = new float[3];
     private float[] mCubeModelMatrix = new float[16];
+    private long firstTimeMillisWithoutMusic = System.currentTimeMillis();
 
     /**
      *
@@ -130,11 +131,9 @@ public class Explosion {
         for (int i = 0; i < this.nbSameCenter * this.nbCenter; i++) {
             int tmpFreqIndex = i / this.nbSameCenter;
             float tmpMagn = freqArray[tmpFreqIndex] + freqArray[tmpFreqIndex] * tmpFreqIndex * this.mFreqAugmentation;
-            if (tmpMagn > 0.1f) {
-                int nbNewOct = (int) (tmpMagn * (float) this.nbMaxOctagonePerExplosion);
-                for (int j = 0; j < nbNewOct; j++) {
-                    this.addNewOctagone(this.mCenterPoint[i], tmpMagn, tmpFreqIndex, i);
-                }
+            int nbNewOct = (int) (tmpMagn * (float) this.nbMaxOctagonePerExplosion);
+            for (int j = 0; j < nbNewOct; j++) {
+                this.addNewOctagone(this.mCenterPoint[i], tmpMagn, tmpFreqIndex, i);
             }
         }
     }
@@ -147,10 +146,10 @@ public class Explosion {
         }
     }
 
-    private void updateOctagone() {
+    private void moveOctagone() {
         for (int i = 0; i < this.mOctagone.size(); i++) {
             Octagone tmpOct = this.mOctagone.get(i);
-            tmpOct.update();
+            tmpOct.move();
             this.mOctagone.set(i, tmpOct);
         }
     }
@@ -171,10 +170,14 @@ public class Explosion {
         this.freqArray = freqArray;
     }
 
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace) {
+    public void updateVisualization(){
         this.deleteOldOctagone();
         this.createNewOctagone(freqArray);
-        this.updateOctagone();
+        this.moveOctagone();
+        this.updateCube();
+    }
+
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace) {
         float[] tmpModelViewMatrix = new float[16];
         float[] tmpModelViewProjectionMatrix = new float[16];
         for (int i = 0; i < this.mOctagone.size(); i++) {
@@ -184,8 +187,10 @@ public class Explosion {
             this.octagone.setColor(this.mOctagone.get(i).getmOctagoneColorBuffer());
             this.octagone.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
         }
-        if(this.mOctagone.isEmpty()){
-            this.updateCube();
+        if(!this.mOctagone.isEmpty()){
+            this.firstTimeMillisWithoutMusic = System.currentTimeMillis();
+        }
+        if(System.currentTimeMillis() - this.firstTimeMillisWithoutMusic > 3000){
             Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mCubeModelMatrix, 0);
             Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
             this.textCube.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
@@ -213,7 +218,7 @@ public class Explosion {
             this.mOctagoneModelMatrix = new float[16];
         }
 
-        public void update() {
+        public void move() {
             float[] tmp = this.mOctagoneSpeedVector;
             this.mOctagoneSpeedVector = new float[]{tmp[0] * 0.5f, tmp[1] * 0.5f, tmp[2] * 0.5f};
             tmp = this.mOctagoneTranslateVector;
