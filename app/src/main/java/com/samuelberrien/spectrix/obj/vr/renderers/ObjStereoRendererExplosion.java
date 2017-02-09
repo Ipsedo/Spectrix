@@ -32,7 +32,7 @@ public class ObjStereoRendererExplosion extends ObjStereoRenderer {
 
     public void update(float[] freqArray) {
         if(this.explosionVisualization != null) {
-            this.explosionVisualization.update(freqArray,0,0,0);
+            this.explosionVisualization.update(freqArray, 0f, 0f, 0.3f);
         }
         this.updateLight(0f, 0f, 0f);
     }
