@@ -299,29 +299,6 @@ public class TextCube {
         // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
         GLES20.glUniform1i(mTextureUniformHandle, 0);
 
-
-        /*GLES20.glEnableVertexAttribArray(mPositionHandle);
-        mCubePositions.position(0);
-        GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false,
-                3 * 4, mCubePositions);
-
-        // Pass in the color information
-        GLES20.glEnableVertexAttribArray(mColorHandle);
-        mCubeColors.position(0);
-        GLES20.glVertexAttribPointer(mColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4,  mCubeColors);
-
-
-        // Pass in the normal information
-        GLES20.glEnableVertexAttribArray(mNormalHandle);
-        mCubeNormals.position(0);
-        GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, mCubeNormals);
-
-        // Pass in the texture coordinate information
-        GLES20.glEnableVertexAttribArray(mTextureCoordinateHandle);
-        mCubeTextureCoordinates.position(0);
-        GLES20.glVertexAttribPointer(mTextureCoordinateHandle, 2, GLES20.GL_FLOAT, false,
-                2 * 4, mCubeTextureCoordinates);*/
-
         mCubePositions.position(0);
         GLES20.glVertexAttribPointer(mPositionHandle, mPositionDataSize, GLES20.GL_FLOAT, false,
                 0, mCubePositions);

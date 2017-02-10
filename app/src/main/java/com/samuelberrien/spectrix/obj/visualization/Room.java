@@ -574,7 +574,7 @@ public class Room {
     }
 
     /**
-     * 
+     *
      * @param mProjectionMatrix
      * @param mViewMatrix
      * @param mLightPosInEyeSpace
