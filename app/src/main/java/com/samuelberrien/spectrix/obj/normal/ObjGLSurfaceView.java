@@ -13,6 +13,7 @@ import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererExplosion;
 import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererIcosahedron;
 import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererRoom;
 import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererSnow;
+import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererTextSpec;
 
 /**
  * Created by samuel on 05/01/17.
@@ -49,6 +50,8 @@ public class ObjGLSurfaceView extends GLSurfaceView {
             this.mRenderer = new ObjGLRendererIcosahedron(context);
         }else if(id_visualisation.equals(context.getString(R.string.explosion))){
             this.mRenderer = new ObjGLRendererExplosion(context);
+        }else if(id_visualisation.equals(context.getString(R.string.test))){
+            this.mRenderer = new ObjGLRendererTextSpec(context);
         }
 
         setRenderer(this.mRenderer);
