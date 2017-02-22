@@ -35,6 +35,6 @@ public class ObjStereoRendererSnow extends ObjStereoRenderer {
 
     public void onDrawEye(Eye eye) {
         super.onDrawEye(eye);
-        this.snowVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
+        this.snowVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ});
     }
 }

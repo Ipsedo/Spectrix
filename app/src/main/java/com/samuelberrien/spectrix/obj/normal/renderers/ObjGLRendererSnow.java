@@ -35,7 +35,7 @@ public class ObjGLRendererSnow extends ObjGLRenderer {
 
     public void onDrawFrame(GL10 unused) {
         super.onDrawFrame(unused);
-        this.snowVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
+        this.snowVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ});
     }
 
 }

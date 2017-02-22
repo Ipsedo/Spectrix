@@ -7,6 +7,7 @@ import com.samuelberrien.spectrix.R;
 import com.samuelberrien.spectrix.obj.ObjModel;
 import com.samuelberrien.spectrix.obj.ObjModelMtl;
 
+import java.nio.FloatBuffer;
 import java.util.Random;
 
 /**
@@ -22,7 +23,7 @@ public class Snow {
     private final int MAXCPT = 16;
     private int cpt = MAXCPT;
 
-    private final float LIGHTAUGMENTATION = 2.0f;
+    private final float LIGHTAUGMENTATION = 1.0f;
     private final float DISTANCECOEFF = 0.0001f;
 
     private final float SCALE = 0.2f;
@@ -231,7 +232,7 @@ public class Snow {
         this.mWhaleTranslateVector[2] = 10f;
         this.mWhaleAngle = 0f;
         this.whale = new ObjModelMtl(this.context, R.raw.snow_baleine_obj, R.raw.snow_baleine_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
-        this.whale.setColors(this.whale.makeColor(rand));
+        this.whale.setColors(this.whale.makeColor(rand), this.whale.makeColor(rand), this.whale.makeColor(0.5f, 0.5f, 0.5f));
     }
 
     /**
@@ -411,25 +412,25 @@ public class Snow {
      * @param mViewMatrix
      * @param mLightPosInEyeSpace
      */
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace){
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
         float[] tmpMVMatrix = new float[16];
         float[] tmpMVPMatrix = new float[16];
 
         for(int i=0; i < this.nbPing; i++) {
             Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mPingModelMatrix[i], 0);
             Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-            this.ping.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace);
+            this.ping.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
         }
 
         for(int i=0; i < this.nbIgloo; i++) {
             Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mIglooModelMatrix[i], 0);
             Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-            this.igloo.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace);
+            this.igloo.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
         }
 
         Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mWhaleModelMatrix, 0);
         Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-        this.whale.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace);
+        this.whale.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
 
         for(int i=0; i < this.nbOctagone; i++){
             Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mOctagoneModelMatrix[i], 0);
@@ -440,11 +441,11 @@ public class Snow {
         for(int i=0; i < this.nbTree; i++){
             Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mTreeModelMatrix[i], 0);
             Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-            this.tree.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace);
+            this.tree.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
         }
 
         Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mMountainsModelMatrix, 0);
         Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-        this.mountains.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace);
+        this.mountains.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
     }
 }
