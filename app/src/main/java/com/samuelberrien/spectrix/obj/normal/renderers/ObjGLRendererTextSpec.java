@@ -20,6 +20,7 @@ public class ObjGLRendererTextSpec extends ObjGLRenderer {
 
     public ObjGLRendererTextSpec(Context context) {
         super(context);
+        this.mCameraY = 2f;
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
