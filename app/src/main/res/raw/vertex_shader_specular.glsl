@@ -15,6 +15,6 @@ void main(){
     v_material_ambient_Color = a_material_ambient_Color;
     v_material_diffuse_Color = a_material_diffuse_Color;
     v_material_specular_Color = a_material_specular_Color;
-    v_Normal = vec3(u_MVMatrix * vec4(a_Normal, 0.0));
+    v_Normal = normalize(vec3(u_MVMatrix * vec4(a_Normal, 0.0)));
     gl_Position = u_MVPMatrix * a_Position;
 }

@@ -22,7 +22,7 @@ public class TestSpecular {
     private float[] mPingModelMatrix;
 
     public TestSpecular(Context context){
-        this.ping = new ObjModelMtlTestSpecular(context, R.raw.snow_tree_obj, R.raw.snow_tree_mtl, 10f, 0.01f);
+        this.ping = new ObjModelMtlTestSpecular(context, R.raw.snow_pingouin_obj, R.raw.snow_pingouin_mtl, 10f, 0.01f);
         this.mPingAngle = 0f;
         this.mPingTranslateVector = new float[]{0f, 0f, 5f};
         this.mPingRotationMatrix = new float[16];
