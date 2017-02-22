@@ -22,9 +22,9 @@ public class TestSpecular {
     private float[] mPingModelMatrix;
 
     public TestSpecular(Context context){
-        this.ping = new ObjModelMtlTestSpecular(context, R.raw.snow_pingouin_obj, R.raw.snow_pingouin_mtl, 10f, 0.01f);
+        this.ping = new ObjModelMtlTestSpecular(context, R.raw.snow_baleine_obj, R.raw.snow_baleine_mtl, 10f, 0.01f);
         this.mPingAngle = 0f;
-        this.mPingTranslateVector = new float[]{0f, 0f, 5f};
+        this.mPingTranslateVector = new float[]{0f, 0f, 20f};
         this.mPingRotationMatrix = new float[16];
         this.mPingModelMatrix = new float[16];
     }
@@ -34,7 +34,6 @@ public class TestSpecular {
         Matrix.setIdentityM(mModelMatrix, 0);
 
         Matrix.translateM(mModelMatrix, 0, this.mPingTranslateVector[0], this.mPingTranslateVector[1], this.mPingTranslateVector[2]);
-
 
         Matrix.setRotateM(mPingRotationMatrix, 0, mPingAngle += 1f, 0f, 1f, 0f);
 

@@ -53,17 +53,17 @@ public class ObjModelMtlTestSpecular {
     private float lightCoef;
 
     // number of coordinates per vertex in this array
-    static final int COORDS_PER_VERTEX = 3;
+    private final int COORDS_PER_VERTEX = 3;
     private ArrayList<float[]> allCoords = new ArrayList<>();
     private ArrayList<float[]> allNormals = new ArrayList<>();
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
     /**
      *
-     * @param context
-     * @param objResId
-     * @param mtlResId
-     * @param lightAugmentation
+     * @param context The application context
+     * @param objResId The res id of the obj 3D model file
+     * @param mtlResId The res id of the mtl model file
+     * @param lightAugmentation The light augmentation
      */
     public ObjModelMtlTestSpecular(Context context, int objResId, int mtlResId, float lightAugmentation, float distanceCoef){
 
@@ -174,7 +174,7 @@ public class ObjModelMtlTestSpecular {
             }
             this.allCoords.add(coords);
 
-            float[] normal = new float[coords.length];
+            float[] normal = new float[3 * allVertexDrawOrderList.get(i).size()];
             for (int j = 0; j < allNormalDrawOrderList.get(i).size(); j++) {
                 normal[j * 3] = currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3);
                 normal[j * 3 + 1] = currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 1);
@@ -182,9 +182,9 @@ public class ObjModelMtlTestSpecular {
             }
             this.allNormals.add(normal);
 
-            float ambRed = this.mtlDiffColor.get(mtlToUse.get(i))[0];
-            float ambGreen = this.mtlDiffColor.get(mtlToUse.get(i))[1];
-            float ambBlue = this.mtlDiffColor.get(mtlToUse.get(i))[2];
+            float ambRed = this.mtlAmbColor.get(mtlToUse.get(i))[0];
+            float ambGreen = this.mtlAmbColor.get(mtlToUse.get(i))[1];
+            float ambBlue = this.mtlAmbColor.get(mtlToUse.get(i))[2];
 
             float diffRed = this.mtlDiffColor.get(mtlToUse.get(i))[0];
             float diffGreen = this.mtlDiffColor.get(mtlToUse.get(i))[1];
@@ -255,8 +255,8 @@ public class ObjModelMtlTestSpecular {
 
     /**
      *
-     * @param rand
-     * @return
+     * @param rand A random object used for random colors generating
+     * @return A FloatBuffer ArrayList containing all the colors per material
      */
     public ArrayList<FloatBuffer> makeColor(Random rand){
         ArrayList<FloatBuffer> result = new ArrayList<>();
@@ -281,17 +281,50 @@ public class ObjModelMtlTestSpecular {
         return result;
     }
 
-    public void setColors(ArrayList<FloatBuffer> mColors){
-        this.allAmbColorBuffer = mColors;
-        this.allDiffColorBuffer = mColors;
-        this.allSpecColorBuffer = mColors;
+    /**
+     *
+     * @param red Red float value [0;1]
+     * @param green Green float value [0;1]
+     * @param blue Blue float value [0;1]
+     * @return A FloatBuffer ArrayList containing all the colors per material
+     */
+    public ArrayList<FloatBuffer> makeColor(float red, float green, float blue){
+        ArrayList<FloatBuffer> result = new ArrayList<>();
+        for(int i=0; i < this.allVertexBuffer.size(); i++){
+            float[] color = new float[this.allCoords.get(i).length * 4 / 3];
+            for (int j = 0; j < color.length; j += 4) {
+                color[j] = red;
+                color[j + 1] = green;
+                color[j + 2] = blue;
+                color[j + 3] = 1f;
+            }
+            FloatBuffer tmpC = ByteBuffer.allocateDirect(color.length * 4)
+                    .order(ByteOrder.nativeOrder())
+                    .asFloatBuffer();
+            tmpC.put(color)
+                    .position(0);
+            result.add(tmpC);
+        }
+        return result;
+    }
+
+    /**
+     *
+     * @param mAmbColors The FloatBuffer ArrayList of all material ambient color
+     * @param mDiffColors The diffuse FloatBuffer ArrayList of all material color
+     * @param mSpecColors The FloatBuffer ArrayList of all material specular color
+     */
+    public void setColors(ArrayList<FloatBuffer> mAmbColors, ArrayList<FloatBuffer> mDiffColors, ArrayList<FloatBuffer> mSpecColors){
+        this.allAmbColorBuffer = mAmbColors;
+        this.allDiffColorBuffer = mDiffColors;
+        this.allSpecColorBuffer = mSpecColors;
     }
 
     /**
      *
      * @param mvpMatrix - The Model View Project matrix in which to draw this shape.
-     * @param mvMatrix
-     * @param mLightPosInEyeSpace
+     * @param mvMatrix - The Model View matrix
+     * @param mLightPosInEyeSpace - The position of light in eye space
      */
     public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
         for(int i=0 ; i<this.allVertexBuffer.size(); i++) {

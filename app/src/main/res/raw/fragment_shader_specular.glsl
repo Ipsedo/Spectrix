@@ -23,7 +23,7 @@ void main(){
         vec3 reflectionVector = reflect(incidenceVector, v_Normal);
         vec3 surfaceToCamera = normalize(u_CameraPosition - v_Position);
         float cosAngle = max(0.0, dot(surfaceToCamera, reflectionVector));
-        specularCoefficient = pow(cosAngle, u_materialShininess);
+        specularCoefficient = pow(cosAngle, u_materialShininess) * u_light_coef;
     }
     vec4 specular = specularCoefficient * v_material_specular_Color;
 
