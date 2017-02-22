@@ -34,6 +34,6 @@ public class ObjStereoRendererIcosahedron extends ObjStereoRenderer {
 
     public void onDrawEye(Eye eye) {
         super.onDrawEye(eye);
-        this.icosahedronVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
+        this.icosahedronVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ});
     }
 }

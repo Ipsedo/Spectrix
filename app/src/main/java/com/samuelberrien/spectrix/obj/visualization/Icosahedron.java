@@ -5,10 +5,12 @@ import android.opengl.Matrix;
 
 import com.samuelberrien.spectrix.R;
 import com.samuelberrien.spectrix.obj.ObjModel;
+import com.samuelberrien.spectrix.obj.ObjModelMtl;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
+import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -29,8 +31,10 @@ public class Icosahedron {
 
     private int nbIcosahedron;
     private int nbSameIcosahedron;
-    private ObjModel icosahedron;
-    private FloatBuffer[] mColorBuffer;
+    private ObjModelMtl icosahedron;
+    private ArrayList<FloatBuffer>[] mAmbColorBuffer;
+    private ArrayList<FloatBuffer>[] mDiffColorBuffer;
+    private ArrayList<FloatBuffer>[] mSpecColorBuffer;
     private float[] mScale;
     private float[] mAngle;
     private float[][] mTranslateVector;
@@ -57,7 +61,9 @@ public class Icosahedron {
 
         this.nbIcosahedron = nbIcosahedron;
         this.nbSameIcosahedron = nbSameIcosahedron;
-        this.mColorBuffer = new FloatBuffer[this.nbIcosahedron * this.nbSameIcosahedron];
+        this.mAmbColorBuffer = new ArrayList[this.nbSameIcosahedron * this.nbIcosahedron];
+        this.mDiffColorBuffer = new ArrayList[this.nbSameIcosahedron * this.nbIcosahedron];
+        this.mSpecColorBuffer = new ArrayList[this.nbSameIcosahedron * this.nbIcosahedron];
         this.mScale = new float[this.nbIcosahedron * this.nbSameIcosahedron];
         this.mAngle = new float[this.nbIcosahedron * this.nbSameIcosahedron];
         this.mTranslateVector = new float[this.nbIcosahedron * this.nbSameIcosahedron][3];
@@ -72,9 +78,9 @@ public class Icosahedron {
      *
      */
     private void setupIcosahedrons(){
-        this.icosahedron = new ObjModel(this.context, R.raw.icosahedron, rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.icosahedron = new ObjModelMtl(this.context, R.raw.icosahedron_obj, R.raw.icosahedron_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
         for(int i=0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++){
-            float[] color = new float[this.icosahedron.getVertexDrawListLength() * 4 / 3];
+            /*float[] color = new float[this.icosahedron.getVertexDrawListLength() * 4 / 3];
             float red = rand.nextFloat();
             float green = rand.nextFloat();
             float blue = rand.nextFloat();
@@ -84,11 +90,14 @@ public class Icosahedron {
                 color[j + 2] = blue;
                 color[j + 3] = 1f;
             }
-            this.mColorBuffer[i] = ByteBuffer.allocateDirect(color.length * 4)
+            this.mAmbColorBuffer[i] = ByteBuffer.allocateDirect(color.length * 4)
                     .order(ByteOrder.nativeOrder())
                     .asFloatBuffer();
-            this.mColorBuffer[i].put(color)
-                    .position(0);
+            this.mAmbColorBuffer[i].put(color)
+                    .position(0);*/
+            this.mAmbColorBuffer[i] = this.icosahedron.makeColor(this.rand);
+            this.mDiffColorBuffer[i] = this.icosahedron.makeColor(this.rand);
+            this.mSpecColorBuffer[i] = this.icosahedron.makeColor(0.5f, 0.5f, 0.5f);
 
             this.mScale[i] = (this.nbIcosahedron - i / this.nbSameIcosahedron) * 0.005f + 0.5f;
 
@@ -148,15 +157,15 @@ public class Icosahedron {
      * @param mViewMatrix
      * @param mLightPosInEyeSpace
      */
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace){
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
         for(int i=0; i<this.nbIcosahedron * this.nbSameIcosahedron; i++){
             float[] tmpModelViewMatrix = new float[16];
             float[] tmpModelViewProjectionMatrix = new float[16];
             Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mModelMatrix[i], 0);
             Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
 
-            this.icosahedron.setColor(this.mColorBuffer[i]);
-            this.icosahedron.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
+            this.icosahedron.setColors(this.mAmbColorBuffer[i], this.mDiffColorBuffer[i], this.mSpecColorBuffer[i]);
+            this.icosahedron.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace, mCameraPosition);
         }
     }
 }
