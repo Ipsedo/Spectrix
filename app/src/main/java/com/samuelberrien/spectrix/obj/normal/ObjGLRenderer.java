@@ -33,6 +33,8 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
     private float phi = 0f;
     private float theta = 0f;
     private float maxRange = 1f;
+    private float projectionAngle = 40f;
+    private float ratio = 1f;
 
     /**
      *
@@ -109,8 +111,14 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void updateZoom(float dist){
-        this.maxRange += dist;
-        this.maxRange = Math.max(1.0f, this.maxRange);
+        this.projectionAngle += dist;
+        if(this.projectionAngle < 10){
+            this.projectionAngle = 10;
+        }
+        if(this.projectionAngle > 100){
+            this.projectionAngle = 100;
+        }
+        this.updateProjection();
     }
 
     /**
@@ -146,10 +154,16 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
         // such as screen rotation
         GLES20.glViewport(0, 0, width, height);
 
-        float ratio = (float) width / height;
+        this.ratio = (float) width / height;
 
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
-        Matrix.frustumM(mProjectionMatrix, 0, -ratio, ratio, -1, 1, 3, 50f);
+        Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
+
+        Matrix.perspectiveM(mProjectionMatrix, 0, this.projectionAngle, ratio, 3, 50f);
+    }
+
+    private void updateProjection(){
+        Matrix.perspectiveM(mProjectionMatrix, 0, this.projectionAngle, this.ratio, 3, 50f);
     }
 }
