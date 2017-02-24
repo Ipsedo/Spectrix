@@ -23,8 +23,8 @@ public class Snow {
     private final int MAXCPT = 16;
     private int cpt = MAXCPT;
 
-    private final float LIGHTAUGMENTATION = 1.0f;
-    private final float DISTANCECOEFF = 0f;
+    private final float LIGHTAUGMENTATION = 2.0f;
+    private final float DISTANCECOEFF = 0.001f;
 
     private final float SCALE = 0.2f;
 
