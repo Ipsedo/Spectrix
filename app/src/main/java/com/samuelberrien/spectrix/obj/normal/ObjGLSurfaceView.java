@@ -7,6 +7,7 @@ import android.opengl.GLSurfaceView;
 
 import android.os.AsyncTask;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 
 import com.samuelberrien.spectrix.R;
 import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererExplosion;
@@ -82,10 +83,10 @@ public class ObjGLSurfaceView extends GLSurfaceView {
     private final float TOUCH_SCALE_FACTOR = 0.001f;
     private float mPreviousX;
     private float mPreviousY;
-    private float mPreviousX1;
+    /*private float mPreviousX1;
     private float mPreviousX2;
     private float mPreviousY1;
-    private float mPreviousY2;
+    private float mPreviousY2;*/
     private float mPreviousZoom;
 
     @Override
@@ -106,32 +107,31 @@ public class ObjGLSurfaceView extends GLSurfaceView {
                     mPreviousX = x;
                     mPreviousY = y;
             }
-        } else if(e.getPointerCount() == 2) {
+        }else if(e.getPointerCount() == 2) {
             float x1 = e.getX(e.getPointerId(0));
             float x2 = e.getX(e.getPointerId(1));
             float y1 = e.getY(e.getPointerId(0));
             float y2 = e.getY(e.getPointerId(1));
             switch (e.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    mPreviousX1 = x1;
+                    /*mPreviousX1 = x1;
                     mPreviousX2 = x2;
                     mPreviousY1 = y1;
-                    mPreviousY2 = y2;
-                    mPreviousZoom = (float) Math.sqrt(mPreviousX1 * mPreviousX2 + mPreviousY1 * mPreviousY2);
+                    mPreviousY2 = y2;*/
+                    mPreviousZoom = (float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d));
                 case MotionEvent.ACTION_MOVE:
-                    float dx1 = x1 - mPreviousX1;
+                    /*float dx1 = x1 - mPreviousX1;
                     float dx2 = x2 - mPreviousX2;
                     float dy1 = y1 - mPreviousY1;
                     float dy2 = y2 - mPreviousY2;
-                    //mRenderer.updateZoom((float) Math.sqrt(dx1 * dx2 + dy1 * dy2) * TOUCH_SCALE_FACTOR);
-                    float dDist = (float) Math.sqrt(x1 * x2 + y1 * y2) - mPreviousZoom;
-                    mRenderer.updateZoom(dDist);
+                    mRenderer.updateZoom((float) Math.sqrt(dx1 * dx2 + dy1 * dy2) * TOUCH_SCALE_FACTOR);*/
+                    mRenderer.updateZoom((float) Math.sqrt(Math.pow((x1 - x2), 2d) + Math.pow((y1 - y2), 2d)) - mPreviousZoom);
                 case MotionEvent.ACTION_UP:
-                    mPreviousX1 = x1;
+                    /*mPreviousX1 = x1;
                     mPreviousX2 = x2;
                     mPreviousY1 = y1;
-                    mPreviousY2 = y2;
-                    mPreviousZoom = (float) Math.sqrt(mPreviousX1 * mPreviousX2 + mPreviousY1 * mPreviousY2);
+                    mPreviousY2 = y2;*/
+                    mPreviousZoom = (float) Math.sqrt(Math.pow((x1 - x2), 2d) + Math.pow((y1 - y2), 2d));
             }
         }
         return true;
