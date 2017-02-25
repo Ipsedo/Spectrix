@@ -18,7 +18,6 @@
         <item>@string/snow</item>
         <item>@string/room</item>
         <item>@string/explosion</item>
-        <item>@string/test</item>
     </string-array>
     <string name="title_activity_icosahedron_rotation">IcosahedronRotationActivity</string>
 </resources>
