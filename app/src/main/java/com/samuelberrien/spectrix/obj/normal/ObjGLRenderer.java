@@ -110,6 +110,10 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
         this.mCameraDirection[2] = this.maxRange * (float) (Math.cos(this.phi) * Math.cos(this.theta)) + this.mCameraZ;
     }
 
+    /**
+     *
+     * @param dist
+     */
     public void updateZoom(float dist){
         this.projectionAngle += dist;
         if(this.projectionAngle < 10){
