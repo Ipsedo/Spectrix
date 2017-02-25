@@ -1,8 +1,7 @@
 <resources>
     <string name="app_name">Spectrix</string>
     <string name="icosahedron">Icosahedron</string>
-    <string name="snow">Snow (IN WORK)</string>
-    <string name="monkey">Monkey (IN WORK)</string>
+    <string name="snow">Snow</string>
     <string name="room">Room</string>
     <string name="explosion">Explosion</string>
     <string name="test">Test</string>
@@ -19,5 +18,4 @@
         <item>@string/room</item>
         <item>@string/explosion</item>
     </string-array>
-    <string name="title_activity_icosahedron_rotation">IcosahedronRotationActivity</string>
 </resources>
