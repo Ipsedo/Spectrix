@@ -112,7 +112,7 @@ public class ObjGvrView extends GvrView {
                 }
                 ObjGvrView.this.mRenderer.update(fft);
                 try {
-                    Thread.sleep(1000l / 120l);
+                    Thread.sleep(1000L / 120L);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }

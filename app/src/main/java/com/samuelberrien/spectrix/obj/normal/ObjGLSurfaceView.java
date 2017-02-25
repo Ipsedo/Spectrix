@@ -27,7 +27,7 @@ public class ObjGLSurfaceView extends GLSurfaceView {
     private MediaPlayer mPlayer;
 
     private GetFFT getFft;
-    
+
     private final float TOUCH_SCALE_FACTOR_MOVE = 0.001f;
     private final float TOUCH_SCALE_FACTOR_ZOOM = 0.05f;
     private float mPreviousX;
