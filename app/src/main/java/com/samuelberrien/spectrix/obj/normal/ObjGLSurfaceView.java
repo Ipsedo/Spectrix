@@ -27,6 +27,12 @@ public class ObjGLSurfaceView extends GLSurfaceView {
     private MediaPlayer mPlayer;
 
     private GetFFT getFft;
+    
+    private final float TOUCH_SCALE_FACTOR_MOVE = 0.001f;
+    private final float TOUCH_SCALE_FACTOR_ZOOM = 0.05f;
+    private float mPreviousX;
+    private float mPreviousY;
+    private float mPreviousZoom;
 
     private boolean useSample;
 
@@ -78,12 +84,6 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         this.getFft = new GetFFT();
         this.getFft.execute();
     }
-
-    private final float TOUCH_SCALE_FACTOR_MOVE = 0.001f;
-    private final float TOUCH_SCALE_FACTOR_ZOOM = 0.05f;
-    private float mPreviousX;
-    private float mPreviousY;
-    private float mPreviousZoom;
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
@@ -153,7 +153,7 @@ public class ObjGLSurfaceView extends GLSurfaceView {
                 }
                 ObjGLSurfaceView.this.mRenderer.update(fft);
                 try {
-                    Thread.sleep(1000l / 120l);
+                    Thread.sleep(1000L / 120L);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
