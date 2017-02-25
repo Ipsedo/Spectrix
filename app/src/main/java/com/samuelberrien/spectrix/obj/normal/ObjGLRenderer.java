@@ -138,10 +138,10 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
      * @param z
      */
     protected void updateLight(float x, float y, float z){
-        Matrix.setIdentityM(mLightModelMatrix, 0);
-        Matrix.translateM(mLightModelMatrix, 0, x, y, z);
-        Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
-        Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
+        Matrix.setIdentityM(this.mLightModelMatrix, 0);
+        Matrix.translateM(this.mLightModelMatrix, 0, x, y, z);
+        Matrix.multiplyMV(this.mLightPosInWorldSpace, 0, this.mLightModelMatrix, 0, this.mLightPosInModelSpace, 0);
+        Matrix.multiplyMV(this.mLightPosInEyeSpace, 0, this.mViewMatrix, 0, this.mLightPosInWorldSpace, 0);
     }
 
     public void onDrawFrame(GL10 unused) {
@@ -149,7 +149,7 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
         // Set the camera position (View matrix)
-        Matrix.setLookAtM(mViewMatrix, 0, this.mCameraX, this.mCameraY, this.mCameraZ, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, 1f, 0f);
+        Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraX, this.mCameraY, this.mCameraZ, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, 1f, 0f);
     }
 
     @Override
@@ -162,12 +162,12 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
 
         // this projection matrix is applied to object coordinates
         // in the onDrawFrame() method
-        Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
+        //Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
 
-        Matrix.perspectiveM(mProjectionMatrix, 0, this.projectionAngle, ratio, 3, 50f);
+        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 3, 50f);
     }
 
     private void updateProjection(){
-        Matrix.perspectiveM(mProjectionMatrix, 0, this.projectionAngle, this.ratio, 3, 50f);
+        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 3, 50f);
     }
 }
