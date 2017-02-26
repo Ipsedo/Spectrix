@@ -162,9 +162,9 @@ public class ObjModel {
 
     /**
      *
-     * @param mvpMatrix - The Model View Project matrix in which to draw this shape.
-     * @param mvMatrix - The Model View matrix
-     * @param mLightPosInEyeSpace the light position in the eye space
+     * @param mvpMatrix The Model View Project matrix in which to draw this shape.
+     * @param mvMatrix The Model View matrix
+     * @param mLightPosInEyeSpace The light position in the eye space
      */
     public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace) {
         // Add program to OpenGL environment
