@@ -2,7 +2,7 @@ package com.samuelberrien.spectrix.obj;
 
 import android.opengl.GLES20;
 
-import com.samuelberrien.spectrix.ShaderLoader;
+import com.samuelberrien.spectrix.utils.ShaderLoader;
 
 /**
  * Created by samuel on 20/12/16.

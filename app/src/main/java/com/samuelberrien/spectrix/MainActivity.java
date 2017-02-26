@@ -18,6 +18,7 @@ import android.widget.Spinner;
 import com.samuelberrien.spectrix.obj.normal.ObjActivity;
 import com.samuelberrien.spectrix.obj.vr.ObjVRActivity;
 import com.samuelberrien.spectrix.spectrum.SpectrumActivity;
+import com.samuelberrien.spectrix.utils.FontsOverride;
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
 

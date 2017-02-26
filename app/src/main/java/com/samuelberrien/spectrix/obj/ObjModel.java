@@ -4,8 +4,7 @@ import android.content.Context;
 import android.opengl.GLES20;
 
 import com.samuelberrien.spectrix.R;
-import com.samuelberrien.spectrix.ShaderLoader;
-import com.samuelberrien.spectrix.obj.normal.ObjGLRenderer;
+import com.samuelberrien.spectrix.utils.ShaderLoader;
 
 import java.io.BufferedReader;
 import java.io.IOException;

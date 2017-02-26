@@ -1,4 +1,4 @@
-package com.samuelberrien.spectrix;
+package com.samuelberrien.spectrix.utils;
 
 import android.content.Context;
 import android.opengl.GLES20;

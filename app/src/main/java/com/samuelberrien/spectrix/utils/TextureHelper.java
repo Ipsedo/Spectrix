@@ -1,4 +1,4 @@
-package com.samuelberrien.spectrix.obj;
+package com.samuelberrien.spectrix.utils;
 
 import android.content.Context;
 import android.graphics.Bitmap;
