@@ -3,6 +3,7 @@ package com.samuelberrien.spectrix.obj.vr.renderers;
 import android.content.Context;
 
 import com.google.vr.sdk.base.Eye;
+import com.google.vr.sdk.base.HeadTransform;
 import com.samuelberrien.spectrix.obj.visualization.Icosahedron;
 import com.samuelberrien.spectrix.obj.vr.ObjStereoRenderer;
 
@@ -27,9 +28,14 @@ public class ObjStereoRendererIcosahedron extends ObjStereoRenderer {
 
     public void update(float[] freqArray) {
         if(this.icosahedronVisualization != null) {
-            this.icosahedronVisualization.updateIcosahedrons(freqArray);
+            this.icosahedronVisualization.updateFreq(freqArray);
         }
         this.updateLight(0f, 0f, 0f);
+    }
+
+    public void onNewFrame(HeadTransform headTransform) {
+        super.onNewFrame(headTransform);
+        this.icosahedronVisualization.updateIcosahedrons();
     }
 
     public void onDrawEye(Eye eye) {

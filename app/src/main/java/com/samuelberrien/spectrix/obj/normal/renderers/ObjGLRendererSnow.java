@@ -30,11 +30,12 @@ public class ObjGLRendererSnow extends ObjGLRenderer {
         if(this.snowVisualization != null) {
             this.snowVisualization.update(freqArray);
         }
-        this.updateLight(0f, 0f, 0f);
+        this.updateLight(0f, 2f, 0f);
     }
 
     public void onDrawFrame(GL10 unused) {
         super.onDrawFrame(unused);
+        this.snowVisualization.updateSnow();
         this.snowVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ});
     }
 

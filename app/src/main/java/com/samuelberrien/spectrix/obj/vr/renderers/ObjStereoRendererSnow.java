@@ -3,6 +3,7 @@ package com.samuelberrien.spectrix.obj.vr.renderers;
 import android.content.Context;
 
 import com.google.vr.sdk.base.Eye;
+import com.google.vr.sdk.base.HeadTransform;
 import com.samuelberrien.spectrix.obj.visualization.Snow;
 import com.samuelberrien.spectrix.obj.vr.ObjStereoRenderer;
 
@@ -30,7 +31,12 @@ public class ObjStereoRendererSnow extends ObjStereoRenderer {
         if(this.snowVisualization != null) {
             this.snowVisualization.update(freqArray);
         }
-        this.updateLight(0f, 0f, 0f);
+        this.updateLight(0f, 2f, 0f);
+    }
+
+    public void onNewFrame(HeadTransform headTransform) {
+        super.onNewFrame(headTransform);
+        this.snowVisualization.updateSnow();
     }
 
     public void onDrawEye(Eye eye) {

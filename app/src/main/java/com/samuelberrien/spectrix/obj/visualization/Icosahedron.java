@@ -43,6 +43,8 @@ public class Icosahedron {
     private float[][] mModelMatrix;
     private float mFreqAugmentation = 0.3f;
 
+    private float[] freqArray = new float[1024];
+
     /**
      *
      * @param context
@@ -129,12 +131,19 @@ public class Icosahedron {
      *
      * @param freqArray
      */
-    public void updateIcosahedrons(float[] freqArray){
+    public void updateFreq(float[] freqArray){
+        this.freqArray = freqArray;
+    }
+
+    /**
+     *
+     */
+    public void updateIcosahedrons(){
         for(int i=0; i<this.nbIcosahedron * this.nbSameIcosahedron; i++) {
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
             Matrix.translateM(mModelMatrix, 0, this.mTranslateVector[i][0], this.mTranslateVector[i][1], this.mTranslateVector[i][2]);
-            Matrix.setRotateM(mRotationMatrix[i], 0, mAngle[i] += 1f, this.mRotationOrientation[i][0], this.mRotationOrientation[i][1], this.mRotationOrientation[i][2]);
+            Matrix.setRotateM(mRotationMatrix[i], 0, mAngle[i] += 3f, this.mRotationOrientation[i][0], this.mRotationOrientation[i][1], this.mRotationOrientation[i][2]);
             float[] tmpMat = mModelMatrix.clone();
             Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, mRotationMatrix[i], 0);
             int tmpFreqIndex = i / this.nbSameIcosahedron;

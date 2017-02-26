@@ -3,6 +3,7 @@ package com.samuelberrien.spectrix.obj.vr.renderers;
 import android.content.Context;
 
 import com.google.vr.sdk.base.Eye;
+import com.google.vr.sdk.base.HeadTransform;
 import com.samuelberrien.spectrix.obj.visualization.Room;
 import com.samuelberrien.spectrix.obj.vr.ObjStereoRenderer;
 
@@ -36,6 +37,11 @@ public class ObjStereoRendererRoom extends ObjStereoRenderer{
             tmp = this.roomVisualization.getLightPos();
         }
         this.updateLight(tmp[0], tmp[1], tmp[2]);
+    }
+
+    public void onNewFrame(HeadTransform headTransform) {
+        super.onNewFrame(headTransform);
+        this.roomVisualization.updateRoom();
     }
 
     public void onDrawEye(Eye eye) {

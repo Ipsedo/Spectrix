@@ -27,13 +27,14 @@ public class ObjGLRendererIcosahedron extends ObjGLRenderer {
 
     public void update(float[] freqArray) {
         if(this.icosahedronVisualization != null) {
-            this.icosahedronVisualization.updateIcosahedrons(freqArray);
+            this.icosahedronVisualization.updateFreq(freqArray);
         }
         this.updateLight(0f, 0f, 0f);
     }
 
     public void onDrawFrame(GL10 unused) {
         super.onDrawFrame(unused);
+        this.icosahedronVisualization.updateIcosahedrons();
         this.icosahedronVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ});
     }
 }

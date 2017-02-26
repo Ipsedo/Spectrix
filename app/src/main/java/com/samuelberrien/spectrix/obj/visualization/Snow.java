@@ -72,6 +72,8 @@ public class Snow {
     private float[] mMountainsTranslateVector = new float[3];
     private float[] mMountainsModelMatrix = new float[16];
 
+    private float[] freqArray = new float[1024];
+
     /**
      *
      * @param context
@@ -353,8 +355,7 @@ public class Snow {
 
         Matrix.translateM(mModelMatrix, 0, this.mWhaleTranslateVector[0], this.mWhaleTranslateVector[1], this.mWhaleTranslateVector[2]);
 
-        this.mWhaleAngle += 0.125f;
-        Matrix.setRotateM(this.mWhaleRotationMatrix, 0, this.mWhaleAngle, 0f, 1f, 0f);
+        Matrix.setRotateM(this.mWhaleRotationMatrix, 0, this.mWhaleAngle += 0.5f, 0f, 1f, 0f);
 
         float[] tmpMat = mModelMatrix.clone();
         Matrix.multiplyMM(mModelMatrix, 0, mWhaleRotationMatrix, 0, tmpMat, 0);
@@ -392,11 +393,14 @@ public class Snow {
         }
     }
 
+    public void update(float[] freqArray){
+        this.freqArray = freqArray;
+    }
+
     /**
      *
-     * @param freqArray
      */
-    public void update(float[] freqArray){
+    public void updateSnow(){
         this.updatePing(freqArray);
         this.updateIgloo(freqArray);
         this.updateWhale(freqArray);

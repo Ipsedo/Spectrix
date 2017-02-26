@@ -40,6 +40,7 @@ public class ObjGLRendererRoom extends ObjGLRenderer {
 
     public void onDrawFrame(GL10 unused) {
         super.onDrawFrame(unused);
+        this.roomVisualization.updateRoom();
         this.roomVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
     }
 }

@@ -98,6 +98,8 @@ public class Room {
     private float[] mTableChevetGTranslateVector = new float[]{-5f, 1.3321f, -6.1209f};
     private float[] mTableChevetGModel = new float[16];
 
+    private float[] freqArray = new float[1024];
+
     /**
      *
      * @param context
@@ -531,11 +533,14 @@ public class Room {
         }
     }
 
+    public void update(float[] freqArray){
+        this.freqArray = freqArray;
+    }
+
     /**
      *
-     * @param freqArray
      */
-    public void update(float[] freqArray) {
+    public void updateRoom() {
         this.updateMurs(freqArray);
 
         this.updateCadreD(freqArray);
