@@ -34,6 +34,7 @@ public class ObjModelMtl {
     private ArrayList<FloatBuffer> allDiffColorBuffer = new ArrayList<>();
     private ArrayList<FloatBuffer> allSpecColorBuffer = new ArrayList<>();
     private ArrayList<Float> allSpecShininess = new ArrayList<>();
+
     private final int mProgram;
     private int mPositionHandle;
     private int mNormalHandle;
@@ -46,9 +47,10 @@ public class ObjModelMtl {
     private int mLightPosHandle;
     private int mMVMatrixHandle;
     private int mDistanceCoefHandle;
-    private float distanceCoef;
     private int mLightCoefHandle;
+
     private float lightCoef;
+    private float distanceCoef;
 
     // number of coordinates per vertex in this array
     private final int COORDS_PER_VERTEX = 3;
