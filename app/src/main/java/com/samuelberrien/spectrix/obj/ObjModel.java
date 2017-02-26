@@ -21,36 +21,6 @@ import java.util.ArrayList;
 
 public class ObjModel {
 
-    private final String vertexShaderCode =
-            "uniform mat4 u_MVPMatrix;\n" +
-                    "uniform mat4 u_MVMatrix;\n" +
-                    "attribute vec4 a_Position;\n" +
-                    "attribute vec4 a_Color;\n" +
-                    "attribute vec3 a_Normal;\n" +
-                    "varying vec3 v_Position;\n" +
-                    "varying vec4 v_Color;\n" +
-                    "varying vec3 v_Normal;\n" +
-                    "void main(){\n" +
-                    "    v_Position = vec3(u_MVMatrix * a_Position);\n" +
-                    "    v_Color = a_Color;\n" +
-                    "    v_Normal = vec3(u_MVMatrix * vec4(a_Normal, 0.0));\n" +
-                    "    gl_Position = u_MVPMatrix * a_Position;\n" +
-                    "}";
-
-    private final String fragmentShaderCode =
-            "precision mediump float;\n" +
-                    "uniform vec3 u_LightPos;\n" +
-                    "varying vec3 v_Position;\n" +
-                    "varying vec4 v_Color;\n" +
-                    "varying vec3 v_Normal;\n" +
-                    "void main(){\n" +
-                    "    float distance = length(u_LightPos - v_Position);\n"+
-                    "    vec3 lightVector = normalize(u_LightPos - v_Position);\n" +
-                    "    float diffuse = max(dot(v_Normal, lightVector), 0.1);\n" +
-                    "    diffuse = diffuse * (1.0 / (1.0 + (0.025 * distance * distance)));\n" +
-                    "    gl_FragColor = v_Color * diffuse;\n" +
-                    "}";
-
     private final FloatBuffer vertexBuffer;
     private final FloatBuffer normalsBuffer;
     private FloatBuffer colorBuffer;
@@ -76,12 +46,12 @@ public class ObjModel {
 
     /**
      *
-     * @param context
-     * @param resId
-     * @param red
-     * @param green
-     * @param blue
-     * @param lightAugmentation
+     * @param context the application context
+     * @param resId the res id of the obj file
+     * @param red the red color of the object
+     * @param green the green color of the object
+     * @param blue the blue color of the object
+     * @param lightAugmentation the light augmentation of the object
      */
     public ObjModel(Context context, int resId, float red, float green, float blue, float lightAugmentation, float distanceCoef){
 
@@ -165,36 +135,6 @@ public class ObjModel {
         this.colorBuffer.put(this.color)
                 .position(0);
 
-        String vertexShaderCode =
-                        "uniform mat4 u_MVPMatrix;\n" +
-                        "uniform mat4 u_MVMatrix;\n" +
-                        "attribute vec4 a_Position;\n" +
-                        "attribute vec4 a_Color;\n" +
-                        "attribute vec3 a_Normal;\n" +
-                        "varying vec3 v_Position;\n" +
-                        "varying vec4 v_Color;\n" +
-                        "varying vec3 v_Normal;\n" +
-                        "void main(){\n" +
-                        "    v_Position = vec3(u_MVMatrix * a_Position);\n" +
-                        "    v_Color = a_Color;\n" +
-                        "    v_Normal = vec3(u_MVMatrix * vec4(a_Normal, 0.0));\n" +
-                        "    gl_Position = u_MVPMatrix * a_Position;\n" +
-                        "}";
-
-        String fragmentShaderCode =
-                        "precision mediump float;\n" +
-                        "uniform vec3 u_LightPos;\n" +
-                        "varying vec3 v_Position;\n" +
-                        "varying vec4 v_Color;\n" +
-                        "varying vec3 v_Normal;\n" +
-                        "void main(){\n" +
-                        "    float distance = length(u_LightPos - v_Position);\n"+
-                        "    vec3 lightVector = normalize(u_LightPos - v_Position);\n" +
-                        "    float diffuse = max(dot(v_Normal, lightVector), 0.1);\n" +
-                        "    diffuse = diffuse * (1.0 / (1.0 + (0.025 * distance)));\n" +
-                        "    gl_FragColor = v_Color * diffuse;\n" +
-                        "}";
-
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.vertex_shader_diffuse));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.fragment_shader_diffuse));
 
@@ -206,7 +146,7 @@ public class ObjModel {
 
     /**
      *
-     * @param colorBuffer
+     * @param colorBuffer a color buffer that will be used to draw the obj 3D model
      */
     public void setColor(FloatBuffer colorBuffer){
         this.colorBuffer = colorBuffer;
@@ -214,7 +154,7 @@ public class ObjModel {
 
     /**
      *
-     * @return
+     * @return the vertex draw list length of the obj 3D model
      */
     public int getVertexDrawListLength(){
         return this.coords.length;
@@ -223,8 +163,8 @@ public class ObjModel {
     /**
      *
      * @param mvpMatrix - The Model View Project matrix in which to draw this shape.
-     * @param mvMatrix
-     * @param mLightPosInEyeSpace
+     * @param mvMatrix - The Model View matrix
+     * @param mLightPosInEyeSpace the light position in the eye space
      */
     public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace) {
         // Add program to OpenGL environment

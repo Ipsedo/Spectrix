@@ -82,6 +82,11 @@ public class ObjModelMtl {
         GLES20.glLinkProgram(this.mProgram);
     }
 
+    /**
+     *
+     * @param context the application context
+     * @param resId the res id of the mtl file
+     */
     private void parseMtl(Context context, int resId){
         InputStream inputStream = context.getResources().openRawResource(resId);
         InputStreamReader inputreader = new InputStreamReader(inputStream);
@@ -110,6 +115,11 @@ public class ObjModelMtl {
         }
     }
 
+    /**
+     *
+     * @param context the application context
+     * @param resId the res id of the obj file
+     */
     private void parseObj(Context context, int resId){
         InputStream inputStream = context.getResources().openRawResource(resId);
         InputStreamReader inputreader = new InputStreamReader(inputStream);
@@ -119,7 +129,7 @@ public class ObjModelMtl {
         ArrayList<Float> currVertixsList = new ArrayList<>();
         ArrayList<Float> currNormalsList = new ArrayList<>();
         ArrayList<Integer> currVertexDrawOrderList = new ArrayList<>();
-        ArrayList<Integer> normalDrawOrderList = new ArrayList<>();
+        ArrayList<Integer> currNormalDrawOrderList = new ArrayList<>();
         ArrayList<ArrayList<Integer>> allVertexDrawOrderList = new ArrayList<>();
         ArrayList<ArrayList<Integer>> allNormalDrawOrderList = new ArrayList<>();
         ArrayList<String> mtlToUse = new ArrayList<>();
@@ -132,10 +142,10 @@ public class ObjModelMtl {
                     mtlToUse.add(line.split(" ")[1]);
                     if(idMtl != 0){
                         allVertexDrawOrderList.add(currVertexDrawOrderList);
-                        allNormalDrawOrderList.add(normalDrawOrderList);
+                        allNormalDrawOrderList.add(currNormalDrawOrderList);
                     }
                     currVertexDrawOrderList = new ArrayList<>();
-                    normalDrawOrderList = new ArrayList<>();
+                    currNormalDrawOrderList = new ArrayList<>();
                     idMtl++;
                 }else if(line.startsWith("vn")){
                     String[] tmp = line.split(" ");
@@ -153,9 +163,9 @@ public class ObjModelMtl {
                     currVertexDrawOrderList.add(Integer.parseInt(tmp[2].split("/")[0]));
                     currVertexDrawOrderList.add(Integer.parseInt(tmp[3].split("/")[0]));
 
-                    normalDrawOrderList.add(Integer.parseInt(tmp[1].split("/")[2]));
-                    normalDrawOrderList.add(Integer.parseInt(tmp[2].split("/")[2]));
-                    normalDrawOrderList.add(Integer.parseInt(tmp[3].split("/")[2]));
+                    currNormalDrawOrderList.add(Integer.parseInt(tmp[1].split("/")[2]));
+                    currNormalDrawOrderList.add(Integer.parseInt(tmp[2].split("/")[2]));
+                    currNormalDrawOrderList.add(Integer.parseInt(tmp[3].split("/")[2]));
                 }
             }
         } catch (IOException e) {
@@ -163,7 +173,7 @@ public class ObjModelMtl {
         }
 
         allVertexDrawOrderList.add(currVertexDrawOrderList);
-        allNormalDrawOrderList.add(normalDrawOrderList);
+        allNormalDrawOrderList.add(currNormalDrawOrderList);
 
         for(int i=0; i<allVertexDrawOrderList.size(); i++) {
             float[] coords = new float[3 * allVertexDrawOrderList.get(i).size()];
