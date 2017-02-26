@@ -24,6 +24,7 @@ public class ObjModel {
     private final FloatBuffer vertexBuffer;
     private final FloatBuffer normalsBuffer;
     private FloatBuffer colorBuffer;
+    
     private final int mProgram;
     private int mPositionHandle;
     private int mNormalHandle;
@@ -32,9 +33,10 @@ public class ObjModel {
     private int mLightPosHandle;
     private int mMVMatrixHandle;
     private int mDistanceCoefHandle;
-    private float distanceCoef;
     private int mLightCoefHandle;
+
     private float lightCoef;
+    private float distanceCoef;
 
     // number of coordinates per vertex in this array
     static final int COORDS_PER_VERTEX = 3;
