@@ -85,7 +85,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         }
     }
 
-    public void sample(View v){
+    public void useSample(View v){
         this.useSample = ((CheckBox) findViewById(R.id.use_sample_check_box)).isChecked();
     }
 
