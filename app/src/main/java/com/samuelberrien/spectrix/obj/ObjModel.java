@@ -24,7 +24,7 @@ public class ObjModel {
     private final FloatBuffer vertexBuffer;
     private final FloatBuffer normalsBuffer;
     private FloatBuffer colorBuffer;
-    
+
     private final int mProgram;
     private int mPositionHandle;
     private int mNormalHandle;
@@ -219,7 +219,7 @@ public class ObjModel {
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
         ShaderLoader.checkGlError("glUniformMatrix4fv");
 
-        GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0); //mLightPosInEyeSpace[0], mLightPosInEyeSpace[1], mLightPosInEyeSpace[2]);
+        GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
 
         GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoef);
         ShaderLoader.checkGlError("glUniform1f");
