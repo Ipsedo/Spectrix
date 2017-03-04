@@ -97,6 +97,9 @@ public class ObjGLSurfaceView extends GLSurfaceView {
                     float dy = e.getY() + 1f - mPreviousY;
                     mRenderer.updateCameraOrientation(dy * TOUCH_SCALE_FACTOR_MOVE, dx * TOUCH_SCALE_FACTOR_MOVE);
                     requestRender();
+                case MotionEvent.ACTION_UP:
+                    mPreviousX = e.getX() + 1f;
+                    mPreviousY = e.getY() + 1f;
             }
             mPreviousX = e.getX() + 1f;
             mPreviousY = e.getY() + 1f;
