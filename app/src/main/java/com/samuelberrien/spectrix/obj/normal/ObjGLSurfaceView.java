@@ -90,19 +90,19 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         if(e.getPointerCount() == 1) {
             switch (e.getAction()) {
                 case MotionEvent.ACTION_DOWN:
-                    mPreviousX = e.getX() + 1f;
-                    mPreviousY = e.getY() + 1f;
+                    mPreviousX = e.getX(e.getActionIndex()) + 1f;
+                    mPreviousY = e.getY(e.getActionIndex()) + 1f;
                 case MotionEvent.ACTION_MOVE:
-                    float dx = e.getX() + 1f - mPreviousX;
-                    float dy = e.getY() + 1f - mPreviousY;
+                    float dx = e.getX(e.getActionIndex()) + 1f - mPreviousX;
+                    float dy = e.getY(e.getActionIndex()) + 1f - mPreviousY;
                     mRenderer.updateCameraOrientation(dy * TOUCH_SCALE_FACTOR_MOVE, dx * TOUCH_SCALE_FACTOR_MOVE);
                     requestRender();
                 case MotionEvent.ACTION_UP:
-                    mPreviousX = e.getX() + 1f;
-                    mPreviousY = e.getY() + 1f;
+                    mPreviousX = e.getX(e.getActionIndex()) + 1f;
+                    mPreviousY = e.getY(e.getActionIndex()) + 1f;
             }
-            mPreviousX = e.getX() + 1f;
-            mPreviousY = e.getY() + 1f;
+            mPreviousX = e.getX(e.getActionIndex()) + 1f;
+            mPreviousY = e.getY(e.getActionIndex()) + 1f;
         } else if(e.getPointerCount() == 2) {
             switch (e.getAction()) {
                 case MotionEvent.ACTION_DOWN:
@@ -111,8 +111,8 @@ public class ObjGLSurfaceView extends GLSurfaceView {
                     mRenderer.updateZoom(- ((float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d)) - mPreviousZoom) * TOUCH_SCALE_FACTOR_ZOOM);
                     requestRender();
                 case MotionEvent.ACTION_UP:
-                    mPreviousX = e.getX() + 1f;
-                    mPreviousY = e.getY() + 1f;
+                    mPreviousX = e.getX(e.getActionIndex()) + 1f;
+                    mPreviousY = e.getY(e.getActionIndex()) + 1f;
             }
             mPreviousZoom = (float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d));
         }
