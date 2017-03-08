@@ -164,10 +164,10 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
         // in the onDrawFrame() method
         //Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
 
-        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 3, 50f);
+        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 1, 50f);
     }
 
     private void updateProjection(){
-        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 3, 50f);
+        Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, 50f);
     }
 }
