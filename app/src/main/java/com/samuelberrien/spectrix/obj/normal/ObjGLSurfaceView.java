@@ -6,6 +6,7 @@ import android.media.audiofx.Visualizer;
 import android.opengl.GLSurfaceView;
 
 import android.os.AsyncTask;
+import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.samuelberrien.spectrix.R;
@@ -34,6 +35,8 @@ public class ObjGLSurfaceView extends GLSurfaceView {
     private float mPreviousY;
     private float mPreviousZoom;
     private boolean isZooming;
+    GestureDetector gestureDetector;
+    private boolean isZoomingMore;
 
     private boolean useSample;
 
@@ -62,6 +65,8 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         }
 
         this.isZooming = false;
+        this.isZoomingMore = true;
+        this.gestureDetector = new GestureDetector(context, new GestureListener());
 
         setRenderer(this.mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
@@ -119,7 +124,7 @@ public class ObjGLSurfaceView extends GLSurfaceView {
             }
             mPreviousZoom = (float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d));
         }
-        return true;
+        return gestureDetector.onTouchEvent(e);
     }
 
     public void onPause(){
@@ -171,4 +176,23 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         }
     }
 
+    private class GestureListener extends GestureDetector.SimpleOnGestureListener {
+
+        @Override
+        public boolean onDown(MotionEvent e) {
+            return true;
+        }
+        // event when double tap occurs
+        @Override
+        public boolean onDoubleTap(MotionEvent e) {
+            if(ObjGLSurfaceView.this.isZoomingMore) {
+                ObjGLSurfaceView.this.mRenderer.updateZoom(-50);
+            } else {
+                ObjGLSurfaceView.this.mRenderer.updateZoom(50);
+            }
+            ObjGLSurfaceView.this.requestRender();
+            ObjGLSurfaceView.this.isZoomingMore = !ObjGLSurfaceView.this.isZoomingMore;
+            return true;
+        }
+    }
 }
