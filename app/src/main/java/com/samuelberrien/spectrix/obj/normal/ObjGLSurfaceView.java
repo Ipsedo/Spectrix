@@ -33,6 +33,7 @@ public class ObjGLSurfaceView extends GLSurfaceView {
     private float mPreviousX;
     private float mPreviousY;
     private float mPreviousZoom;
+    private boolean isZooming;
 
     private boolean useSample;
 
@@ -59,6 +60,8 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         }else if(id_visualisation.equals(context.getString(R.string.test))){
             this.mRenderer = new ObjGLRendererTextSpec(context);
         }
+
+        this.isZooming = false;
 
         setRenderer(this.mRenderer);
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
@@ -88,6 +91,11 @@ public class ObjGLSurfaceView extends GLSurfaceView {
     @Override
     public boolean onTouchEvent(MotionEvent e) {
         if(e.getPointerCount() == 1) {
+            if(this.isZooming){
+                mPreviousX = e.getX() + 1f;
+                mPreviousY = e.getY() + 1f;
+                this.isZooming = false;
+            }
             switch (e.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mPreviousX = e.getX() + 1f;
@@ -101,6 +109,7 @@ public class ObjGLSurfaceView extends GLSurfaceView {
             mPreviousX = e.getX() + 1f;
             mPreviousY = e.getY() + 1f;
         } else if(e.getPointerCount() == 2) {
+            this.isZooming = true;
             switch (e.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mPreviousZoom = (float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d));
