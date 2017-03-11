@@ -119,7 +119,13 @@ public class ObjGLSurfaceView extends GLSurfaceView {
                 case MotionEvent.ACTION_DOWN:
                     mPreviousZoom = (float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d));
                 case MotionEvent.ACTION_MOVE:
-                    mRenderer.updateZoom(- ((float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d)) - mPreviousZoom) * TOUCH_SCALE_FACTOR_ZOOM);
+                    float dZoom = ((float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d)) - mPreviousZoom);
+                    if(dZoom > 0){
+                        this.isZoomingMore = true;
+                    } else {
+                        this.isZoomingMore = false;
+                    }
+                    mRenderer.updateZoom(- dZoom * TOUCH_SCALE_FACTOR_ZOOM);
                     requestRender();
             }
             mPreviousZoom = (float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d));
