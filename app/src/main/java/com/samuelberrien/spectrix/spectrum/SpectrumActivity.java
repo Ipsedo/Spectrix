@@ -28,22 +28,22 @@ public class SpectrumActivity extends Activity {
 
         this.isPortrait = Boolean.parseBoolean(getIntent().getStringExtra("SCREEN_PORTRAIT"));
 
-        if(this.isPortrait){
+        if (this.isPortrait) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        }else{
+        } else {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
         }
-        this.mGLView = new SpectrumGLSurfaceView(this,this.useSample,this.isPortrait);
+        this.mGLView = new SpectrumGLSurfaceView(this, this.useSample, this.isPortrait);
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         setContentView(this.mGLView);
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         this.mGLView.onPause();
         super.onPause();
     }

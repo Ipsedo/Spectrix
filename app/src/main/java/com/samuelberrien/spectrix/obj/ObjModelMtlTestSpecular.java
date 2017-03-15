@@ -25,10 +25,10 @@ import java.util.Random;
  */
 
 public class ObjModelMtlTestSpecular {
-    private HashMap<String,float[]> mtlAmbColor = new HashMap<>();
-    private HashMap<String,float[]> mtlDiffColor = new HashMap<>();
-    private HashMap<String,float[]> mtlSpecColor = new HashMap<>();
-    private HashMap<String,Float> mtlSpecShininess = new HashMap<>();
+    private HashMap<String, float[]> mtlAmbColor = new HashMap<>();
+    private HashMap<String, float[]> mtlDiffColor = new HashMap<>();
+    private HashMap<String, float[]> mtlSpecColor = new HashMap<>();
+    private HashMap<String, Float> mtlSpecShininess = new HashMap<>();
 
     private ArrayList<FloatBuffer> allVertexBuffer = new ArrayList<>();
     private ArrayList<FloatBuffer> allNormalsBuffer = new ArrayList<>();
@@ -59,13 +59,12 @@ public class ObjModelMtlTestSpecular {
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
     /**
-     *
-     * @param context The application context
-     * @param objResId The res id of the obj 3D model file
-     * @param mtlResId The res id of the mtl model file
+     * @param context           The application context
+     * @param objResId          The res id of the obj 3D model file
+     * @param mtlResId          The res id of the mtl model file
      * @param lightAugmentation The light augmentation
      */
-    public ObjModelMtlTestSpecular(Context context, int objResId, int mtlResId, float lightAugmentation, float distanceCoef){
+    public ObjModelMtlTestSpecular(Context context, int objResId, int mtlResId, float lightAugmentation, float distanceCoef) {
 
         this.parseMtl(context, mtlResId);
         this.parseObj(context, objResId);
@@ -82,7 +81,7 @@ public class ObjModelMtlTestSpecular {
         GLES20.glLinkProgram(this.mProgram);
     }
 
-    private void parseMtl(Context context, int resId){
+    private void parseMtl(Context context, int resId) {
         InputStream inputStream = context.getResources().openRawResource(resId);
         InputStreamReader inputreader = new InputStreamReader(inputStream);
         BufferedReader buffreader1 = new BufferedReader(inputreader);
@@ -90,18 +89,18 @@ public class ObjModelMtlTestSpecular {
         try {
             String currentMtl = "";
             while ((line = buffreader1.readLine()) != null) {
-                if(line.startsWith("newmtl")){
+                if (line.startsWith("newmtl")) {
                     currentMtl = line.split(" ")[1];
-                }else if(line.startsWith("Ka")){
+                } else if (line.startsWith("Ka")) {
                     String[] tmp = line.split(" ");
                     this.mtlAmbColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
-                }else if(line.startsWith("Kd")){
+                } else if (line.startsWith("Kd")) {
                     String[] tmp = line.split(" ");
                     this.mtlDiffColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
-                }else if(line.startsWith("Ks")){
+                } else if (line.startsWith("Ks")) {
                     String[] tmp = line.split(" ");
                     this.mtlSpecColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
-                }else if(line.startsWith("Ns")){
+                } else if (line.startsWith("Ns")) {
                     this.mtlSpecShininess.put(currentMtl, Float.parseFloat(line.split(" ")[1]));
                 }
             }
@@ -110,7 +109,7 @@ public class ObjModelMtlTestSpecular {
         }
     }
 
-    private void parseObj(Context context, int resId){
+    private void parseObj(Context context, int resId) {
         InputStream inputStream = context.getResources().openRawResource(resId);
         InputStreamReader inputreader = new InputStreamReader(inputStream);
         BufferedReader buffreader = new BufferedReader(inputreader);
@@ -127,27 +126,27 @@ public class ObjModelMtlTestSpecular {
         int idMtl = 0;
 
         try {
-            while (( line = buffreader.readLine()) != null) {
-                if(line.startsWith("usemtl")) {
+            while ((line = buffreader.readLine()) != null) {
+                if (line.startsWith("usemtl")) {
                     mtlToUse.add(line.split(" ")[1]);
-                    if(idMtl != 0){
+                    if (idMtl != 0) {
                         allVertexDrawOrderList.add(currVertexDrawOrderList);
                         allNormalDrawOrderList.add(normalDrawOrderList);
                     }
                     currVertexDrawOrderList = new ArrayList<>();
                     normalDrawOrderList = new ArrayList<>();
                     idMtl++;
-                }else if(line.startsWith("vn")){
+                } else if (line.startsWith("vn")) {
                     String[] tmp = line.split(" ");
                     currNormalsList.add(Float.parseFloat(tmp[1]));
                     currNormalsList.add(Float.parseFloat(tmp[2]));
                     currNormalsList.add(Float.parseFloat(tmp[3]));
-                }else if(line.startsWith("v ")){
+                } else if (line.startsWith("v ")) {
                     String[] tmp = line.split(" ");
                     currVertixsList.add(Float.parseFloat(tmp[1]));
                     currVertixsList.add(Float.parseFloat(tmp[2]));
                     currVertixsList.add(Float.parseFloat(tmp[3]));
-                }else if(line.startsWith("f")){
+                } else if (line.startsWith("f")) {
                     String[] tmp = line.split(" ");
                     currVertexDrawOrderList.add(Integer.parseInt(tmp[1].split("/")[0]));
                     currVertexDrawOrderList.add(Integer.parseInt(tmp[2].split("/")[0]));
@@ -165,7 +164,7 @@ public class ObjModelMtlTestSpecular {
         allVertexDrawOrderList.add(currVertexDrawOrderList);
         allNormalDrawOrderList.add(normalDrawOrderList);
 
-        for(int i=0; i<allVertexDrawOrderList.size(); i++) {
+        for (int i = 0; i < allVertexDrawOrderList.size(); i++) {
             float[] coords = new float[3 * allVertexDrawOrderList.get(i).size()];
             for (int j = 0; j < allVertexDrawOrderList.get(i).size(); j++) {
                 coords[j * 3] = currVertixsList.get((allVertexDrawOrderList.get(i).get(j) - 1) * 3);
@@ -254,13 +253,12 @@ public class ObjModelMtlTestSpecular {
     }
 
     /**
-     *
      * @param rand A random object used for random colors generating
      * @return A FloatBuffer ArrayList containing all the colors per material
      */
-    public ArrayList<FloatBuffer> makeColor(Random rand){
+    public ArrayList<FloatBuffer> makeColor(Random rand) {
         ArrayList<FloatBuffer> result = new ArrayList<>();
-        for(int i=0; i < this.allVertexBuffer.size(); i++){
+        for (int i = 0; i < this.allVertexBuffer.size(); i++) {
             float red = rand.nextFloat();
             float green = rand.nextFloat();
             float blue = rand.nextFloat();
@@ -282,15 +280,14 @@ public class ObjModelMtlTestSpecular {
     }
 
     /**
-     *
-     * @param red Red float value [0;1]
+     * @param red   Red float value [0;1]
      * @param green Green float value [0;1]
-     * @param blue Blue float value [0;1]
+     * @param blue  Blue float value [0;1]
      * @return A FloatBuffer ArrayList containing all the colors per material
      */
-    public ArrayList<FloatBuffer> makeColor(float red, float green, float blue){
+    public ArrayList<FloatBuffer> makeColor(float red, float green, float blue) {
         ArrayList<FloatBuffer> result = new ArrayList<>();
-        for(int i=0; i < this.allVertexBuffer.size(); i++){
+        for (int i = 0; i < this.allVertexBuffer.size(); i++) {
             float[] color = new float[this.allCoords.get(i).length * 4 / 3];
             for (int j = 0; j < color.length; j += 4) {
                 color[j] = red;
@@ -309,25 +306,23 @@ public class ObjModelMtlTestSpecular {
     }
 
     /**
-     *
-     * @param mAmbColors The FloatBuffer ArrayList of all material ambient color
+     * @param mAmbColors  The FloatBuffer ArrayList of all material ambient color
      * @param mDiffColors The diffuse FloatBuffer ArrayList of all material color
      * @param mSpecColors The FloatBuffer ArrayList of all material specular color
      */
-    public void setColors(ArrayList<FloatBuffer> mAmbColors, ArrayList<FloatBuffer> mDiffColors, ArrayList<FloatBuffer> mSpecColors){
+    public void setColors(ArrayList<FloatBuffer> mAmbColors, ArrayList<FloatBuffer> mDiffColors, ArrayList<FloatBuffer> mSpecColors) {
         this.allAmbColorBuffer = mAmbColors;
         this.allDiffColorBuffer = mDiffColors;
         this.allSpecColorBuffer = mSpecColors;
     }
 
     /**
-     *
-     * @param mvpMatrix - The Model View Project matrix in which to draw this shape.
-     * @param mvMatrix - The Model View matrix
+     * @param mvpMatrix           - The Model View Project matrix in which to draw this shape.
+     * @param mvMatrix            - The Model View matrix
      * @param mLightPosInEyeSpace - The position of light in eye space
      */
-    public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
-        for(int i=0 ; i<this.allVertexBuffer.size(); i++) {
+    public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+        for (int i = 0; i < this.allVertexBuffer.size(); i++) {
             GLES20.glUseProgram(mProgram);
 
             this.allVertexBuffer.get(i).position(0);

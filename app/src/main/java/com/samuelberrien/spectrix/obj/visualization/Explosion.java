@@ -55,7 +55,6 @@ public class Explosion {
     private long firstTimeMillisWithoutMusic = System.currentTimeMillis();
 
     /**
-     *
      * @param context
      * @param nbCenter
      * @param nbSameCenter
@@ -89,7 +88,7 @@ public class Explosion {
     /**
      *
      */
-    private void setupTextCube(){
+    private void setupTextCube() {
         this.mTextTranslateVector[0] = 0f;
         this.mTextTranslateVector[1] = 0f;
         this.mTextTranslateVector[2] = 0f;
@@ -127,7 +126,6 @@ public class Explosion {
     }
 
     /**
-     *
      * @param center
      * @param magn
      * @param indiceFreq
@@ -143,7 +141,6 @@ public class Explosion {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void createNewOctagone(float[] freqArray) {
@@ -182,7 +179,7 @@ public class Explosion {
     /**
      *
      */
-    private void updateText(){
+    private void updateText() {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
         Matrix.translateM(mModelMatrix, 0, this.mTextTranslateVector[0], this.mTextTranslateVector[1], this.mTextTranslateVector[2]);
@@ -192,7 +189,6 @@ public class Explosion {
     }
 
     /**
-     *
      * @param freqArray
      * @param cubeX
      * @param cubeY
@@ -208,7 +204,7 @@ public class Explosion {
     /**
      *
      */
-    public void updateVisualization(){
+    public void updateVisualization() {
         this.deleteOldOctagone();
         this.createNewOctagone(freqArray);
         this.moveOctagone();
@@ -216,7 +212,6 @@ public class Explosion {
     }
 
     /**
-     *
      * @param mProjectionMatrix
      * @param mViewMatrix
      * @param mLightPosInEyeSpace
@@ -231,10 +226,10 @@ public class Explosion {
             this.octagone.setColor(this.mOctagone.get(i).getmOctagoneColorBuffer());
             this.octagone.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
         }
-        if(!this.mOctagone.isEmpty()){
+        if (!this.mOctagone.isEmpty()) {
             this.firstTimeMillisWithoutMusic = System.currentTimeMillis();
         }
-        if(System.currentTimeMillis() - this.firstTimeMillisWithoutMusic > 3000){
+        if (System.currentTimeMillis() - this.firstTimeMillisWithoutMusic > 3000) {
             Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mTextModelMatrix, 0);
             Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
             this.textCube.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
@@ -252,7 +247,6 @@ public class Explosion {
         private FloatBuffer mOctagoneColorBuffer;
 
         /**
-         *
          * @param mOctagoneScale
          * @param mOctagoneAngle
          * @param mOctagoneRotationOrientation
@@ -293,7 +287,6 @@ public class Explosion {
         }
 
         /**
-         *
          * @return
          */
         public float[] getmOctagoneModelMatrix() {
@@ -301,7 +294,6 @@ public class Explosion {
         }
 
         /**
-         *
          * @return
          */
         public FloatBuffer getmOctagoneColorBuffer() {
@@ -309,7 +301,6 @@ public class Explosion {
         }
 
         /**
-         *
          * @return
          */
         public double getSpeedVectorNorm() {

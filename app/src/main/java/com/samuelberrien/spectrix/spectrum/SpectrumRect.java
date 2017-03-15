@@ -45,21 +45,21 @@ public class SpectrumRect {
     static final int COORDS_PER_VERTEX = 3;
     private float[] squareCoords;
 
-    private final short drawOrder[] = { 0, 1, 2, 0, 2, 3 }; // order to draw vertices
+    private final short drawOrder[] = {0, 1, 2, 0, 2, 3}; // order to draw vertices
 
     private final int vertexStride = COORDS_PER_VERTEX * 4; // 4 bytes per vertex
 
-    float color[] = { 0.2f, 0.709803922f, 0.898039216f, 1.0f };
+    float color[] = {0.2f, 0.709803922f, 0.898039216f, 1.0f};
 
     /**
      * Sets up the drawing object data for use in an OpenGL ES context.
      */
     public SpectrumRect(float left, float right, float down, float up) {
         this.squareCoords = new float[]{
-                left,  up, 0.0f,   // top left
+                left, up, 0.0f,   // top left
                 left, down, 0.0f,   // bottom left
                 right, down, 0.0f,   // bottom right
-                right,  up, 0.0f };
+                right, up, 0.0f};
 
         // initialize vertex byte buffer for shape coordinates
         ByteBuffer bb = ByteBuffer.allocateDirect(
@@ -97,7 +97,7 @@ public class SpectrumRect {
      * Encapsulates the OpenGL ES instructions for drawing this shape.
      *
      * @param mvpMatrix - The Model View Project matrix in which to draw
-     * this shape.
+     *                  this shape.
      */
     public void draw(float[] mvpMatrix) {
         // Add program to OpenGL environment

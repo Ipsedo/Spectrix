@@ -30,8 +30,8 @@ public class SpectrumGLRendererLand implements GLSurfaceView.Renderer {
         this.nbSquares = 512;
         this.mSquaresMoveMatrix = new float[this.nbSquares][16];
         this.mSquares = new ArrayList<>();
-        for(int i=0; i<this.nbSquares; i++){
-            this.mSquares.add(new SpectrumRect(- 0.5f * (2f / this.nbSquares - 0.005f), 0.5f * (2f / this.nbSquares - 0.005f), -1f, 1f));//new SpectrumRect((float) i / (float) (this.nbSquares / 2) - 1.0f, (float) i / (float) (this.nbSquares / 2) - 1.0f + 2.0f / this.nbSquares - 0.005f, -1.0f, 1.0f);
+        for (int i = 0; i < this.nbSquares; i++) {
+            this.mSquares.add(new SpectrumRect(-0.5f * (2f / this.nbSquares - 0.005f), 0.5f * (2f / this.nbSquares - 0.005f), -1f, 1f));//new SpectrumRect((float) i / (float) (this.nbSquares / 2) - 1.0f, (float) i / (float) (this.nbSquares / 2) - 1.0f + 2.0f / this.nbSquares - 0.005f, -1.0f, 1.0f);
         }
         // Set the background frame color
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
@@ -39,18 +39,19 @@ public class SpectrumGLRendererLand implements GLSurfaceView.Renderer {
 
     /**
      * update the squares with the given frequencies
+     *
      * @param freqArray array of frequency
      */
-    public void updateSquaresMoveMatrix(float[] freqArray){
-        for(int i=0; i<this.nbSquares / 2; i++){
+    public void updateSquaresMoveMatrix(float[] freqArray) {
+        for (int i = 0; i < this.nbSquares / 2; i++) {
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
             Matrix.translateM(mModelMatrix, 0, i / (this.nbSquares * 0.25f), 0f, 0f);
-            Matrix.scaleM(mModelMatrix, 0, 1f, freqArray[i]  + freqArray[i] * (float) i / this.hightFreqsAugmentation, 1f);
+            Matrix.scaleM(mModelMatrix, 0, 1f, freqArray[i] + freqArray[i] * (float) i / this.hightFreqsAugmentation, 1f);
             Matrix.multiplyMM(this.mSquaresMoveMatrix[i + this.nbSquares / 2], 0, mMVPMatrix, 0, mModelMatrix, 0);
             Matrix.setIdentityM(mModelMatrix, 0);
-            Matrix.translateM(mModelMatrix, 0, - i / (this.nbSquares * 0.25f), 0f, 0f);
-            Matrix.scaleM(mModelMatrix, 0, 1f, freqArray[i]  + freqArray[i] * (float) i / this.hightFreqsAugmentation, 1f);
+            Matrix.translateM(mModelMatrix, 0, -i / (this.nbSquares * 0.25f), 0f, 0f);
+            Matrix.scaleM(mModelMatrix, 0, 1f, freqArray[i] + freqArray[i] * (float) i / this.hightFreqsAugmentation, 1f);
             Matrix.multiplyMM(this.mSquaresMoveMatrix[this.nbSquares / 2 - 1 - i], 0, mMVPMatrix, 0, mModelMatrix, 0);
         }
     }
@@ -68,7 +69,7 @@ public class SpectrumGLRendererLand implements GLSurfaceView.Renderer {
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
         //Draw Rects
-        for(int i=0; i<this.nbSquares; i++){
+        for (int i = 0; i < this.nbSquares; i++) {
             this.mSquares.get(i).draw(this.mSquaresMoveMatrix[i]);
         }
     }

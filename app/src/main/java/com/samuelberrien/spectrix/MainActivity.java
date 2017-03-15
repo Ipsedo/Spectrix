@@ -37,7 +37,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/ace_futurism.ttf");
 
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,WindowManager.LayoutParams.FLAG_FULLSCREEN);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         setContentView(R.layout.activity_main);
 
@@ -61,22 +61,22 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         }
     }
 
-    private boolean getOrientationPortrait(String idSpectrumAnalyser){
+    private boolean getOrientationPortrait(String idSpectrumAnalyser) {
         return idSpectrumAnalyser.equals(this.adapter.getItem(0));
     }
 
-    public void start(View v){
-        if(this.idVusalisation.equals(this.adapter.getItem(0)) || this.idVusalisation.equals(this.adapter.getItem(1))) {
+    public void start(View v) {
+        if (this.idVusalisation.equals(this.adapter.getItem(0)) || this.idVusalisation.equals(this.adapter.getItem(1))) {
             Intent intent = new Intent(this, SpectrumActivity.class);
             intent.putExtra("USE_SAMPLE", Boolean.toString(this.useSample));
             intent.putExtra("SCREEN_PORTRAIT", Boolean.toString(this.getOrientationPortrait(this.idVusalisation)));
             startActivity(intent);
-        }else if(this.useVR){
+        } else if (this.useVR) {
             Intent intent = new Intent(this, ObjVRActivity.class);
             intent.putExtra("USE_SAMPLE", Boolean.toString(this.useSample));
             intent.putExtra("ID_RENDERER", this.idVusalisation);
             startActivity(intent);
-        }else{
+        } else {
             Intent intent = new Intent(this, ObjActivity.class);
             intent.putExtra("USE_SAMPLE", Boolean.toString(this.useSample));
             intent.putExtra("SCREEN_PORTRAIT", Boolean.toString(false));
@@ -85,21 +85,21 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
         }
     }
 
-    public void useSample(View v){
+    public void useSample(View v) {
         this.useSample = ((CheckBox) findViewById(R.id.use_sample_check_box)).isChecked();
     }
 
-    public void useVr(View v){
+    public void useVr(View v) {
         this.useVR = ((CheckBox) findViewById(R.id.use_vr_check_box)).isChecked();
     }
 
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
         this.idVusalisation = (String) parent.getItemAtPosition(pos);
-        if(pos > 1){
+        if (pos > 1) {
             CheckBox useVRCheckBox = (CheckBox) findViewById(R.id.use_vr_check_box);
             useVRCheckBox.setEnabled(true);
             this.useVR = ((CheckBox) findViewById(R.id.use_vr_check_box)).isChecked();
-        }else{
+        } else {
             CheckBox useVRCheckBox = (CheckBox) findViewById(R.id.use_vr_check_box);
             useVRCheckBox.setEnabled(false);
             useVRCheckBox.setChecked(false);
@@ -111,7 +111,7 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
     }
 

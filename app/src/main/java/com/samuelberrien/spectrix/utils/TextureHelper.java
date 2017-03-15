@@ -16,8 +16,7 @@ import android.opengl.GLUtils;
 public class TextureHelper {
 
     /**
-     *
-     * @param context the application context
+     * @param context    the application context
      * @param resourceId the texture image res id
      * @return the texture handle
      */
@@ -28,7 +27,7 @@ public class TextureHelper {
 
         if (textureHandle[0] != 0) {
             final BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inScaled = false;	// No pre-scaling
+            options.inScaled = false;    // No pre-scaling
 
             // Read in the resource
             final Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), resourceId, options);

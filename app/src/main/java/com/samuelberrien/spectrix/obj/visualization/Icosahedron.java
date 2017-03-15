@@ -46,14 +46,13 @@ public class Icosahedron {
     private float[] freqArray = new float[1024];
 
     /**
-     *
      * @param context
      * @param nbIcosahedron
      * @param nbSameIcosahedron
      * @param minDist
      * @param rangeDist
      */
-    public Icosahedron(Context context, int nbIcosahedron, int nbSameIcosahedron, float minDist, float rangeDist){
+    public Icosahedron(Context context, int nbIcosahedron, int nbSameIcosahedron, float minDist, float rangeDist) {
         this.context = context;
 
         this.minDist = minDist;
@@ -79,9 +78,9 @@ public class Icosahedron {
     /**
      *
      */
-    private void setupIcosahedrons(){
+    private void setupIcosahedrons() {
         this.icosahedron = new ObjModelMtl(this.context, R.raw.icosahedron_obj, R.raw.icosahedron_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
-        for(int i=0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++){
+        for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {
             /*float[] color = new float[this.icosahedron.getVertexDrawListLength() * 4 / 3];
             float red = rand.nextFloat();
             float green = rand.nextFloat();
@@ -110,8 +109,8 @@ public class Icosahedron {
                 phi = rand.nextDouble() * 360d;
                 theta = rand.nextDouble() * 360d;
             }else{*/
-                phi = rand.nextDouble() * Math.PI * 2;
-                theta = rand.nextDouble() * Math.PI * 2;
+            phi = rand.nextDouble() * Math.PI * 2;
+            theta = rand.nextDouble() * Math.PI * 2;
             //}
             float x = maxRange * (float) (Math.cos(phi) * Math.sin(theta));
             float y = maxRange * (float) Math.sin(phi);
@@ -128,18 +127,17 @@ public class Icosahedron {
     }
 
     /**
-     *
      * @param freqArray
      */
-    public void updateFreq(float[] freqArray){
+    public void updateFreq(float[] freqArray) {
         this.freqArray = freqArray;
     }
 
     /**
      *
      */
-    public void updateIcosahedrons(){
-        for(int i=0; i<this.nbIcosahedron * this.nbSameIcosahedron; i++) {
+    public void updateIcosahedrons() {
+        for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
             Matrix.translateM(mModelMatrix, 0, this.mTranslateVector[i][0], this.mTranslateVector[i][1], this.mTranslateVector[i][2]);
@@ -149,9 +147,9 @@ public class Icosahedron {
             int tmpFreqIndex = i / this.nbSameIcosahedron;
             float scale = this.mScale[i];
             float tmp = freqArray[tmpFreqIndex] + freqArray[tmpFreqIndex] * tmpFreqIndex * this.mFreqAugmentation;
-            if(tmp > 0.7f){
+            if (tmp > 0.7f) {
                 scale += 0.7f * mScale[i];
-            }else{
+            } else {
                 scale += tmp * mScale[i];
             }
             Matrix.scaleM(mModelMatrix, 0, scale, scale, scale);
@@ -161,13 +159,12 @@ public class Icosahedron {
     }
 
     /**
-     *
      * @param mProjectionMatrix
      * @param mViewMatrix
      * @param mLightPosInEyeSpace
      */
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
-        for(int i=0; i<this.nbIcosahedron * this.nbSameIcosahedron; i++){
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+        for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {
             float[] tmpModelViewMatrix = new float[16];
             float[] tmpModelViewProjectionMatrix = new float[16];
             Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mModelMatrix[i], 0);

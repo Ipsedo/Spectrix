@@ -18,7 +18,7 @@ public class ObjGLRendererRoom extends ObjGLRenderer {
 
     private final float SCALE = 1f;
 
-    public ObjGLRendererRoom(Context context){
+    public ObjGLRendererRoom(Context context) {
         super(context);
         this.mCameraZ = -2f * SCALE;
         this.mCameraY = 6f * SCALE;
@@ -31,7 +31,7 @@ public class ObjGLRendererRoom extends ObjGLRenderer {
 
     public void update(float[] freqArray) {
         float tmp[] = new float[3];
-        if(this.roomVisualization != null) {
+        if (this.roomVisualization != null) {
             this.roomVisualization.update(freqArray);
             tmp = this.roomVisualization.getLightPos();
         }

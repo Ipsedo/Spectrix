@@ -1,7 +1,6 @@
 package com.samuelberrien.spectrix.spectrum;
 
 
-
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -16,7 +15,7 @@ import com.samuelberrien.spectrix.R;
  * Created by samuel on 15/12/16.
  */
 
-public class SpectrumGLSurfaceView extends GLSurfaceView{
+public class SpectrumGLSurfaceView extends GLSurfaceView {
 
     private SpectrumGLRendererLand mRendererLand;
     private SpectrumGLRenderer mRenderer;
@@ -44,10 +43,10 @@ public class SpectrumGLSurfaceView extends GLSurfaceView{
         this.isPortrait = isPortrait;
 
         // Set the Renderer for drawing on the GLSurfaceView
-        if(this.isPortrait) {
+        if (this.isPortrait) {
             this.mRenderer = new SpectrumGLRenderer();
             setRenderer(this.mRenderer);
-        }else{
+        } else {
             this.mRendererLand = new SpectrumGLRendererLand();
             setRenderer(this.mRendererLand);
         }
@@ -57,7 +56,7 @@ public class SpectrumGLSurfaceView extends GLSurfaceView{
         //setPreserveEGLContextOnPause(true);
 
         this.aManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
-        if(this.useSample) {
+        if (this.useSample) {
             this.mPlayer = MediaPlayer.create(context, R.raw.crea_session_8);
             this.mPlayer.start();
         }
@@ -68,7 +67,7 @@ public class SpectrumGLSurfaceView extends GLSurfaceView{
     }
 
     private void setupVisualizerAndAsyncTask() {
-        if(this.mVisualizer == null){
+        if (this.mVisualizer == null) {
             this.mVisualizer = new Visualizer(this.useSample ? this.mPlayer.getAudioSessionId() : 0);
             this.mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
             this.mVisualizer.setEnabled(true);
@@ -77,42 +76,42 @@ public class SpectrumGLSurfaceView extends GLSurfaceView{
         this.getFft.execute();
     }
 
-    public void onPause(){
+    public void onPause() {
         this.getFft.cancel(true);
         this.mVisualizer.setEnabled(false);
-        if(this.useSample) {
+        if (this.useSample) {
             this.mPlayer.pause();
         }
         super.onPause();
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        if(this.useSample) {
+        if (this.useSample) {
             this.mPlayer.start();
         }
-        if(this.getFft.isCancelled()){
+        if (this.getFft.isCancelled()) {
             this.getFft.cancel(false);
         }
-        if(this.getFft.getStatus() == AsyncTask.Status.FINISHED){
+        if (this.getFft.getStatus() == AsyncTask.Status.FINISHED) {
             this.getFft = new GetFFT();
             this.getFft.execute();
         }
     }
 
-    public void updateVolume(int keycode){
-        if(keycode == KeyEvent.KEYCODE_VOLUME_UP){
-            if(this.currVol < this.maxVol){
+    public void updateVolume(int keycode) {
+        if (keycode == KeyEvent.KEYCODE_VOLUME_UP) {
+            if (this.currVol < this.maxVol) {
                 this.currVol += 1.0f;
             }
-        }else if(keycode == KeyEvent.KEYCODE_VOLUME_DOWN){
-            if(this.currVol > 0){
-                this.currVol-= 1.0f;
+        } else if (keycode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+            if (this.currVol > 0) {
+                this.currVol -= 1.0f;
             }
         }
     }
 
-    private class GetFFT extends AsyncTask<String,Void,Void> {
+    private class GetFFT extends AsyncTask<String, Void, Void> {
         @Override
         public Void doInBackground(String[] param) {
             while (!this.isCancelled()) {

@@ -21,7 +21,7 @@ public class TestSpecular {
     private float[] mPingRotationMatrix;
     private float[] mPingModelMatrix;
 
-    public TestSpecular(Context context){
+    public TestSpecular(Context context) {
         this.ping = new ObjModelMtlTestSpecular(context, R.raw.canyon_obj, R.raw.canyon_mtl, 5f, 0.01f);
         this.mPingAngle = 0f;
         this.mPingTranslateVector = new float[]{0f, -2f, 0f};
@@ -29,7 +29,7 @@ public class TestSpecular {
         this.mPingModelMatrix = new float[16];
     }
 
-    public void update(){
+    public void update() {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
@@ -45,7 +45,7 @@ public class TestSpecular {
         this.mPingModelMatrix = mModelMatrix.clone();
     }
 
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         float[] tmpMVMatrix = new float[16];
         float[] tmpMVPMatrix = new float[16];
         Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mPingModelMatrix, 0);

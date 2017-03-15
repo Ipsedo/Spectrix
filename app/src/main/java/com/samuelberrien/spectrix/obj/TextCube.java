@@ -247,7 +247,7 @@ public class TextCube {
     private final int mNormalDataSize = 3;
     private final int mTextureCoordinateDataSize = 2;
 
-    public TextCube(Context context){
+    public TextCube(Context context) {
         mCubePositions = ByteBuffer.allocateDirect(cubePositionData.length * mBytesPerFloat)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
         mCubePositions.put(cubePositionData).position(0);
@@ -275,7 +275,7 @@ public class TextCube {
         mTextureDataHandle = TextureHelper.loadTexture(context, R.drawable.best_experience_with_music);
     }
 
-    public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace){
+    public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace) {
         GLES20.glUseProgram(this.mProgram);
         ShaderLoader.checkGlError("glUniformMatrix4fv");
 

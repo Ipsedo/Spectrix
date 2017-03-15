@@ -47,15 +47,14 @@ public class ObjModel {
     private float[] color;
 
     /**
-     *
-     * @param context the application context
-     * @param resId the res id of the obj file
-     * @param red the red color of the object
-     * @param green the green color of the object
-     * @param blue the blue color of the object
+     * @param context           the application context
+     * @param resId             the res id of the obj file
+     * @param red               the red color of the object
+     * @param green             the green color of the object
+     * @param blue              the blue color of the object
      * @param lightAugmentation the light augmentation of the object
      */
-    public ObjModel(Context context, int resId, float red, float green, float blue, float lightAugmentation, float distanceCoef){
+    public ObjModel(Context context, int resId, float red, float green, float blue, float lightAugmentation, float distanceCoef) {
 
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
@@ -71,18 +70,18 @@ public class ObjModel {
         ArrayList<Integer> normalDrawOrderList = new ArrayList<>();
 
         try {
-            while (( line = buffreader1.readLine()) != null) {
-                if(line.startsWith("vn")){
+            while ((line = buffreader1.readLine()) != null) {
+                if (line.startsWith("vn")) {
                     String[] tmp = line.split(" ");
                     normalsList.add(Float.parseFloat(tmp[1]));
                     normalsList.add(Float.parseFloat(tmp[2]));
                     normalsList.add(Float.parseFloat(tmp[3]));
-                }else if(line.startsWith("v ")){
+                } else if (line.startsWith("v ")) {
                     String[] tmp = line.split(" ");
                     vertixsList.add(Float.parseFloat(tmp[1]));
                     vertixsList.add(Float.parseFloat(tmp[2]));
                     vertixsList.add(Float.parseFloat(tmp[3]));
-                }else if(line.startsWith("f")){
+                } else if (line.startsWith("f")) {
                     String[] tmp = line.split(" ");
                     vertexDrawOrderList.add(Integer.parseInt(tmp[1].split("/")[0]));
                     vertexDrawOrderList.add(Integer.parseInt(tmp[2].split("/")[0]));
@@ -98,21 +97,21 @@ public class ObjModel {
         }
 
         this.coords = new float[3 * vertexDrawOrderList.size()];
-        for(int i=0; i < vertexDrawOrderList.size(); i++){
+        for (int i = 0; i < vertexDrawOrderList.size(); i++) {
             this.coords[i * 3] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3);
             this.coords[i * 3 + 1] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 1);
             this.coords[i * 3 + 2] = vertixsList.get((vertexDrawOrderList.get(i) - 1) * 3 + 2);
         }
 
         this.normal = new float[this.coords.length];
-        for(int i=0; i < normalDrawOrderList.size(); i++){
+        for (int i = 0; i < normalDrawOrderList.size(); i++) {
             this.normal[i * 3] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3);
             this.normal[i * 3 + 1] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3 + 1);
             this.normal[i * 3 + 2] = normalsList.get((normalDrawOrderList.get(i) - 1) * 3 + 2);
         }
 
         this.color = new float[this.coords.length * 4 / 3];
-        for(int i=0; i<this.color.length; i+=4){
+        for (int i = 0; i < this.color.length; i += 4) {
             this.color[i] = red;
             this.color[i + 1] = green;
             this.color[i + 2] = blue;
@@ -147,25 +146,22 @@ public class ObjModel {
     }
 
     /**
-     *
      * @param colorBuffer a color buffer that will be used to draw the obj 3D model
      */
-    public void setColor(FloatBuffer colorBuffer){
+    public void setColor(FloatBuffer colorBuffer) {
         this.colorBuffer = colorBuffer;
     }
 
     /**
-     *
      * @return the vertex draw list length of the obj 3D model
      */
-    public int getVertexDrawListLength(){
+    public int getVertexDrawListLength() {
         return this.coords.length;
     }
 
     /**
-     *
-     * @param mvpMatrix The Model View Project matrix in which to draw this shape.
-     * @param mvMatrix The Model View matrix
+     * @param mvpMatrix           The Model View Project matrix in which to draw this shape.
+     * @param mvMatrix            The Model View matrix
      * @param mLightPosInEyeSpace The light position in the eye space
      */
     public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace) {

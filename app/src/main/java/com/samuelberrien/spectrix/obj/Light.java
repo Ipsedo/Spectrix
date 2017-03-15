@@ -14,7 +14,7 @@ public class Light {
 
     final String vertexShaderCode =
             "uniform mat4 u_MVPMatrix;      \n"
-                    +	"attribute vec4 a_Position;     \n"
+                    + "attribute vec4 a_Position;     \n"
                     + "void main()                    \n"
                     + "{                              \n"
                     + "   gl_Position = u_MVPMatrix   \n"
@@ -36,7 +36,7 @@ public class Light {
     /**
      *
      */
-    public Light(){
+    public Light() {
         int vertexShader = ShaderLoader.loadShader(
                 GLES20.GL_VERTEX_SHADER,
                 vertexShaderCode);
@@ -51,11 +51,10 @@ public class Light {
     }
 
     /**
-     *
      * @param mMVPMatrix
      * @param mLightPosInModelSpace
      */
-    public void draw(float[] mMVPMatrix,float[] mLightPosInModelSpace){
+    public void draw(float[] mMVPMatrix, float[] mLightPosInModelSpace) {
         GLES20.glUseProgram(mProgram);
         pointMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
         pointPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");

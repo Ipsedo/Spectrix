@@ -29,7 +29,7 @@ public class ObjGLRendererTextSpec extends ObjGLRenderer {
     }
 
     public void update(float[] freqArray) {
-        if(this.test != null) {
+        if (this.test != null) {
             this.test.update();
         }
         this.updateLight(0f, 0f, 0f);

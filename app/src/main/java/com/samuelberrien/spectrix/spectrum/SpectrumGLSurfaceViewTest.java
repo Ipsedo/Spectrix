@@ -27,7 +27,7 @@ public class SpectrumGLSurfaceViewTest extends GLSurfaceView {
 
     private boolean isPortrait;
 
-    public SpectrumGLSurfaceViewTest(Context context, boolean useSample, boolean isPortrait){
+    public SpectrumGLSurfaceViewTest(Context context, boolean useSample, boolean isPortrait) {
         super(context);
 
         setEGLContextClientVersion(2);
@@ -37,13 +37,13 @@ public class SpectrumGLSurfaceViewTest extends GLSurfaceView {
         this.isPortrait = isPortrait;
 
         // Set the Renderer for drawing on the GLSurfaceView
-        if(this.isPortrait) {
+        if (this.isPortrait) {
             setRenderer(mRenderer);
-        }else{
+        } else {
             setRenderer(mRendererLand);
         }
 
-        if(this.useSample) {
+        if (this.useSample) {
             this.mPlayer = MediaPlayer.create(context, R.raw.crea_session_8);
             this.mPlayer.start();
         }
@@ -53,32 +53,32 @@ public class SpectrumGLSurfaceViewTest extends GLSurfaceView {
 
     }
 
-    public void onPause(){
+    public void onPause() {
         this.getFft.cancel(true);
-        if(this.useSample) {
+        if (this.useSample) {
             this.mPlayer.pause();
         }
         super.onPause();
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        if(this.useSample) {
+        if (this.useSample) {
             this.mPlayer.start();
         }
-        if(this.getFft.isCancelled()){
+        if (this.getFft.isCancelled()) {
             this.getFft.cancel(false);
         }
-        if(this.getFft.getStatus() == AsyncTask.Status.FINISHED){
+        if (this.getFft.getStatus() == AsyncTask.Status.FINISHED) {
             this.getFft = new GetFFT();
             this.getFft.execute();
         }
     }
 
-    public void updateVolume(int keycode){
+    public void updateVolume(int keycode) {
     }
 
-    private class GetFFT extends AsyncTask<String,Void,Void> {
+    private class GetFFT extends AsyncTask<String, Void, Void> {
 
         private static final int RECORDER_SAMPLERATE = 8000;
         private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
@@ -107,10 +107,10 @@ public class SpectrumGLSurfaceViewTest extends GLSurfaceView {
 
             short sData[] = new short[bufferElements];
 
-            while(!this.isCancelled()) {
+            while (!this.isCancelled()) {
                 this.recorder.read(sData, 0, bufferElements);
                 System.out.println(sData.length + " " + sData[(int) (Math.random() * sData.length)]);
-                try{
+                try {
                     Thread.sleep(1000L / 120L);
                 } catch (Exception e) {
                     e.printStackTrace();

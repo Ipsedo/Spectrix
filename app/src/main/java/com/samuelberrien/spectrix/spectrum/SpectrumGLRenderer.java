@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Created by samuel on 15/12/16.
  */
 
-public class SpectrumGLRenderer implements GLSurfaceView.Renderer{
+public class SpectrumGLRenderer implements GLSurfaceView.Renderer {
 
     // mMVPMatrix is an abbreviation for "Model View Projection Matrix"
     private final float[] mMVPMatrix = new float[16];
@@ -32,7 +32,7 @@ public class SpectrumGLRenderer implements GLSurfaceView.Renderer{
         this.nbSquares = 512;
         this.mSquaresMoveMatrix = new float[this.nbSquares][16];
         this.mSquares = new ArrayList<>();
-        for(int i=0; i < this.nbSquares; i++){
+        for (int i = 0; i < this.nbSquares; i++) {
             this.mSquares.add(new SpectrumRect(-1.0f, 1.0f, -0.5f * (2.0f / this.nbSquares - 0.005f), 0.5f * (2.0f / this.nbSquares - 0.005f)));//new SpectrumRect(-1.0f,1.0f,(float) i / (float) (this.nbSquares / 2) - 1.0f, (float) i / (float) (this.nbSquares / 2) - 1.0f + 2.0f / this.nbSquares - 0.005f);
         }
         // Set the background frame color
@@ -41,13 +41,14 @@ public class SpectrumGLRenderer implements GLSurfaceView.Renderer{
 
     /**
      * update the squares with the frequencies
+     *
      * @param freqArray array of frequency
      */
-    public void updateSquaresMoveMatrix(float[] freqArray){
-        for(int i=0; i < this.nbSquares; i++){
+    public void updateSquaresMoveMatrix(float[] freqArray) {
+        for (int i = 0; i < this.nbSquares; i++) {
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
-            Matrix.translateM(mModelMatrix, 0, 0f, (float) i / (float) (this.nbSquares / 2) -1f, 0f);
+            Matrix.translateM(mModelMatrix, 0, 0f, (float) i / (float) (this.nbSquares / 2) - 1f, 0f);
             Matrix.scaleM(mModelMatrix, 0, freqArray[i] + freqArray[i] * (float) i / this.hightFreqsAugmentation, 1f, 1f);
             Matrix.multiplyMM(this.mSquaresMoveMatrix[i], 0, mMVPMatrix, 0, mModelMatrix, 0);
         }
@@ -66,7 +67,7 @@ public class SpectrumGLRenderer implements GLSurfaceView.Renderer{
         Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 
         //Draw Rects
-        for(int i=0; i<this.nbSquares; i++){
+        for (int i = 0; i < this.nbSquares; i++) {
             this.mSquares.get(i).draw(this.mSquaresMoveMatrix[i]);
         }
     }

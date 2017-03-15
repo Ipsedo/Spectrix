@@ -87,7 +87,7 @@ public class Room {
 
     private ObjModel stores;
     private float mStoresVibrationAtenuation = 0.15f;
-    private float[] mStoresTranslateVector = new float[]{-7.6871f, 6.3401f,  0f};
+    private float[] mStoresTranslateVector = new float[]{-7.6871f, 6.3401f, 0f};
     private float[] mStoresModel = new float[16];
 
     private float mTableChevetFreqAtenuation = 1.8f;
@@ -101,11 +101,10 @@ public class Room {
     private float[] freqArray = new float[1024];
 
     /**
-     *
      * @param context
      * @param scale
      */
-    public Room(Context context, float scale){
+    public Room(Context context, float scale) {
         this.rand = new Random(System.currentTimeMillis());
         this.context = context;
         this.scale = scale;
@@ -129,7 +128,6 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void updateCadreD(float[] freqArray) {
@@ -139,8 +137,8 @@ public class Room {
         Matrix.translateM(mModelMatrix, 0, this.mCadreDTranslateVector[0] * scale, this.mCadreDTranslateVector[1] * scale, this.mCadreDTranslateVector[2] * scale * -1f);
 
         float max = 0f;
-        for(int i=7; i < 11; i++ ){
-            if(freqArray[i] > max){
+        for (int i = 7; i < 11; i++) {
+            if (freqArray[i] > max) {
                 max = freqArray[i];
             }
         }
@@ -151,7 +149,6 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void updateCadreG(float[] freqArray) {
@@ -161,8 +158,8 @@ public class Room {
         Matrix.translateM(mModelMatrix, 0, this.mCadreGTranslateVector[0] * scale, this.mCadreGTranslateVector[1] * scale, this.mCadreGTranslateVector[2] * scale * -1f);
 
         float max = 0f;
-        for(int i=15; i < 19; i++ ){
-            if(freqArray[i] > max){
+        for (int i = 15; i < 19; i++) {
+            if (freqArray[i] > max) {
                 max = freqArray[i];
             }
         }
@@ -173,7 +170,6 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void updateCadreM(float[] freqArray) {
@@ -183,8 +179,8 @@ public class Room {
         Matrix.translateM(mModelMatrix, 0, this.mCadreMTranslateVector[0] * scale, this.mCadreMTranslateVector[1] * scale, this.mCadreMTranslateVector[2] * scale * -1f);
 
         float max = 0f;
-        for(int i=11; i < 15; i++ ){
-            if(freqArray[i] > max){
+        for (int i = 11; i < 15; i++) {
+            if (freqArray[i] > max) {
                 max = freqArray[i];
             }
         }
@@ -195,7 +191,6 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void updateCadreAD(float[] freqArray) {
@@ -211,8 +206,8 @@ public class Room {
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, tmpRotationMatrix, 0);
 
         float max = 0f;
-        for(int i=19; i < 23; i++ ){
-            if(freqArray[i] > max){
+        for (int i = 19; i < 23; i++) {
+            if (freqArray[i] > max) {
                 max = freqArray[i];
             }
         }
@@ -223,7 +218,6 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void updateCadreAG(float[] freqArray) {
@@ -239,8 +233,8 @@ public class Room {
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, tmpRotationMatrix, 0);
 
         float max = 0f;
-        for(int i=27; i < 30; i++ ){
-            if(freqArray[i] > max){
+        for (int i = 27; i < 30; i++) {
+            if (freqArray[i] > max) {
                 max = freqArray[i];
             }
         }
@@ -251,7 +245,6 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void updateCadreAM(float[] freqArray) {
@@ -267,8 +260,8 @@ public class Room {
         Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, tmpRotationMatrix, 0);
 
         float max = 0f;
-        for(int i=23; i < 27; i++ ){
-            if(freqArray[i] > max){
+        for (int i = 23; i < 27; i++) {
+            if (freqArray[i] > max) {
                 max = freqArray[i];
             }
         }
@@ -279,10 +272,9 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
-    private void updateLampeChevetD(float[] freqArray){
+    private void updateLampeChevetD(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
@@ -309,10 +301,9 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
-    private void updateLampeChevetG(float[] freqArray){
+    private void updateLampeChevetG(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
@@ -339,7 +330,6 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void updateLampePlafond(float[] freqArray) {
@@ -349,8 +339,8 @@ public class Room {
         Matrix.translateM(mModelMatrix, 0, this.mLampePlafondTranslateVector[0] * scale, this.mLampePlafondTranslateVector[1] * scale, this.mLampePlafondTranslateVector[2] * scale * -1f);
 
         float max = 0f;
-        for(int i=206; i < 307; i++ ){
-            if(freqArray[i] > max){
+        for (int i = 206; i < 307; i++) {
+            if (freqArray[i] > max) {
                 max = freqArray[i];
             }
         }
@@ -361,19 +351,18 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
-    private void updateLit2Places(float[] freqArray){
+    private void updateLit2Places(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
         Matrix.translateM(mModelMatrix, 0, this.mLit2PlacesTranslateVector[0] * scale, this.mLit2PlacesTranslateVector[1] * scale, this.mLit2PlacesTranslateVector[2] * scale * -1f);
 
         float tmpScale;
-        if((freqArray[0] > 0.2f || freqArray[1] > 0.2f) && this.mCounter % 2 == 0){
+        if ((freqArray[0] > 0.2f || freqArray[1] > 0.2f) && this.mCounter % 2 == 0) {
             tmpScale = scale + scale * this.mLitVibrationAtenuation;
-        }else{
+        } else {
             tmpScale = scale;
         }
         Matrix.scaleM(mModelMatrix, 0, tmpScale, tmpScale, tmpScale);
@@ -382,7 +371,6 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void updateMurs(float[] freqArray) {
@@ -394,18 +382,17 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
-    private void updateOreillerD(float[] freqArray){
+    private void updateOreillerD(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
         Matrix.translateM(mModelMatrix, 0, this.mOreillerDTranslateVector[0] * scale, this.mOreillerDTranslateVector[1] * scale, this.mOreillerDTranslateVector[2] * scale * -1f);
 
         float max = 0f;
-        for(int i=3; i<5; i++){
-            if(max < freqArray[i]){
+        for (int i = 3; i < 5; i++) {
+            if (max < freqArray[i]) {
                 max = freqArray[i];
             }
         }
@@ -416,18 +403,17 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
-    private void updateOreillerG(float[] freqArray){
+    private void updateOreillerG(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
         Matrix.translateM(mModelMatrix, 0, this.mOreillerGTranslateVector[0] * scale, this.mOreillerGTranslateVector[1] * scale, this.mOreillerGTranslateVector[2] * scale * -1f);
 
         float max = 0f;
-        for(int i=5; i<7; i++){
-            if(max < freqArray[i]){
+        for (int i = 5; i < 7; i++) {
+            if (max < freqArray[i]) {
                 max = freqArray[i];
             }
         }
@@ -438,19 +424,18 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
-    private void updatePorte(float[] freqArray){
+    private void updatePorte(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
         Matrix.translateM(mModelMatrix, 0, this.mPorteTranslateVector[0] * scale, this.mPorteTranslateVector[1] * scale, this.mPorteTranslateVector[2] * scale * -1f);
 
         float tmpScale;
-        if((freqArray[1] > 0.2f || freqArray[2] > 0.2f) && this.mCounter % 2 == 0){
+        if ((freqArray[1] > 0.2f || freqArray[2] > 0.2f) && this.mCounter % 2 == 0) {
             tmpScale = scale + scale * this.mPorteVibrationAtenuation;
-        }else{
+        } else {
             tmpScale = scale;
         }
         Matrix.scaleM(mModelMatrix, 0, tmpScale, scale, scale);
@@ -459,19 +444,18 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
-    private void updateStores(float[] freqArray){
+    private void updateStores(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
         Matrix.translateM(mModelMatrix, 0, this.mStoresTranslateVector[0] * scale, this.mStoresTranslateVector[1] * scale, this.mStoresTranslateVector[2] * scale * -1f);
 
         float tmpScale;
-        if((freqArray[1] > 0.2f || freqArray[2] > 0.2f) && this.mCounter % 2 == 0){
+        if ((freqArray[1] > 0.2f || freqArray[2] > 0.2f) && this.mCounter % 2 == 0) {
             tmpScale = scale + scale * this.mStoresVibrationAtenuation;
-        }else{
+        } else {
             tmpScale = scale;
         }
         Matrix.scaleM(mModelMatrix, 0, tmpScale, scale, scale);
@@ -480,18 +464,17 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
-    private void updateTableChevetD(float[] freqArray){
+    private void updateTableChevetD(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
         Matrix.translateM(mModelMatrix, 0, this.mTableChevetDTranslateVector[0] * scale, this.mTableChevetDTranslateVector[1] * scale, this.mTableChevetDTranslateVector[2] * scale * -1f);
 
         float max = 0f;
-        for(int i=22; i<33; i++){
-            if(max < freqArray[i]){
+        for (int i = 22; i < 33; i++) {
+            if (max < freqArray[i]) {
                 max = freqArray[i];
             }
         }
@@ -502,18 +485,17 @@ public class Room {
     }
 
     /**
-     *
      * @param freqArray
      */
-    private void updateTableChevetG(float[] freqArray){
+    private void updateTableChevetG(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
         Matrix.translateM(mModelMatrix, 0, this.mTableChevetGTranslateVector[0] * scale, this.mTableChevetGTranslateVector[1] * scale, this.mTableChevetGTranslateVector[2] * scale * -1f);
 
         float max = 0f;
-        for(int i=33; i<44; i++){
-            if(max < freqArray[i]){
+        for (int i = 33; i < 44; i++) {
+            if (max < freqArray[i]) {
                 max = freqArray[i];
             }
         }
@@ -526,14 +508,14 @@ public class Room {
     /**
      *
      */
-    private void count(){
-        this.mCounter --;
-        if(this.mCounter <= 0){
+    private void count() {
+        this.mCounter--;
+        if (this.mCounter <= 0) {
             this.mCounter = mMaxCounter;
         }
     }
 
-    public void update(float[] freqArray){
+    public void update(float[] freqArray) {
         this.freqArray = freqArray;
     }
 
@@ -571,89 +553,87 @@ public class Room {
     }
 
     /**
-     *
      * @return
      */
-    public float[] getLightPos(){
+    public float[] getLightPos() {
         return new float[]{0f * scale, 7f * scale, 0f * scale};
     }
 
     /**
-     *
      * @param mProjectionMatrix
      * @param mViewMatrix
      * @param mLightPosInEyeSpace
      */
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace){
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace) {
         float[] tmpModelViewMatrix = new float[16];
         float[] tmpModelViewProjectionMatrix = new float[16];
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mCadreDModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.cadreD.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.cadreD.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mCadreGModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.cadreG.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.cadreG.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mCadreMModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.cadreM.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.cadreM.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mCadreADModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.cadreAD.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.cadreAD.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mCadreAGModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.cadreAG.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.cadreAG.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mCadreAMModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.cadreAM.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.cadreAM.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mLampeChevetDModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.lampeChevetD.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.lampeChevetD.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mLampeChevetGModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.lampeChevetG.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.lampeChevetG.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mLampePlafondModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.lampePlafond.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.lampePlafond.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mLit2PlacesModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.lit2Places.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.lit2Places.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mOreillerDModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.oreillerD.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.oreillerD.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mOreillerGModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.oreillerG.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.oreillerG.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mPorteModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.porte.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.porte.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mStoresModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.stores.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.stores.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mTableChevetDModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.tableChevetD.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.tableChevetD.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mTableChevetGModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.tableChevetG.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.tableChevetG.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 
         Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mMursModel, 0);
         Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-        this.murs.draw(tmpModelViewProjectionMatrix,tmpModelViewMatrix, mLightPosInEyeSpace);
+        this.murs.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
     }
 }

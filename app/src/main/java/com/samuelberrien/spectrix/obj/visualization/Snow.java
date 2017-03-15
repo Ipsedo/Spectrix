@@ -75,14 +75,13 @@ public class Snow {
     private float[] freqArray = new float[1024];
 
     /**
-     *
      * @param context
      * @param nbPing
      * @param nbOctagone
      * @param nbIgloo
      * @param nbTree
      */
-    public Snow(Context context, int nbPing, int nbOctagone, int nbIgloo, int nbTree){
+    public Snow(Context context, int nbPing, int nbOctagone, int nbIgloo, int nbTree) {
         this.context = context;
 
         this.rand = new Random(System.currentTimeMillis());
@@ -130,15 +129,15 @@ public class Snow {
     /**
      *
      */
-    private void setupTree(){
+    private void setupTree() {
         this.tree = new ObjModelMtl(this.context, R.raw.snow_tree_obj, R.raw.snow_tree_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
-        for(int i=0; i < this.nbTree; i++){
+        for (int i = 0; i < this.nbTree; i++) {
             double r = 5d * rand.nextDouble();
             double theta;
             /*if(Math.sin(90) == 1){
                 theta = rand.nextDouble() * 360d;
             }else{*/
-                theta = rand.nextDouble() * Math.PI * 2d;
+            theta = rand.nextDouble() * Math.PI * 2d;
             //}
 
             float up = rand.nextFloat() * 0.5f;
@@ -156,13 +155,13 @@ public class Snow {
      */
     private void setupPinguin() {
         this.ping = new ObjModelMtl(this.context, R.raw.snow_pingouin_obj, R.raw.snow_pingouin_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
-        for(int i=0; i < nbPing; i++) {
+        for (int i = 0; i < nbPing; i++) {
             double r = 5d * rand.nextDouble();
             double theta;
             /*if(Math.sin(90) == 1){
                 theta = rand.nextDouble() * 360d;
             }else{*/
-                theta = rand.nextDouble() * Math.PI * 2d;
+            theta = rand.nextDouble() * Math.PI * 2d;
             //}
 
             this.mPingTranslateVector[i][0] = (float) ((5d + r) * Math.cos(theta));
@@ -177,7 +176,7 @@ public class Snow {
      */
     private void setupOctagone() {
         this.octagone = new ObjModel(this.context, R.raw.octagone, 1f, 0.8f, 0.8f, LIGHTAUGMENTATION, DISTANCECOEFF);
-        for(int i=0; i<this.nbOctagone; i++){
+        for (int i = 0; i < this.nbOctagone; i++) {
             double theta;
             double phi;
             double r1 = 20d;
@@ -188,9 +187,9 @@ public class Snow {
                 phi = rand.nextDouble() * 135f + 22.5f;
                 this.mOctagoneAngle[i] = rand.nextFloat() * 360f;
             }else{*/
-                theta = rand.nextDouble() * Math.PI * 2d;
-                phi = rand.nextDouble() * Math.PI * 6 / 8 + Math.PI / 8;
-                this.mOctagoneAngle[i] = (float) (rand.nextDouble() * 360f);
+            theta = rand.nextDouble() * Math.PI * 2d;
+            phi = rand.nextDouble() * Math.PI * 6 / 8 + Math.PI / 8;
+            this.mOctagoneAngle[i] = (float) (rand.nextDouble() * 360f);
             //}
 
             this.mOctagoneRotationOrientation[i][0] = rand.nextFloat() * 2f - 1f;
@@ -210,13 +209,13 @@ public class Snow {
      */
     private void setupIgloo() {
         this.igloo = new ObjModelMtl(this.context, R.raw.snow_igloo_obj, R.raw.snow_igloo_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
-        for(int i=0; i < this.nbIgloo; i++) {
+        for (int i = 0; i < this.nbIgloo; i++) {
             double r = 5d * rand.nextDouble();
             double theta;
             /*if (Math.sin(90) == 1) {
                 theta = rand.nextDouble() * 360d;
             } else {*/
-                theta = rand.nextDouble() * Math.PI * 2d;
+            theta = rand.nextDouble() * Math.PI * 2d;
             //}
             this.mIglooTranslateVector[i][0] = (float) ((5d + r) * Math.cos(theta));
             this.mIglooTranslateVector[i][1] = -1f;
@@ -228,7 +227,7 @@ public class Snow {
     /**
      *
      */
-    private void setupWhale(){
+    private void setupWhale() {
         this.mWhaleTranslateVector[0] = 0f;
         this.mWhaleTranslateVector[1] = 3f;
         this.mWhaleTranslateVector[2] = 10f;
@@ -248,17 +247,16 @@ public class Snow {
     }
 
     /**
-     *
      * @param freqArray
      */
-    private void updateTree(float[] freqArray){
-        for(int i=0; i<this.nbTree; i++){
+    private void updateTree(float[] freqArray) {
+        for (int i = 0; i < this.nbTree; i++) {
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
             Matrix.translateM(mModelMatrix, 0, this.mTreeTranslateVector[i][0], this.mTreeTranslateVector[i][1], this.mTreeTranslateVector[i][2]);
             float max = 0f;
-            for(int j= i * 4; j < (i + 1) * 4; j++){
-                if(max < freqArray[j]){
+            for (int j = i * 4; j < (i + 1) * 4; j++) {
+                if (max < freqArray[j]) {
                     max = freqArray[j];
                 }
             }
@@ -269,11 +267,10 @@ public class Snow {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void updatePing(float[] freqArray) {
-        for(int i=0; i<nbPing; i++) {
+        for (int i = 0; i < nbPing; i++) {
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
 
@@ -300,11 +297,10 @@ public class Snow {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void updateOctagone(float[] freqArray) {
-        for(int i=0; i<this.nbOctagone; i++){
+        for (int i = 0; i < this.nbOctagone; i++) {
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
 
@@ -316,7 +312,7 @@ public class Snow {
             Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, this.mOctagoneRotationMatrix[i], 0);
 
             float sum = 0f;
-            for (int j = freqArray.length * i / this.nbOctagone; j < freqArray.length * (i + 1) / this.nbOctagone; j++){
+            for (int j = freqArray.length * i / this.nbOctagone; j < freqArray.length * (i + 1) / this.nbOctagone; j++) {
                 sum += freqArray[i];
             }
             float scale = this.mOctagoneScale[i] + sum * this.mOctagoneScale[i] + sum * i * this.mOctagoneFreqAttenuation * this.mOctagoneScale[i];
@@ -328,11 +324,10 @@ public class Snow {
     }
 
     /**
-     *
      * @param freqArray
      */
     private void updateIgloo(float[] freqArray) {
-        for(int i=0; i<this.nbIgloo; i++) {
+        for (int i = 0; i < this.nbIgloo; i++) {
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
             Matrix.translateM(mModelMatrix, 0, this.mIglooTranslateVector[i][0], this.mIglooTranslateVector[i][1], this.mIglooTranslateVector[i][2]);
@@ -346,10 +341,9 @@ public class Snow {
     }
 
     /**
-     *
      * @param freqArray
      */
-    private void updateWhale(float[] freqArray){
+    private void updateWhale(float[] freqArray) {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
@@ -361,9 +355,9 @@ public class Snow {
         Matrix.multiplyMM(mModelMatrix, 0, mWhaleRotationMatrix, 0, tmpMat, 0);
 
         float scale;
-        if(freqArray[3] > 0.2 && this.cpt % 2 == 0){
+        if (freqArray[3] > 0.2 && this.cpt % 2 == 0) {
             scale = SCALE + SCALE * this.mWhaleFreqAttenuation;//* freqArray[3];
-        }else{
+        } else {
             scale = SCALE;
         }
         Matrix.scaleM(mModelMatrix, 0, scale, scale, scale);
@@ -374,7 +368,7 @@ public class Snow {
     /**
      *
      */
-    private void updateMountains(){
+    private void updateMountains() {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
 
@@ -386,21 +380,21 @@ public class Snow {
         this.mMountainsModelMatrix = mModelMatrix.clone();
     }
 
-    private void count(){
+    private void count() {
         this.cpt--;
-        if(this.cpt <= 0){
+        if (this.cpt <= 0) {
             this.cpt = MAXCPT;
         }
     }
 
-    public void update(float[] freqArray){
+    public void update(float[] freqArray) {
         this.freqArray = freqArray;
     }
 
     /**
      *
      */
-    public void updateSnow(){
+    public void updateSnow() {
         this.updatePing(freqArray);
         this.updateIgloo(freqArray);
         this.updateWhale(freqArray);
@@ -411,22 +405,21 @@ public class Snow {
     }
 
     /**
-     *
      * @param mProjectionMatrix
      * @param mViewMatrix
      * @param mLightPosInEyeSpace
      */
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition){
+    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         float[] tmpMVMatrix = new float[16];
         float[] tmpMVPMatrix = new float[16];
 
-        for(int i=0; i < this.nbPing; i++) {
+        for (int i = 0; i < this.nbPing; i++) {
             Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mPingModelMatrix[i], 0);
             Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
             this.ping.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
         }
 
-        for(int i=0; i < this.nbIgloo; i++) {
+        for (int i = 0; i < this.nbIgloo; i++) {
             Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mIglooModelMatrix[i], 0);
             Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
             this.igloo.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
@@ -436,13 +429,13 @@ public class Snow {
         Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
         this.whale.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
 
-        for(int i=0; i < this.nbOctagone; i++){
+        for (int i = 0; i < this.nbOctagone; i++) {
             Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mOctagoneModelMatrix[i], 0);
             Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
             this.octagone.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace);
         }
 
-        for(int i=0; i < this.nbTree; i++){
+        for (int i = 0; i < this.nbTree; i++) {
             Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mTreeModelMatrix[i], 0);
             Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
             this.tree.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);

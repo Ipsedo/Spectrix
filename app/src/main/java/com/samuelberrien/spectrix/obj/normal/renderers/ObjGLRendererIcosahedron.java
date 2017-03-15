@@ -16,7 +16,7 @@ public class ObjGLRendererIcosahedron extends ObjGLRenderer {
 
     private Icosahedron icosahedronVisualization;
 
-    public ObjGLRendererIcosahedron(Context context){
+    public ObjGLRendererIcosahedron(Context context) {
         super(context);
     }
 
@@ -26,7 +26,7 @@ public class ObjGLRendererIcosahedron extends ObjGLRenderer {
     }
 
     public void update(float[] freqArray) {
-        if(this.icosahedronVisualization != null) {
+        if (this.icosahedronVisualization != null) {
             this.icosahedronVisualization.updateFreq(freqArray);
         }
         this.updateLight(0f, 0f, 0f);

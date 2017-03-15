@@ -16,7 +16,7 @@ public class ObjGLRendererSnow extends ObjGLRenderer {
 
     private Snow snowVisualization;
 
-    public ObjGLRendererSnow(Context context){
+    public ObjGLRendererSnow(Context context) {
         super(context);
         this.mCameraY = 2f;
     }
@@ -27,7 +27,7 @@ public class ObjGLRendererSnow extends ObjGLRenderer {
     }
 
     public void update(float[] freqArray) {
-        if(this.snowVisualization != null) {
+        if (this.snowVisualization != null) {
             this.snowVisualization.update(freqArray);
         }
         this.updateLight(0f, 2f, 0f);
