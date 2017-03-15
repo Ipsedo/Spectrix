@@ -27,6 +27,6 @@ void main(){
     }
     vec4 specular = specularCoefficient * v_material_specular_Color;
 
-    vec4 ambient = 0.05 * v_material_ambient_Color;
+    vec4 ambient = 0.1 * v_material_ambient_Color;
     gl_FragColor = ambient + diffuse + specular;
 }
