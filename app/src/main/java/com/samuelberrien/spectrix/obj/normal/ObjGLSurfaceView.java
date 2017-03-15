@@ -40,7 +40,6 @@ public class ObjGLSurfaceView extends GLSurfaceView {
     private boolean useSample;
 
     /**
-     *
      * @param context
      * @param useSample
      * @param id_visualisation
@@ -51,15 +50,15 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         setEGLContextClientVersion(2);
 
         // Set the Renderer for drawing on the GLSurfaceView
-        if(id_visualisation.equals(context.getString(R.string.snow))){
+        if (id_visualisation.equals(context.getString(R.string.snow))) {
             this.mRenderer = new ObjGLRendererSnow(context);
-        } else if(id_visualisation.equals(context.getString(R.string.room))){
+        } else if (id_visualisation.equals(context.getString(R.string.room))) {
             this.mRenderer = new ObjGLRendererRoom(context);
-        }else if(id_visualisation.equals(context.getString(R.string.icosahedron))){
+        } else if (id_visualisation.equals(context.getString(R.string.icosahedron))) {
             this.mRenderer = new ObjGLRendererIcosahedron(context);
-        }else if(id_visualisation.equals(context.getString(R.string.explosion))){
+        } else if (id_visualisation.equals(context.getString(R.string.explosion))) {
             this.mRenderer = new ObjGLRendererExplosion(context);
-        }else if(id_visualisation.equals(context.getString(R.string.test))){
+        } else if (id_visualisation.equals(context.getString(R.string.test))) {
             this.mRenderer = new ObjGLRendererTextSpec(context);
         }
 
@@ -70,7 +69,7 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         setRenderMode(GLSurfaceView.RENDERMODE_CONTINUOUSLY);
 
         this.useSample = useSample;
-        if(this.useSample) {
+        if (this.useSample) {
             this.mPlayer = new MediaPlayer().create(context, R.raw.crea_session_8);
             this.mPlayer.start();
         }
@@ -82,7 +81,7 @@ public class ObjGLSurfaceView extends GLSurfaceView {
      *
      */
     private void setupVisualizerAndAsyncTask() {
-        if(this.mVisualizer == null){
+        if (this.mVisualizer == null) {
             this.mVisualizer = new Visualizer(this.useSample ? this.mPlayer.getAudioSessionId() : 0);
             this.mVisualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
             this.mVisualizer.setEnabled(true);
@@ -93,8 +92,8 @@ public class ObjGLSurfaceView extends GLSurfaceView {
 
     @Override
     public boolean onTouchEvent(MotionEvent e) {
-        if(e.getPointerCount() == 1) {
-            if(this.isZooming){
+        if (e.getPointerCount() == 1) {
+            if (this.isZooming) {
                 mPreviousX = e.getX() + 1f;
                 mPreviousY = e.getY() + 1f;
                 this.isZooming = false;
@@ -111,14 +110,14 @@ public class ObjGLSurfaceView extends GLSurfaceView {
             }
             mPreviousX = e.getX() + 1f;
             mPreviousY = e.getY() + 1f;
-        } else if(e.getPointerCount() == 2) {
+        } else if (e.getPointerCount() == 2) {
             this.isZooming = true;
             switch (e.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     mPreviousZoom = (float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d));
                 case MotionEvent.ACTION_MOVE:
                     float dZoom = ((float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d)) - mPreviousZoom);
-                    mRenderer.updateZoom(- dZoom * TOUCH_SCALE_FACTOR_ZOOM);
+                    mRenderer.updateZoom(-dZoom * TOUCH_SCALE_FACTOR_ZOOM);
                     requestRender();
             }
             mPreviousZoom = (float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d));
@@ -126,33 +125,33 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         return gestureDetector.onTouchEvent(e);
     }
 
-    public void onPause(){
+    public void onPause() {
         this.getFft.cancel(true);
         this.mVisualizer.setEnabled(false);
-        if(this.useSample) {
+        if (this.useSample) {
             this.mPlayer.pause();
         }
         super.onPause();
     }
 
-    public void onResume(){
+    public void onResume() {
         super.onResume();
-        if(this.useSample) {
+        if (this.useSample) {
             this.mPlayer.start();
         }
-        if(this.getFft.isCancelled()){
+        if (this.getFft.isCancelled()) {
             this.getFft.cancel(false);
         }
-        if(!this.mVisualizer.getEnabled()){
+        if (!this.mVisualizer.getEnabled()) {
             this.mVisualizer.setEnabled(true);
         }
-        if(this.getFft.getStatus() == AsyncTask.Status.FINISHED){
+        if (this.getFft.getStatus() == AsyncTask.Status.FINISHED) {
             this.getFft = new GetFFT();
             this.getFft.execute();
         }
     }
 
-    private class GetFFT extends AsyncTask<String,Void,Void> {
+    private class GetFFT extends AsyncTask<String, Void, Void> {
         @Override
         public Void doInBackground(String[] param) {
             while (!this.isCancelled()) {
@@ -181,10 +180,11 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         public boolean onDown(MotionEvent e) {
             return true;
         }
+
         // event when double tap occurs
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            if(ObjGLSurfaceView.this.mRenderer.isZoomUp()) {
+            if (ObjGLSurfaceView.this.mRenderer.isZoomUp()) {
                 ObjGLSurfaceView.this.mRenderer.updateZoom(50);
             } else {
                 ObjGLSurfaceView.this.mRenderer.updateZoom(-50);
