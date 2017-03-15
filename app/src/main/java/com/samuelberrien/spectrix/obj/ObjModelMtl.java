@@ -329,6 +329,9 @@ public class ObjModelMtl {
      * @param mSpecColors The FloatBuffer ArrayList of all material specular color
      */
     public void setColors(ArrayList<FloatBuffer> mAmbColors, ArrayList<FloatBuffer> mDiffColors, ArrayList<FloatBuffer> mSpecColors) {
+        if(mAmbColors.size() != this.allAmbColorBuffer.size() || mDiffColors.size() != this.allDiffColorBuffer.size() || mSpecColors.size() != this.allSpecColorBuffer.size()){
+            throw new RuntimeException("Not the same Number of material");
+        }
         this.allAmbColorBuffer = mAmbColors;
         this.allDiffColorBuffer = mDiffColors;
         this.allSpecColorBuffer = mSpecColors;
@@ -342,7 +345,7 @@ public class ObjModelMtl {
     public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         for (int i = 0; i < this.allVertexBuffer.size(); i++) {
             GLES20.glUseProgram(mProgram);
-            
+
             mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
             ShaderLoader.checkGlError("glGetUniformLocation");
 
