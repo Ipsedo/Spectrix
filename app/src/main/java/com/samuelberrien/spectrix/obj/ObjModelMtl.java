@@ -271,7 +271,7 @@ public class ObjModelMtl {
     }
 
     /**
-     * @param rand A random object used for random colors generating
+     * @param rand A random instance used for random colors generating
      * @return A FloatBuffer ArrayList containing all the colors per material
      */
     public ArrayList<FloatBuffer> makeColor(Random rand) {
@@ -342,8 +342,7 @@ public class ObjModelMtl {
     public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         for (int i = 0; i < this.allVertexBuffer.size(); i++) {
             GLES20.glUseProgram(mProgram);
-
-            this.allVertexBuffer.get(i).position(0);
+            
             mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
             ShaderLoader.checkGlError("glGetUniformLocation");
 
