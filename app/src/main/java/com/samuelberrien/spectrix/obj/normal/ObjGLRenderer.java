@@ -21,7 +21,7 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
     protected final float[] mProjectionMatrix = new float[16];
     protected final float[] mViewMatrix = new float[16];
 
-    private final float[] mLightPosInModelSpace = new float[] {0.0f, 0.0f, 0.0f, 1.0f};
+    private final float[] mLightPosInModelSpace = new float[]{0.0f, 0.0f, 0.0f, 1.0f};
     protected final float[] mLightPosInEyeSpace = new float[4];
     private final float[] mLightModelMatrix = new float[16];
     private final float[] mLightPosInWorldSpace = new float[4];
@@ -37,10 +37,9 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
     private float ratio = 1f;
 
     /**
-     *
      * @param context
      */
-    public ObjGLRenderer(Context context){
+    public ObjGLRenderer(Context context) {
         this.context = context;
     }
 
@@ -55,10 +54,11 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
 
     /**
      * update the camera look point with orientation angles
-     * @param phi angle phi
+     *
+     * @param phi   angle phi
      * @param theta angle theta
      */
-    public void updateCameraOrientation(float phi, float theta){
+    public void updateCameraOrientation(float phi, float theta) {
         this.phi += phi;
         this.theta += theta;
         /*if(Math.sin(90) == 1){
@@ -89,19 +89,19 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
             }
         }*/
 
-        if(this.phi > Math.PI * 2){
+        if (this.phi > Math.PI * 2) {
             this.phi -= Math.PI * 2;
         }
-        if(this.phi < 0){
+        if (this.phi < 0) {
             this.phi += Math.PI * 2;
         }
-        if(this.theta > Math.PI * 2){
+        if (this.theta > Math.PI * 2) {
             this.theta -= Math.PI * 2;
         }
-        if(this.theta < 0) {
+        if (this.theta < 0) {
             this.theta += Math.PI * 2;
         }
-        if((this.phi > Math.toRadians(80) && this.phi < Math.toRadians(100)) || (this.phi > Math.toRadians(260) && this.phi < Math.toRadians(280))) {
+        if ((this.phi > Math.toRadians(80) && this.phi < Math.toRadians(100)) || (this.phi > Math.toRadians(260) && this.phi < Math.toRadians(280))) {
             this.phi -= phi * 2;
         }
 
@@ -111,37 +111,34 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
     }
 
     /**
-     *
      * @param dist
      */
-    public void updateZoom(float dist){
+    public void updateZoom(float dist) {
         this.projectionAngle += dist;
-        if(this.projectionAngle < 10f){
+        if (this.projectionAngle < 10f) {
             this.projectionAngle = 10f;
         }
-        if(this.projectionAngle > 100f){
+        if (this.projectionAngle > 100f) {
             this.projectionAngle = 100f;
         }
         this.updateProjection();
     }
 
-    public boolean isZoomUp(){
+    public boolean isZoomUp() {
         return this.projectionAngle < 40f;
     }
 
     /**
-     *
      * @param freqArray
      */
     protected abstract void update(float[] freqArray);
 
     /**
-     *
      * @param x
      * @param y
      * @param z
      */
-    protected void updateLight(float x, float y, float z){
+    protected void updateLight(float x, float y, float z) {
         Matrix.setIdentityM(this.mLightModelMatrix, 0);
         Matrix.translateM(this.mLightModelMatrix, 0, x, y, z);
         Matrix.multiplyMV(this.mLightPosInWorldSpace, 0, this.mLightModelMatrix, 0, this.mLightPosInModelSpace, 0);
@@ -171,7 +168,7 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, ratio, 1, 50f);
     }
 
-    private void updateProjection(){
+    private void updateProjection() {
         Matrix.perspectiveM(this.mProjectionMatrix, 0, this.projectionAngle, this.ratio, 1, 50f);
     }
 }
