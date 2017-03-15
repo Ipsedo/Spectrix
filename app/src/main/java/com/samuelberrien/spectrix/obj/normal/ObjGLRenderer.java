@@ -116,13 +116,17 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
      */
     public void updateZoom(float dist){
         this.projectionAngle += dist;
-        if(this.projectionAngle < 10){
-            this.projectionAngle = 10;
+        if(this.projectionAngle < 10f){
+            this.projectionAngle = 10f;
         }
-        if(this.projectionAngle > 100){
-            this.projectionAngle = 100;
+        if(this.projectionAngle > 100f){
+            this.projectionAngle = 100f;
         }
         this.updateProjection();
+    }
+
+    public boolean isZoomUp(){
+        return this.projectionAngle < 40f;
     }
 
     /**

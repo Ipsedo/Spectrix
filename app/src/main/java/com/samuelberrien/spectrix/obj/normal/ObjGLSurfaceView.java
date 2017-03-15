@@ -36,7 +36,6 @@ public class ObjGLSurfaceView extends GLSurfaceView {
     private float mPreviousZoom;
     private boolean isZooming;
     GestureDetector gestureDetector;
-    private boolean isZoomingMore;
 
     private boolean useSample;
 
@@ -65,7 +64,6 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         }
 
         this.isZooming = false;
-        this.isZoomingMore = true;
         this.gestureDetector = new GestureDetector(context, new GestureListener());
 
         setRenderer(this.mRenderer);
@@ -120,11 +118,6 @@ public class ObjGLSurfaceView extends GLSurfaceView {
                     mPreviousZoom = (float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d));
                 case MotionEvent.ACTION_MOVE:
                     float dZoom = ((float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d)) - mPreviousZoom);
-                    if(dZoom > 0){
-                        this.isZoomingMore = true;
-                    } else {
-                        this.isZoomingMore = false;
-                    }
                     mRenderer.updateZoom(- dZoom * TOUCH_SCALE_FACTOR_ZOOM);
                     requestRender();
             }
@@ -191,13 +184,12 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         // event when double tap occurs
         @Override
         public boolean onDoubleTap(MotionEvent e) {
-            if(ObjGLSurfaceView.this.isZoomingMore) {
-                ObjGLSurfaceView.this.mRenderer.updateZoom(-50);
-            } else {
+            if(ObjGLSurfaceView.this.mRenderer.isZoomUp()) {
                 ObjGLSurfaceView.this.mRenderer.updateZoom(50);
+            } else {
+                ObjGLSurfaceView.this.mRenderer.updateZoom(-50);
             }
             ObjGLSurfaceView.this.requestRender();
-            ObjGLSurfaceView.this.isZoomingMore = !ObjGLSurfaceView.this.isZoomingMore;
             return true;
         }
     }
