@@ -19,7 +19,7 @@ public class ObjGLRendererExplosion extends ObjGLRenderer {
 
     private Explosion explosionVisualization;
 
-    public ObjGLRendererExplosion(Context context){
+    public ObjGLRendererExplosion(Context context) {
         super(context);
     }
 
@@ -29,7 +29,7 @@ public class ObjGLRendererExplosion extends ObjGLRenderer {
     }
 
     public void update(float[] freqArray) {
-        if(this.explosionVisualization != null) {
+        if (this.explosionVisualization != null) {
             this.explosionVisualization.update(freqArray, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2]);
         }
         this.updateLight(0f, 0f, 0f);
