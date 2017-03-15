@@ -66,8 +66,29 @@ public class ObjModelMtl {
      */
     public ObjModelMtl(Context context, int objResId, int mtlResId, float lightAugmentation, float distanceCoef) {
 
-        this.parseMtlFromRawRec(context, mtlResId);
+        this.parseMtlFromRawRes(context, mtlResId);
         this.parseObjFromRawRes(context, objResId);
+
+        if (this.allCoords.size() < 1) {
+            throw new RuntimeException("Need one material at minimum");
+        }
+
+        this.lightCoef = lightAugmentation;
+        this.distanceCoef = distanceCoef;
+
+        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.vertex_shader_specular));
+        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.fragment_shader_specular));
+
+        this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+        GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
+        GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
+        GLES20.glLinkProgram(this.mProgram);
+    }
+
+    public ObjModelMtl(Context context, String objFileName, String mtlFileName, float lightAugmentation, float distanceCoef) {
+
+        this.parseMtlFromAssets(context, mtlFileName);
+        this.parseObjFromAssets(context, objFileName);
 
         if (this.allCoords.size() < 1) {
             throw new RuntimeException("Need one material at minimum");
@@ -89,12 +110,47 @@ public class ObjModelMtl {
      * @param context the application context
      * @param resId   the res id of the mtl file
      */
-    private void parseMtlFromRawRec(Context context, int resId) {
+    private void parseMtlFromRawRes(Context context, int resId) {
         InputStream inputStream = context.getResources().openRawResource(resId);
         InputStreamReader inputreader = new InputStreamReader(inputStream);
         BufferedReader buffreader = new BufferedReader(inputreader);
         String line;
         try {
+            String currentMtl = "";
+            while ((line = buffreader.readLine()) != null) {
+                if (line.startsWith("newmtl")) {
+                    currentMtl = line.split(" ")[1];
+                } else if (line.startsWith("Ka")) {
+                    String[] tmp = line.split(" ");
+                    this.mtlAmbColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+                } else if (line.startsWith("Kd")) {
+                    String[] tmp = line.split(" ");
+                    this.mtlDiffColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+                } else if (line.startsWith("Ks")) {
+                    String[] tmp = line.split(" ");
+                    this.mtlSpecColor.put(currentMtl, new float[]{Float.parseFloat(tmp[1]), Float.parseFloat(tmp[2]), Float.parseFloat(tmp[3])});
+                } else if (line.startsWith("Ns")) {
+                    this.mtlSpecShininess.put(currentMtl, Float.parseFloat(line.split(" ")[1]));
+                }
+            }
+            buffreader.close();
+            inputreader.close();
+            inputStream.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * @param context     The context application
+     * @param mtlFileName The mtl file name
+     */
+    private void parseMtlFromAssets(Context context, String mtlFileName) {
+        try {
+            InputStream inputStream = context.getAssets().open(mtlFileName);
+            InputStreamReader inputreader = new InputStreamReader(inputStream);
+            BufferedReader buffreader = new BufferedReader(inputreader);
+            String line;
             String currentMtl = "";
             while ((line = buffreader.readLine()) != null) {
                 if (line.startsWith("newmtl")) {
@@ -141,6 +197,156 @@ public class ObjModelMtl {
         int idMtl = 0;
 
         try {
+            while ((line = buffreader.readLine()) != null) {
+                if (line.startsWith("usemtl")) {
+                    mtlToUse.add(line.split(" ")[1]);
+                    if (idMtl != 0) {
+                        allVertexDrawOrderList.add(currVertexDrawOrderList);
+                        allNormalDrawOrderList.add(currNormalDrawOrderList);
+                    }
+                    currVertexDrawOrderList = new ArrayList<>();
+                    currNormalDrawOrderList = new ArrayList<>();
+                    idMtl++;
+                } else if (line.startsWith("vn")) {
+                    String[] tmp = line.split(" ");
+                    currNormalsList.add(Float.parseFloat(tmp[1]));
+                    currNormalsList.add(Float.parseFloat(tmp[2]));
+                    currNormalsList.add(Float.parseFloat(tmp[3]));
+                } else if (line.startsWith("v ")) {
+                    String[] tmp = line.split(" ");
+                    currVertixsList.add(Float.parseFloat(tmp[1]));
+                    currVertixsList.add(Float.parseFloat(tmp[2]));
+                    currVertixsList.add(Float.parseFloat(tmp[3]));
+                } else if (line.startsWith("f")) {
+                    String[] tmp = line.split(" ");
+                    currVertexDrawOrderList.add(Integer.parseInt(tmp[1].split("/")[0]));
+                    currVertexDrawOrderList.add(Integer.parseInt(tmp[2].split("/")[0]));
+                    currVertexDrawOrderList.add(Integer.parseInt(tmp[3].split("/")[0]));
+
+                    currNormalDrawOrderList.add(Integer.parseInt(tmp[1].split("/")[2]));
+                    currNormalDrawOrderList.add(Integer.parseInt(tmp[2].split("/")[2]));
+                    currNormalDrawOrderList.add(Integer.parseInt(tmp[3].split("/")[2]));
+                }
+            }
+            buffreader.close();
+            inputreader.close();
+            inputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        allVertexDrawOrderList.add(currVertexDrawOrderList);
+        allNormalDrawOrderList.add(currNormalDrawOrderList);
+
+        for (int i = 0; i < allVertexDrawOrderList.size(); i++) {
+            float[] coords = new float[3 * allVertexDrawOrderList.get(i).size()];
+            for (int j = 0; j < allVertexDrawOrderList.get(i).size(); j++) {
+                coords[j * 3] = currVertixsList.get((allVertexDrawOrderList.get(i).get(j) - 1) * 3);
+                coords[j * 3 + 1] = currVertixsList.get((allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 1);
+                coords[j * 3 + 2] = currVertixsList.get((allVertexDrawOrderList.get(i).get(j) - 1) * 3 + 2);
+            }
+            this.allCoords.add(coords);
+
+            float[] normal = new float[3 * allVertexDrawOrderList.get(i).size()];
+            for (int j = 0; j < allNormalDrawOrderList.get(i).size(); j++) {
+                normal[j * 3] = currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3);
+                normal[j * 3 + 1] = currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 1);
+                normal[j * 3 + 2] = currNormalsList.get((allNormalDrawOrderList.get(i).get(j) - 1) * 3 + 2);
+            }
+            this.allNormals.add(normal);
+
+            float ambRed = this.mtlAmbColor.get(mtlToUse.get(i))[0];
+            float ambGreen = this.mtlAmbColor.get(mtlToUse.get(i))[1];
+            float ambBlue = this.mtlAmbColor.get(mtlToUse.get(i))[2];
+
+            float diffRed = this.mtlDiffColor.get(mtlToUse.get(i))[0];
+            float diffGreen = this.mtlDiffColor.get(mtlToUse.get(i))[1];
+            float diffBlue = this.mtlDiffColor.get(mtlToUse.get(i))[2];
+
+            float specRed = this.mtlSpecColor.get(mtlToUse.get(i))[0];
+            float specGreen = this.mtlSpecColor.get(mtlToUse.get(i))[1];
+            float specBlue = this.mtlSpecColor.get(mtlToUse.get(i))[2];
+
+            float[] ambColor = new float[coords.length * 4 / 3];
+            float[] diffColor = new float[coords.length * 4 / 3];
+            float[] specColor = new float[coords.length * 4 / 3];
+            for (int j = 0; j < diffColor.length; j += 4) {
+                ambColor[j] = ambRed;
+                ambColor[j + 1] = ambGreen;
+                ambColor[j + 2] = ambBlue;
+                ambColor[j + 3] = 1f;
+
+                diffColor[j] = diffRed;
+                diffColor[j + 1] = diffGreen;
+                diffColor[j + 2] = diffBlue;
+                diffColor[j + 3] = 1f;
+
+                specColor[j] = specRed;
+                specColor[j + 1] = specGreen;
+                specColor[j + 2] = specBlue;
+                specColor[j + 3] = 1f;
+            }
+
+            FloatBuffer tmpV = ByteBuffer.allocateDirect(coords.length * 4)
+                    .order(ByteOrder.nativeOrder())
+                    .asFloatBuffer();
+            tmpV.put(coords)
+                    .position(0);
+            this.allVertexBuffer.add(tmpV);
+
+            FloatBuffer tmpN = ByteBuffer.allocateDirect(normal.length * 4)
+                    .order(ByteOrder.nativeOrder())
+                    .asFloatBuffer();
+            tmpN.put(normal)
+                    .position(0);
+            this.allNormalsBuffer.add(tmpN);
+
+            FloatBuffer tmpAC = ByteBuffer.allocateDirect(ambColor.length * 4)
+                    .order(ByteOrder.nativeOrder())
+                    .asFloatBuffer();
+            tmpAC.put(ambColor)
+                    .position(0);
+            this.allAmbColorBuffer.add(tmpAC);
+
+            FloatBuffer tmpDC = ByteBuffer.allocateDirect(diffColor.length * 4)
+                    .order(ByteOrder.nativeOrder())
+                    .asFloatBuffer();
+            tmpDC.put(diffColor)
+                    .position(0);
+            this.allDiffColorBuffer.add(tmpDC);
+
+            FloatBuffer tmpSC = ByteBuffer.allocateDirect(specColor.length * 4)
+                    .order(ByteOrder.nativeOrder())
+                    .asFloatBuffer();
+            tmpSC.put(specColor)
+                    .position(0);
+            this.allSpecColorBuffer.add(tmpSC);
+
+            this.allSpecShininess.add(this.mtlSpecShininess.get(mtlToUse.get(i)));
+        }
+    }
+
+    /**
+     * @param context     The application context
+     * @param objFileName The obj file name
+     */
+    private void parseObjFromAssets(Context context, String objFileName) {
+
+        ArrayList<Float> currVertixsList = new ArrayList<>();
+        ArrayList<Float> currNormalsList = new ArrayList<>();
+        ArrayList<Integer> currVertexDrawOrderList = new ArrayList<>();
+        ArrayList<Integer> currNormalDrawOrderList = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> allVertexDrawOrderList = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> allNormalDrawOrderList = new ArrayList<>();
+        ArrayList<String> mtlToUse = new ArrayList<>();
+
+        int idMtl = 0;
+
+        try {
+            InputStream inputStream = context.getAssets().open(objFileName);
+            InputStreamReader inputreader = new InputStreamReader(inputStream);
+            BufferedReader buffreader = new BufferedReader(inputreader);
+            String line;
             while ((line = buffreader.readLine()) != null) {
                 if (line.startsWith("usemtl")) {
                     mtlToUse.add(line.split(" ")[1]);
@@ -329,7 +535,7 @@ public class ObjModelMtl {
      * @param mSpecColors The FloatBuffer ArrayList of all material specular color
      */
     public void setColors(ArrayList<FloatBuffer> mAmbColors, ArrayList<FloatBuffer> mDiffColors, ArrayList<FloatBuffer> mSpecColors) {
-        if(mAmbColors.size() != this.allAmbColorBuffer.size() || mDiffColors.size() != this.allDiffColorBuffer.size() || mSpecColors.size() != this.allSpecColorBuffer.size()){
+        if (mAmbColors.size() != this.allAmbColorBuffer.size() || mDiffColors.size() != this.allDiffColorBuffer.size() || mSpecColors.size() != this.allSpecColorBuffer.size()) {
             throw new RuntimeException("Not the same Number of material");
         }
         this.allAmbColorBuffer = mAmbColors;
