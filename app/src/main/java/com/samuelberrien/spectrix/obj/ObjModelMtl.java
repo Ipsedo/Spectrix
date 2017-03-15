@@ -69,7 +69,7 @@ public class ObjModelMtl {
         this.parseMtlFromRawRec(context, mtlResId);
         this.parseObjFromRawRes(context, objResId);
 
-        if(this.allCoords.size() < 1) {
+        if (this.allCoords.size() < 1) {
             throw new RuntimeException("Need one material at minimum");
         }
 
