@@ -66,8 +66,12 @@ public class ObjModelMtl {
      */
     public ObjModelMtl(Context context, int objResId, int mtlResId, float lightAugmentation, float distanceCoef) {
 
-        this.parseMtl(context, mtlResId);
-        this.parseObj(context, objResId);
+        this.parseMtlFromRawRec(context, mtlResId);
+        this.parseObjFromRawRes(context, objResId);
+
+        if(this.allCoords.size() < 1) {
+            throw new RuntimeException("Need one material at minimum");
+        }
 
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
@@ -85,14 +89,14 @@ public class ObjModelMtl {
      * @param context the application context
      * @param resId   the res id of the mtl file
      */
-    private void parseMtl(Context context, int resId) {
+    private void parseMtlFromRawRec(Context context, int resId) {
         InputStream inputStream = context.getResources().openRawResource(resId);
         InputStreamReader inputreader = new InputStreamReader(inputStream);
-        BufferedReader buffreader1 = new BufferedReader(inputreader);
+        BufferedReader buffreader = new BufferedReader(inputreader);
         String line;
         try {
             String currentMtl = "";
-            while ((line = buffreader1.readLine()) != null) {
+            while ((line = buffreader.readLine()) != null) {
                 if (line.startsWith("newmtl")) {
                     currentMtl = line.split(" ")[1];
                 } else if (line.startsWith("Ka")) {
@@ -108,6 +112,9 @@ public class ObjModelMtl {
                     this.mtlSpecShininess.put(currentMtl, Float.parseFloat(line.split(" ")[1]));
                 }
             }
+            buffreader.close();
+            inputreader.close();
+            inputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -117,7 +124,7 @@ public class ObjModelMtl {
      * @param context the application context
      * @param resId   the res id of the obj file
      */
-    private void parseObj(Context context, int resId) {
+    private void parseObjFromRawRes(Context context, int resId) {
         InputStream inputStream = context.getResources().openRawResource(resId);
         InputStreamReader inputreader = new InputStreamReader(inputStream);
         BufferedReader buffreader = new BufferedReader(inputreader);
@@ -165,6 +172,9 @@ public class ObjModelMtl {
                     currNormalDrawOrderList.add(Integer.parseInt(tmp[3].split("/")[2]));
                 }
             }
+            buffreader.close();
+            inputreader.close();
+            inputStream.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
