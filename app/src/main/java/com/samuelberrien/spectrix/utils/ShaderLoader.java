@@ -16,12 +16,12 @@ import java.io.InputStreamReader;
 public class ShaderLoader {
 
     /**
-     * @param context
-     * @param resId
-     * @return
+     * @param context The application context
+     * @param resId   The res glsl file id
+     * @return The shader code
      */
     public static String openShader(Context context, int resId) {
-        String shader = new String("");
+        String shader = "";
 
         InputStream inputStream = context.getResources().openRawResource(resId);
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -31,12 +31,8 @@ public class ShaderLoader {
             while ((line = reader.readLine()) != null) {
                 shader += line;
             }
-            if (inputStream != null) {
-                inputStream.close();
-            }
-            if (reader != null) {
-                reader.close();
-            }
+            inputStream.close();
+            reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -81,7 +77,7 @@ public class ShaderLoader {
      */
     public static void checkGlError(String glOperation) {
         int error;
-        while ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
+        if ((error = GLES20.glGetError()) != GLES20.GL_NO_ERROR) {
             Log.e("Renderer 1D", glOperation + ": glError " + error);
             throw new RuntimeException(glOperation + ": glError " + error);
         }
