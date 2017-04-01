@@ -87,6 +87,8 @@ public class ObjModelMtl {
         GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
         GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(this.mProgram);
+
+        this.bind();
     }
 
     /**
@@ -127,6 +129,26 @@ public class ObjModelMtl {
         GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
         GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(this.mProgram);
+
+        this.bind();
+    }
+
+    /**
+     * Get shaders var location
+     */
+    private void bind(){
+        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
+        mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
+        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
+        mAmbColorHandle = GLES20.glGetAttribLocation(mProgram, "a_material_ambient_Color");
+        mDiffColorHandle = GLES20.glGetAttribLocation(mProgram, "a_material_diffuse_Color");
+        mSpecColorHandle = GLES20.glGetAttribLocation(mProgram, "a_material_specular_Color");
+        mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
+        mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
+        mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
+        mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
+        mCameraPosHandle = GLES20.glGetUniformLocation(mProgram, "u_CameraPosition");
+        mSpecShininessHandle = GLES20.glGetUniformLocation(mProgram, "u_materialShininess");
     }
 
     /**
@@ -386,60 +408,16 @@ public class ObjModelMtl {
         for (int i = 0; i < this.allVertexBuffer.size(); i++) {
             GLES20.glUseProgram(mProgram);
 
-            mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
-            ShaderLoader.checkGlError("glGetUniformLocation");
-
-            mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
-
-            // get handle to vertex shader's vPosition member
-            mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
-            ShaderLoader.checkGlError("glGetAttribLocation");
-
-            // get handle to fragment shader's vColor member
-            mAmbColorHandle = GLES20.glGetAttribLocation(mProgram, "a_material_ambient_Color");
-            ShaderLoader.checkGlError("glGetAttribLocation");
-
-            mDiffColorHandle = GLES20.glGetAttribLocation(mProgram, "a_material_diffuse_Color");
-            ShaderLoader.checkGlError("glGetAttribLocation");
-
-            mSpecColorHandle = GLES20.glGetAttribLocation(mProgram, "a_material_specular_Color");
-            ShaderLoader.checkGlError("glGetAttribLocation");
-
-            mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
-            ShaderLoader.checkGlError("glGetUniformLocation");
-
-            //this.allNormalsBuffer.get(i).position(0);
-            mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
-            ShaderLoader.checkGlError("glGetAttribLocation");
-
-            mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
-            ShaderLoader.checkGlError("glGetUniformLocation");
-
-            mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
-            ShaderLoader.checkGlError("glGetUniformLocation");
-
-            mCameraPosHandle = GLES20.glGetUniformLocation(mProgram, "u_CameraPosition");
-            ShaderLoader.checkGlError("glGetUniformLocation");
-
-            mSpecShininessHandle = GLES20.glGetUniformLocation(mProgram, "u_materialShininess");
-            ShaderLoader.checkGlError("glGetUniformLocation");
-
-
             // Enable a handle to the triangle vertices
             GLES20.glEnableVertexAttribArray(mPositionHandle);
             // Prepare the triangle coordinate data
             GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, this.allVertexBuffer.get(i));
-            ShaderLoader.checkGlError("glVertexAttribPointer");
 
             GLES20.glEnableVertexAttribArray(mAmbColorHandle);
-            ShaderLoader.checkGlError("glEnableVertexAttribArray");
             GLES20.glVertexAttribPointer(mAmbColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.allAmbColorBuffer.get(i));
-            ShaderLoader.checkGlError("glVertexAttribPointer");
 
             GLES20.glEnableVertexAttribArray(mDiffColorHandle);
-            ShaderLoader.checkGlError("glEnableVertexAttribArray");
             GLES20.glVertexAttribPointer(mDiffColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.allDiffColorBuffer.get(i));
-            ShaderLoader.checkGlError("glVertexAttribPointer");
 
             GLES20.glEnableVertexAttribArray(mSpecColorHandle);
             GLES20.glVertexAttribPointer(mSpecColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, this.allSpecColorBuffer.get(i));
@@ -452,20 +430,16 @@ public class ObjModelMtl {
 
             // Apply the projection and view transformation
             GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
-            ShaderLoader.checkGlError("glUniformMatrix4fv");
 
             GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
 
             GLES20.glUniform3fv(mCameraPosHandle, 1, mCameraPosition, 0);
 
             GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoef);
-            ShaderLoader.checkGlError("glUniform1f");
 
             GLES20.glUniform1f(mLightCoefHandle, this.lightCoef);
-            ShaderLoader.checkGlError("glUniform1f");
 
             GLES20.glUniform1f(mSpecShininessHandle, this.allSpecShininess.get(i));
-            ShaderLoader.checkGlError("glUniform1f");
 
             // Draw the polygon
             GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.allCoords.get(i).length / 3);

@@ -143,6 +143,15 @@ public class ObjModel {
         GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
         GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(this.mProgram);
+
+        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
+        mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
+        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
+        mColorHandle = GLES20.glGetAttribLocation(mProgram, "a_Color");
+        mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
+        mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
+        mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
+        mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
     }
 
     /**
@@ -169,32 +178,8 @@ public class ObjModel {
         GLES20.glUseProgram(mProgram);
 
         this.vertexBuffer.position(0);
-        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
-        ShaderLoader.checkGlError("glGetUniformLocation");
-
-        mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
-
-        // get handle to vertex shader's vPosition member
-        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
-        ShaderLoader.checkGlError("glGetAttribLocation");
-
-        // get handle to fragment shader's vColor member
         this.colorBuffer.position(0);
-        mColorHandle = GLES20.glGetAttribLocation(mProgram, "a_Color");
-        ShaderLoader.checkGlError("glGetAttribLocation");
-
-        mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
-        ShaderLoader.checkGlError("glGetUniformLocation");
-
-        mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
-        ShaderLoader.checkGlError("glGetUniformLocation");
-
-        mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
-        ShaderLoader.checkGlError("glGetUniformLocation");
-
         this.normalsBuffer.position(0);
-        mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
-        ShaderLoader.checkGlError("glGetAttribLocation");
 
         // Enable a handle to the triangle vertices
         GLES20.glEnableVertexAttribArray(mPositionHandle);
@@ -213,15 +198,12 @@ public class ObjModel {
 
         // Apply the projection and view transformation
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
-        ShaderLoader.checkGlError("glUniformMatrix4fv");
 
         GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
 
         GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoef);
-        ShaderLoader.checkGlError("glUniform1f");
 
         GLES20.glUniform1f(mLightCoefHandle, this.lightCoef);
-        ShaderLoader.checkGlError("glUniform1f");
 
         // Draw the polygon
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.coords.length / 3);
