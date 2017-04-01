@@ -29,7 +29,7 @@ public class ShaderLoader {
         String line;
         try {
             while ((line = reader.readLine()) != null) {
-                shader += line;
+                shader += line + "\n";
             }
             inputStream.close();
             reader.close();
