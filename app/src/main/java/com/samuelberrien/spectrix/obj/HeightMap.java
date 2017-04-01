@@ -20,8 +20,8 @@ import java.nio.FloatBuffer;
 
 public class HeightMap {
 
-    private final int NBSLICES = 100;
-    private final int NBSTRIPS = 100;
+    private final int NBSLICES = 500;
+    private final int NBSTRIPS = 500;
     private int nbFaces;
     private float[] points;
 
@@ -31,6 +31,8 @@ public class HeightMap {
     private int mMVMatrixHandle;
     private int mLightPosHandle;
     private int mPositionHandle;
+    private int mTextureHeightMapDataHandle;
+    private int mTextureHeightMapUniformHandle;
     private int mTextureDataHandle;
     private int mTextureUniformHandle;
     private int mNbSlicesHandles;
@@ -40,7 +42,7 @@ public class HeightMap {
     private final int mBytesPerFloat = 4;
     private final int mPositionDataSize = 3;
 
-    public HeightMap(Context context, int texResId){
+    public HeightMap(Context context, int texHMResId, int texResId){
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.vertex_shader_height_map));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.fragment_shader_height_map));
 
@@ -49,9 +51,26 @@ public class HeightMap {
         GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(this.mProgram);
 
+        mTextureHeightMapDataHandle = TextureHelper.loadTexture(context, texHMResId);
         mTextureDataHandle = TextureHelper.loadTexture(context, texResId);
 
         this.initPlan();
+        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
+        ShaderLoader.checkGlError("glUniformLocation");
+        mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
+        ShaderLoader.checkGlError("glUniformLocation");
+        mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
+        ShaderLoader.checkGlError("glUniformLocation");
+        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vp");
+        ShaderLoader.checkGlError("glUniformLocation");
+        mTextureHeightMapUniformHandle = GLES20.glGetUniformLocation(mProgram, "textureHeight");
+        ShaderLoader.checkGlError("glUniformLocation");
+        mTextureUniformHandle = GLES20.glGetUniformLocation(mProgram, "textureMap");
+        ShaderLoader.checkGlError("glUniformLocation");
+        mNbStripsHandles = GLES20.glGetUniformLocation(mProgram, "nbStrips");
+        ShaderLoader.checkGlError("glUniformLocation");
+        mNbSlicesHandles = GLES20.glGetUniformLocation(mProgram, "nbSlices");
+        ShaderLoader.checkGlError("glUniformLocation");
     }
 
     private void initPlan(){
@@ -77,34 +96,28 @@ public class HeightMap {
 
     public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace) {
         GLES20.glUseProgram(this.mProgram);
-
-        ShaderLoader.checkGlError("glUniformLocation");
-        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
-        ShaderLoader.checkGlError("glUniformLocation");
-        mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
-        ShaderLoader.checkGlError("glUniformLocation");
-        mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
-        ShaderLoader.checkGlError("glUniformLocation");
-        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vp");
-        ShaderLoader.checkGlError("glUniformLocation");
-        mTextureUniformHandle = GLES20.glGetUniformLocation(mProgram, "textureHeight");
-        ShaderLoader.checkGlError("glUniformLocation");
-        mNbStripsHandles = GLES20.glGetUniformLocation(mProgram, "nbStrips");
-        ShaderLoader.checkGlError("glUniformLocation");
-        mNbSlicesHandles = GLES20.glGetUniformLocation(mProgram, "nbSlices");
-        ShaderLoader.checkGlError("glUniformLocation");
+        ShaderLoader.checkGlError("glUseProgram");
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
 
         // Bind the texture to this unit.
+        GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureHeightMapDataHandle);
+        ShaderLoader.checkGlError("glBindTexture");
+        // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
+        GLES20.glUniform1i(mTextureHeightMapUniformHandle, 0);
+        ShaderLoader.checkGlError("glUniform1i");
+
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle);
+        ShaderLoader.checkGlError("glBindTexture");
         // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
         GLES20.glUniform1i(mTextureUniformHandle, 0);
+        ShaderLoader.checkGlError("glUniform1i");
 
         mPositions.position(0);
-        GLES20.glVertexAttribPointer(mPositionHandle, mPositionDataSize, GLES20.GL_FLOAT, false,
-                0, mPositions);
+        GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, mPositions);
+        ShaderLoader.checkGlError("glVertexAttribPointer");
         GLES20.glEnableVertexAttribArray(mPositionHandle);
+        ShaderLoader.checkGlError("glEnableVertexAttribArray");
 
         // get handle to shape's transformation matrix
         GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
@@ -115,14 +128,18 @@ public class HeightMap {
         ShaderLoader.checkGlError("glUniformMatrix4fv");
 
         GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
+        ShaderLoader.checkGlError("glUniform3fv");
 
         GLES20.glUniform1i(mNbSlicesHandles, NBSLICES);
+        ShaderLoader.checkGlError("glUniform1i");
         GLES20.glUniform1i(mNbStripsHandles, NBSTRIPS);
+        ShaderLoader.checkGlError("glUniform1i");
 
         // Draw the cube.
         int nbStackTriangles = (NBSLICES + 1) * 2;
-        for(int i = 0 ; i < NBSTRIPS ; i++)
-            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, i * nbStackTriangles ,
-                    nbStackTriangles);
+        for(int i = 0 ; i < NBSTRIPS ; i++) {
+            GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, i * nbStackTriangles, nbStackTriangles);
+            ShaderLoader.checkGlError("glDrawArrays");
+        }
     }
 }

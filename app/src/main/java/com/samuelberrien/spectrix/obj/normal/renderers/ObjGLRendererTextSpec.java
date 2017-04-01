@@ -20,7 +20,7 @@ public class ObjGLRendererTextSpec extends ObjGLRenderer {
 
     public ObjGLRendererTextSpec(Context context) {
         super(context);
-        this.mCameraY = 2f;
+        this.mCameraY = 1f;
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -32,7 +32,7 @@ public class ObjGLRendererTextSpec extends ObjGLRenderer {
         if (this.test != null) {
             this.test.update();
         }
-        this.updateLight(0f, 0f, 0f);
+        this.updateLight(0f, 5f, 0f);
     }
 
     public void onDrawFrame(GL10 unused) {
