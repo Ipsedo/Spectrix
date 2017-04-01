@@ -408,9 +408,7 @@ public class ObjModelMtl {
         for (int i = 0; i < this.allVertexBuffer.size(); i++) {
             GLES20.glUseProgram(mProgram);
 
-            // Enable a handle to the triangle vertices
             GLES20.glEnableVertexAttribArray(mPositionHandle);
-            // Prepare the triangle coordinate data
             GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, this.allVertexBuffer.get(i));
 
             GLES20.glEnableVertexAttribArray(mAmbColorHandle);
@@ -425,10 +423,8 @@ public class ObjModelMtl {
             GLES20.glEnableVertexAttribArray(mNormalHandle);
             GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, this.allNormalsBuffer.get(i));
 
-            // get handle to shape's transformation matrix
             GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
 
-            // Apply the projection and view transformation
             GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
 
             GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
@@ -441,10 +437,8 @@ public class ObjModelMtl {
 
             GLES20.glUniform1f(mSpecShininessHandle, this.allSpecShininess.get(i));
 
-            // Draw the polygon
             GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, this.allCoords.get(i).length / 3);
 
-            // Disable vertex array
             GLES20.glDisableVertexAttribArray(mPositionHandle);
         }
     }
