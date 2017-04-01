@@ -12,7 +12,7 @@ void main () {
     float distance = length(u_LightPos - v_Position);
     vec3 lightVector = normalize(u_LightPos - v_Position);
 
-  float diffuse = max(0.2, dot(normal, lightVector)) * 0.05;
+  float diffuse = max(0.2, dot(normal, lightVector)) * 0.5;
   /*vec4 frag_colour = (0.05 - newVp.z) * vec4(1.0, 1.0, 0.0, 1.0) + newVp.z * vec4(1.0, 0.25, 0.0, 1.0);*/
   vec4 frag_colour = texture2D(textureMap, newVp.xz);
 

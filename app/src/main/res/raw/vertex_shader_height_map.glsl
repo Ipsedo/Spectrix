@@ -7,6 +7,8 @@ uniform mat4 u_MVMatrix;
 uniform int nbStrips;
 uniform int nbSlices;
 
+uniform float coefficient;
+
 uniform sampler2D textureHeight;
 
 varying vec3 normal;
@@ -15,7 +17,6 @@ varying vec3 newVp;
 varying vec3 v_Position;
 
 void main () {
-  float coefficient = 0.05;
 
   vec4 textHeightColor = texture2D(textureHeight, vp.xz);
   newVp = vec3(vp.x, coefficient * textHeightColor.r, vp.z);
