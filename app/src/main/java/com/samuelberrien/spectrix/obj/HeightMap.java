@@ -20,8 +20,8 @@ import java.nio.FloatBuffer;
 
 public class HeightMap {
 
-    private final int NBSLICES = 512;
-    private final int NBSTRIPS = 512;
+    private final int NBSLICES = 300;
+    private final int NBSTRIPS = 300;
     private int nbFaces;
     private float[] points;
 
@@ -89,7 +89,7 @@ public class HeightMap {
         nbFaces = NBSTRIPS * (NBSLICES + 1) * 2;
         points = new float[ nbFaces * 3 ];
         for( int indStrip = 0 ; indStrip < NBSTRIPS ; indStrip++ ) {
-            for( int indFace = 0 ; indFace < NBSLICES ; indFace++ ) {
+            for( int indFace = 0 ; indFace <= NBSLICES ; indFace++ ) {
                 int indPoint = indStrip * (NBSLICES + 1) * 2 + indFace * 2;
                 points[ indPoint * 3 ] = (float)indFace / (float)NBSLICES;
                 points[ indPoint * 3 + 1 ] = 0.0f;
@@ -154,7 +154,7 @@ public class HeightMap {
 
         // Draw the cube.
         int nbStackTriangles = (NBSLICES + 1) * 2;
-        for(int i = 0 ; i < NBSTRIPS - 1; i++) {
+        for(int i = 0 ; i < NBSTRIPS; i++) {
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, i * nbStackTriangles, nbStackTriangles);
             ShaderLoader.checkGlError("glDrawArrays");
         }

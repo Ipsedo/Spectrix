@@ -1,6 +1,7 @@
 package com.samuelberrien.spectrix.obj.normal.renderers;
 
 import android.content.Context;
+import android.opengl.GLES20;
 
 import com.samuelberrien.spectrix.obj.normal.ObjGLRenderer;
 import com.samuelberrien.spectrix.obj.visualization.TestSpecular;
@@ -20,11 +21,12 @@ public class ObjGLRendererTextSpec extends ObjGLRenderer {
 
     public ObjGLRendererTextSpec(Context context) {
         super(context);
-        this.mCameraY = 1f;
+        this.mCameraY = 4f;
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         super.onSurfaceCreated(unused, config);
+        GLES20.glClearColor(0.5f, 0.9f, 0.9f, 1.0f);
         this.test = new TestSpecular(this.context);
     }
 
