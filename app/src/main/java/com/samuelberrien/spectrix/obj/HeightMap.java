@@ -39,6 +39,7 @@ public class HeightMap {
     private int mNbStripsHandles;
     private int mCoeffHandle;
     private int mLightCoefHandle;
+    private int mDistanceCoefHandle;
     private int mProgram;
 
     private final int mBytesPerFloat = 4;
@@ -46,8 +47,9 @@ public class HeightMap {
 
     private float coeff;
     private float lightCoeff;
+    private float distanceCoeff;
 
-    public HeightMap(Context context, int texHMResId, int texResId, float coeff, float lightCoeff){
+    public HeightMap(Context context, int texHMResId, int texResId, float coeff, float lightCoeff, float distanceCoeff){
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.vertex_shader_height_map));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.fragment_shader_height_map));
 
@@ -61,6 +63,7 @@ public class HeightMap {
 
         this.coeff = coeff;
         this.lightCoeff = lightCoeff;
+        this.distanceCoeff = distanceCoeff;
 
         this.initPlan();
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
@@ -82,6 +85,8 @@ public class HeightMap {
         mCoeffHandle = GLES20.glGetUniformLocation(mProgram, "coefficient");
         ShaderLoader.checkGlError("glUniformLocation");
         mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
+        ShaderLoader.checkGlError("glUniformLocation");
+        mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
         ShaderLoader.checkGlError("glUniformLocation");
     }
 
@@ -151,6 +156,8 @@ public class HeightMap {
         ShaderLoader.checkGlError("glUniform1i");
 
         GLES20.glUniform1f(mLightCoefHandle, this.lightCoeff);
+
+        GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoeff);
 
         // Draw the cube.
         int nbStackTriangles = (NBSLICES + 1) * 2;

@@ -34,7 +34,7 @@ public class ObjGLRendererTextSpec extends ObjGLRenderer {
         if (this.test != null) {
             this.test.update();
         }
-        this.updateLight(0f, 5f, 0f);
+        this.updateLight(0f, 5f * 50f, 0f);
     }
 
     public void onDrawFrame(GL10 unused) {

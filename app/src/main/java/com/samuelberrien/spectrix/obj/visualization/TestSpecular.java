@@ -30,7 +30,7 @@ public class TestSpecular {
         this.mPingTranslateVector = new float[]{0f, -2f, 0f};
         this.mPingRotationMatrix = new float[16];
         this.mPingModelMatrix = new float[16];*/
-        this.hm = new HeightMap(context, R.drawable.canyon_5_hm, R.drawable.canyon_5_tex, 0.1f, 0.05f);
+        this.hm = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.1f, 0.02f, 3e-5f);
         this.mHmModelMatrix = new float[16];
     }
 
@@ -39,7 +39,7 @@ public class TestSpecular {
         Matrix.setIdentityM(mModelMatrix, 0);
 
         float scale = 50f;
-        Matrix.translateM(mModelMatrix, 0, -0.5f * scale, 0f, -0.5f * scale);
+        Matrix.translateM(mModelMatrix, 0, -0.5f * scale, -0.5f, -0.5f * scale);
         Matrix.scaleM(mModelMatrix, 0, scale, scale, scale);
         this.mHmModelMatrix = mModelMatrix.clone();
     }
