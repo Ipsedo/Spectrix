@@ -2,6 +2,7 @@ package com.samuelberrien.spectrix.obj.vr.renderers;
 
 import android.content.Context;
 import android.opengl.GLES20;
+import android.opengl.Matrix;
 
 import com.google.vr.sdk.base.Eye;
 import com.google.vr.sdk.base.HeadTransform;
@@ -49,6 +50,8 @@ public class ObjStereoRendererCanyon extends ObjStereoRenderer {
 
     public void onDrawEye(Eye eye) {
         super.onDrawEye(eye);
-        this.canyonVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{super.mCameraX, super.mCameraY, super.mCameraZ});
+        float[] cam = new float[4];
+        Matrix.multiplyMV(cam, 0, eye.getEyeView(), 0, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
+        this.canyonVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{cam[0], cam[1], cam[2]});
     }
 }
