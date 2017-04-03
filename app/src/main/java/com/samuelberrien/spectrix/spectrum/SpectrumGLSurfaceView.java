@@ -124,9 +124,9 @@ public class SpectrumGLSurfaceView extends GLSurfaceView {
                     fft[i] = ((real * real) + (imag * imag));// * maxVol) / (currVol >= 5 ? currVol : 5);
                 }
                 if (SpectrumGLSurfaceView.this.isPortrait) {
-                    SpectrumGLSurfaceView.this.mRenderer.updateSquaresMoveMatrix(fft);
+                    SpectrumGLSurfaceView.this.mRenderer.updateSquares(fft);
                 } else {
-                    SpectrumGLSurfaceView.this.mRendererLand.updateSquaresMoveMatrix(fft);
+                    SpectrumGLSurfaceView.this.mRendererLand.updateSquares(fft);
                 }
                 try {
                     Thread.sleep(1000L / 120L);

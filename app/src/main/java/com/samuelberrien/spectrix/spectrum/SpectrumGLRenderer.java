@@ -21,7 +21,7 @@ public class SpectrumGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mMVPMatrix = new float[16];
     private final float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
-    private float[][] mSquaresMoveMatrix;
+    private float[][] mSquaresModelMatrix;
 
     private int nbSquares;
     private ArrayList<SpectrumRect> mSquares;
@@ -30,7 +30,7 @@ public class SpectrumGLRenderer implements GLSurfaceView.Renderer {
     @Override
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         this.nbSquares = 512;
-        this.mSquaresMoveMatrix = new float[this.nbSquares][16];
+        this.mSquaresModelMatrix = new float[this.nbSquares][16];
         this.mSquares = new ArrayList<>();
         for (int i = 0; i < this.nbSquares; i++) {
             this.mSquares.add(new SpectrumRect(-1.0f, 1.0f, -0.5f * (2.0f / this.nbSquares - 0.005f), 0.5f * (2.0f / this.nbSquares - 0.005f)));//new SpectrumRect(-1.0f,1.0f,(float) i / (float) (this.nbSquares / 2) - 1.0f, (float) i / (float) (this.nbSquares / 2) - 1.0f + 2.0f / this.nbSquares - 0.005f);
@@ -44,13 +44,13 @@ public class SpectrumGLRenderer implements GLSurfaceView.Renderer {
      *
      * @param freqArray array of frequency
      */
-    public void updateSquaresMoveMatrix(float[] freqArray) {
+    public void updateSquares(float[] freqArray) {
         for (int i = 0; i < this.nbSquares; i++) {
             float[] mModelMatrix = new float[16];
             Matrix.setIdentityM(mModelMatrix, 0);
             Matrix.translateM(mModelMatrix, 0, 0f, (float) i / (float) (this.nbSquares / 2) - 1f, 0f);
             Matrix.scaleM(mModelMatrix, 0, freqArray[i] + freqArray[i] * (float) i / this.hightFreqsAugmentation, 1f, 1f);
-            Matrix.multiplyMM(this.mSquaresMoveMatrix[i], 0, mMVPMatrix, 0, mModelMatrix, 0);
+            Matrix.multiplyMM(this.mSquaresModelMatrix[i], 0, mMVPMatrix, 0, mModelMatrix, 0);
         }
     }
 
@@ -68,7 +68,7 @@ public class SpectrumGLRenderer implements GLSurfaceView.Renderer {
 
         //Draw Rects
         for (int i = 0; i < this.nbSquares; i++) {
-            this.mSquares.get(i).draw(this.mSquaresMoveMatrix[i]);
+            this.mSquares.get(i).draw(this.mSquaresModelMatrix[i]);
         }
     }
 
