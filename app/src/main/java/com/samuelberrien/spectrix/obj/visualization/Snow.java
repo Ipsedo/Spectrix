@@ -130,7 +130,7 @@ public class Snow {
      *
      */
     private void setupTree() {
-        this.tree = new ObjModelMtl(this.context, R.raw.snow_tree_obj, R.raw.snow_tree_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.tree = new ObjModelMtl(this.context, "obj/snow/snow_tree_obj.obj", "obj/snow/snow_tree_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF);
         for (int i = 0; i < this.nbTree; i++) {
             double r = 5d * rand.nextDouble();
             double theta;
@@ -154,7 +154,7 @@ public class Snow {
      *
      */
     private void setupPinguin() {
-        this.ping = new ObjModelMtl(this.context, R.raw.snow_pingouin_obj, R.raw.snow_pingouin_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.ping = new ObjModelMtl(this.context, "obj/snow/snow_pingouin_obj.obj", "obj/snow/snow_pingouin_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF);
         for (int i = 0; i < nbPing; i++) {
             double r = 5d * rand.nextDouble();
             double theta;
@@ -175,7 +175,7 @@ public class Snow {
      *
      */
     private void setupOctagone() {
-        this.octagone = new ObjModel(this.context, R.raw.octagone, 1f, 0.8f, 0.8f, LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.octagone = new ObjModel(this.context, "obj/octagone.obj", 1f, 0.8f, 0.8f, LIGHTAUGMENTATION, DISTANCECOEFF);
         for (int i = 0; i < this.nbOctagone; i++) {
             double theta;
             double phi;
@@ -208,7 +208,7 @@ public class Snow {
      *
      */
     private void setupIgloo() {
-        this.igloo = new ObjModelMtl(this.context, R.raw.snow_igloo_obj, R.raw.snow_igloo_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.igloo = new ObjModelMtl(this.context, "obj/snow/snow_igloo_obj.obj", "obj/snow/snow_igloo_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF);
         for (int i = 0; i < this.nbIgloo; i++) {
             double r = 5d * rand.nextDouble();
             double theta;
@@ -232,7 +232,7 @@ public class Snow {
         this.mWhaleTranslateVector[1] = 3f;
         this.mWhaleTranslateVector[2] = 10f;
         this.mWhaleAngle = 0f;
-        this.whale = new ObjModelMtl(this.context, R.raw.snow_baleine_obj, R.raw.snow_baleine_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.whale = new ObjModelMtl(this.context, "obj/snow/snow_baleine_obj.obj", "obj/snow/snow_baleine_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF);
         this.whale.setColors(this.whale.makeColor(rand), this.whale.makeColor(rand), this.whale.makeColor(0.5f, 0.5f, 0.5f));
     }
 
@@ -243,7 +243,7 @@ public class Snow {
         this.mMountainsTranslateVector[0] = 0f;
         this.mMountainsTranslateVector[1] = -3f;
         this.mMountainsTranslateVector[2] = 0f;
-        this.mountains = new ObjModelMtl(this.context, R.raw.snow_mountains_obj, R.raw.snow_mountains_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.mountains = new ObjModelMtl(this.context, "obj/snow/snow_mountains_obj.obj", "obj/snow/snow_mountains_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF);
     }
 
     /**

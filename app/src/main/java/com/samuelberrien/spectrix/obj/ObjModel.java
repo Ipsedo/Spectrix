@@ -21,8 +21,8 @@ import java.util.ArrayList;
 
 public class ObjModel {
 
-    private final FloatBuffer vertexBuffer;
-    private final FloatBuffer normalsBuffer;
+    private FloatBuffer vertexBuffer;
+    private FloatBuffer normalsBuffer;
     private FloatBuffer colorBuffer;
 
     private final int mProgram;
@@ -61,6 +61,67 @@ public class ObjModel {
 
         InputStream inputStream = context.getResources().openRawResource(resId);
         InputStreamReader inputreader = new InputStreamReader(inputStream);
+        this.parseObj(inputreader, red, green, blue);
+
+
+        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.vertex_shader_diffuse));
+        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.fragment_shader_diffuse));
+
+        this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+        GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
+        GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
+        GLES20.glLinkProgram(this.mProgram);
+
+        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
+        mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
+        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
+        mColorHandle = GLES20.glGetAttribLocation(mProgram, "a_Color");
+        mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
+        mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
+        mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
+        mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
+    }
+
+    public ObjModel(Context context, String fileName, float red, float green, float blue, float lightAugmentation, float distanceCoef) {
+
+        this.lightCoef = lightAugmentation;
+        this.distanceCoef = distanceCoef;
+
+        try {
+            InputStream inputStream = context.getAssets().open(fileName);
+            InputStreamReader inputreader = new InputStreamReader(inputStream);
+            this.parseObj(inputreader, red, green, blue);
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+
+        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.vertex_shader_diffuse));
+        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.fragment_shader_diffuse));
+
+        this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+        GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
+        GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
+        GLES20.glLinkProgram(this.mProgram);
+
+        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
+        mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
+        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
+        mColorHandle = GLES20.glGetAttribLocation(mProgram, "a_Color");
+        mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
+        mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
+        mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
+        mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
+    }
+
+    /**
+     *
+     * @param inputreader
+     * @param red
+     * @param green
+     * @param blue
+     */
+    private void parseObj(InputStreamReader inputreader, float red, float green, float blue) {
         BufferedReader buffreader1 = new BufferedReader(inputreader);
         String line;
 
@@ -135,23 +196,6 @@ public class ObjModel {
                 .asFloatBuffer();
         this.colorBuffer.put(this.color)
                 .position(0);
-
-        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.vertex_shader_diffuse));
-        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.fragment_shader_diffuse));
-
-        this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-        GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-        GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(this.mProgram);
-
-        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
-        mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
-        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
-        mColorHandle = GLES20.glGetAttribLocation(mProgram, "a_Color");
-        mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
-        mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
-        mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
-        mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
     }
 
     /**

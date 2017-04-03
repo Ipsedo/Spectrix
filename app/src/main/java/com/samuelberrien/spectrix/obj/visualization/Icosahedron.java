@@ -79,7 +79,7 @@ public class Icosahedron {
      *
      */
     private void setupIcosahedrons() {
-        this.icosahedron = new ObjModelMtl(this.context, R.raw.icosahedron_obj, R.raw.icosahedron_mtl, LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.icosahedron = new ObjModelMtl(this.context, "obj/icosahedron_obj.obj", "obj/icosahedron_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF);
         for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {
             /*float[] color = new float[this.icosahedron.getVertexDrawListLength() * 4 / 3];
             float red = rand.nextFloat();

@@ -73,7 +73,7 @@ public class Explosion {
         this.mCenterColorBuffer = new FloatBuffer[this.nbSameCenter * this.nbCenter];
         this.nbMaxOctagonePerExplosion = nbMaxOctagonePerExplosion;
         this.mCenterPoint = new float[this.nbCenter * this.nbSameCenter][3];
-        this.octagone = new ObjModel(this.context, R.raw.octagone, 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.octagone = new ObjModel(this.context, "obj/octagone.obj", 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
         this.maxOctagonSpeed = maxOctagonSpeed;
         this.mOctagone = new ArrayList<>();
 
