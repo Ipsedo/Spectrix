@@ -10,6 +10,7 @@ import android.view.GestureDetector;
 import android.view.MotionEvent;
 
 import com.samuelberrien.spectrix.R;
+import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererCanyon;
 import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererExplosion;
 import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererIcosahedron;
 import com.samuelberrien.spectrix.obj.normal.renderers.ObjGLRendererRoom;
@@ -58,8 +59,8 @@ public class ObjGLSurfaceView extends GLSurfaceView {
             this.mRenderer = new ObjGLRendererIcosahedron(context);
         } else if (id_visualisation.equals(context.getString(R.string.explosion))) {
             this.mRenderer = new ObjGLRendererExplosion(context);
-        } else if (id_visualisation.equals(context.getString(R.string.test))) {
-            this.mRenderer = new ObjGLRendererTextSpec(context);
+        } else if (id_visualisation.equals(context.getString(R.string.canyon))) {
+            this.mRenderer = new ObjGLRendererCanyon(context);
         }
 
         this.isZooming = false;
