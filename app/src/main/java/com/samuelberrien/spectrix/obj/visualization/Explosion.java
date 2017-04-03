@@ -236,6 +236,9 @@ public class Explosion {
         }
     }
 
+    /**
+     *
+     */
     private class Octagone {
         private float mOctagoneScale;
         private float mOctagoneAngle;

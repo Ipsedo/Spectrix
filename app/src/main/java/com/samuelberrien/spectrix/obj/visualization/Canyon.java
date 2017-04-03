@@ -15,19 +15,27 @@ import com.samuelberrien.spectrix.obj.HeightMap;
  */
 
 public class Canyon {
-
+    
     private float[] freqArray = new float[Visualizer.getCaptureSizeRange()[1]];
 
     private HeightMap canyon;
     private float mCanyonScale;
     private float[] mCanyonModelMatrix;
 
+    /**
+     *
+     * @param context
+     * @param mCanyonScale
+     */
     public Canyon(Context context, float mCanyonScale){
         this.canyon = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.05f, 0.8f, 3e-5f);
         this.mCanyonModelMatrix = new float[16];
         this.mCanyonScale = mCanyonScale;
     }
 
+    /**
+     *
+     */
     private void updateMap() {
         float[] mModelMatrix = new float[16];
         Matrix.setIdentityM(mModelMatrix, 0);
@@ -37,14 +45,28 @@ public class Canyon {
         this.mCanyonModelMatrix = mModelMatrix.clone();
     }
 
+    /**
+     *
+     */
     public void updateCanyon(){
         this.updateMap();
     }
 
+    /**
+     *
+     * @param freqArray
+     */
     public void update(float[] freqArray){
         this.freqArray = freqArray;
     }
 
+    /**
+     *
+     * @param mProjectionMatrix
+     * @param mViewMatrix
+     * @param mLightPosInEyeSpace
+     * @param mCameraPosition
+     */
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         float[] tmpMVMatrix = new float[16];
         float[] tmpMVPMatrix = new float[16];
