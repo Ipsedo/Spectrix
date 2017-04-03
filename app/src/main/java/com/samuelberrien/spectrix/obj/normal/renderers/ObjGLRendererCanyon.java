@@ -37,7 +37,7 @@ public class ObjGLRendererCanyon extends ObjGLRenderer {
             //this.explosionVisualization.update(freqArray, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2]);
             this.canyonVisualization.update(freqArray);
         }
-        this.updateLight(0f, 5f * this.mapScale, 0f);
+        this.updateLight(0f, 2.5f * this.mapScale, 0f);
     }
 
     public void onDrawFrame(GL10 unused) {

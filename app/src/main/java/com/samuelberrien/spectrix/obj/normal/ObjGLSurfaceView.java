@@ -105,6 +105,7 @@ public class ObjGLSurfaceView extends GLSurfaceView {
                     mPreviousX = e.getX() + 1f;
                     mPreviousY = e.getY() + 1f;
                 case MotionEvent.ACTION_MOVE:
+                    ObjGLSurfaceView.this.mRenderer.setDoubleTapZoom(false, false);
                     float dx = e.getX() + 1f - mPreviousX;
                     float dy = e.getY() + 1f - mPreviousY;
                     mRenderer.updateCameraOrientation(dy * TOUCH_SCALE_FACTOR_MOVE, dx * TOUCH_SCALE_FACTOR_MOVE);
@@ -118,6 +119,7 @@ public class ObjGLSurfaceView extends GLSurfaceView {
                 case MotionEvent.ACTION_DOWN:
                     mPreviousZoom = (float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d));
                 case MotionEvent.ACTION_MOVE:
+                    ObjGLSurfaceView.this.mRenderer.setDoubleTapZoom(false, false);
                     float dZoom = ((float) Math.sqrt(Math.pow(e.getX(e.getPointerId(0)) - e.getX(e.getPointerId(1)), 2d) + Math.pow(e.getY(e.getPointerId(0)) - e.getY(e.getPointerId(1)), 2d)) - mPreviousZoom);
                     mRenderer.updateZoom(-dZoom * TOUCH_SCALE_FACTOR_ZOOM);
                     requestRender();
@@ -187,10 +189,13 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         @Override
         public boolean onDoubleTap(MotionEvent e) {
             if (ObjGLSurfaceView.this.mRenderer.isZoomUp()) {
-                ObjGLSurfaceView.this.mRenderer.updateZoom(50);
+                //ObjGLSurfaceView.this.mRenderer.updateZoom(50);
+                ObjGLSurfaceView.this.mRenderer.setDoubleTapZoom(true, true);
             } else {
-                ObjGLSurfaceView.this.mRenderer.updateZoom(-50);
+                //ObjGLSurfaceView.this.mRenderer.updateZoom(-50);
+                ObjGLSurfaceView.this.mRenderer.setDoubleTapZoom(true, false);
             }
+
             ObjGLSurfaceView.this.requestRender();
             return true;
         }

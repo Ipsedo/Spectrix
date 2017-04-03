@@ -34,6 +34,8 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
     private float theta = 0f;
     private float maxRange = 1f;
     private float projectionAngle = 40f;
+    private boolean isZoomingDoubleTap;
+    private boolean isZoomingUp;
     private float ratio = 1f;
 
     /**
@@ -45,6 +47,8 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
         this.mCameraDirection = new float[]{mCameraX, mCameraY, mCameraZ + 1f};
+        this.isZoomingDoubleTap = false;
+        this.isZoomingUp = false;
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
         GLES20.glEnable(GLES20.GL_CULL_FACE);
         GLES20.glDepthFunc(GLES20.GL_LEQUAL);
@@ -124,6 +128,11 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
         this.updateProjection();
     }
 
+    public void setDoubleTapZoom(boolean turnOn, boolean toUp){
+        this.isZoomingDoubleTap = turnOn;
+        this.isZoomingUp = toUp;
+    }
+
     public boolean isZoomUp() {
         return this.projectionAngle < 40f;
     }
@@ -149,6 +158,12 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
         // Draw background color
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
+        if(this.isZoomingDoubleTap && this.isZoomingUp){
+            this.updateZoom(10);
+        } else if(this.isZoomingDoubleTap){
+            this.updateZoom(-10);
+        }
+        this.updateProjection();
         // Set the camera position (View matrix)
         Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraX, this.mCameraY, this.mCameraZ, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, 1f, 0f);
     }
