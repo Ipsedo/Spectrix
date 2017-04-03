@@ -58,6 +58,7 @@ public class SpectrumGLSurfaceView extends GLSurfaceView {
         this.aManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         if (this.useSample) {
             this.mPlayer = MediaPlayer.create(context, R.raw.crea_session_8);
+            this.mPlayer.setLooping(true);
             this.mPlayer.start();
         }
         this.currVol = this.aManager.getStreamVolume(AudioManager.STREAM_MUSIC);

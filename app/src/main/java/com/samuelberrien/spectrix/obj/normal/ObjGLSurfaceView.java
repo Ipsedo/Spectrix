@@ -72,6 +72,7 @@ public class ObjGLSurfaceView extends GLSurfaceView {
         this.useSample = useSample;
         if (this.useSample) {
             this.mPlayer = new MediaPlayer().create(context, R.raw.crea_session_8);
+            this.mPlayer.setLooping(true);
             this.mPlayer.start();
         }
 

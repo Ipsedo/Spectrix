@@ -56,6 +56,7 @@ public class ObjGvrView extends GvrView {
         this.useSample = useSample;
         if(this.useSample) {
             this.mPlayer = new MediaPlayer().create(context, R.raw.crea_session_8);
+            this.mPlayer.setLooping(true);
             this.mPlayer.start();
         }
 
