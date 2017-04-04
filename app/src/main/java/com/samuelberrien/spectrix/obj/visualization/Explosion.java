@@ -4,7 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.spectrix.obj.drawable.ObjModel;
-import com.samuelberrien.spectrix.obj.drawable.TextCube;
+import com.samuelberrien.spectrix.obj.drawable.TexCube;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -46,7 +46,7 @@ public class Explosion {
     private ObjModel octagone;
     private ArrayList<Octagone> mOctagone;
 
-    private TextCube textCube;
+    private TexCube texCube;
     //private ObjModel text;
     private float mTextScale = 0.5f;
     private float[] mTextTranslateVector = new float[3];
@@ -77,7 +77,7 @@ public class Explosion {
         this.mOctagone = new ArrayList<>();
 
 
-        this.textCube = new TextCube(this.context);
+        this.texCube = new TexCube(this.context);
         //this.text = new ObjModel(this.context, R.raw.best_experience_with_playing_music_obj, 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
 
         this.setupCenter();
@@ -231,7 +231,7 @@ public class Explosion {
         if (System.currentTimeMillis() - this.firstTimeMillisWithoutMusic > 3000) {
             Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mTextModelMatrix, 0);
             Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-            this.textCube.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
+            this.texCube.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
         }
     }
 

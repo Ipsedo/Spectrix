@@ -18,7 +18,7 @@ import java.nio.FloatBuffer;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class TextCube {
+public class TexCube {
 
     private final float[] cubePositionData =
             {
@@ -247,7 +247,7 @@ public class TextCube {
     private final int mNormalDataSize = 3;
     private final int mTextureCoordinateDataSize = 2;
 
-    public TextCube(Context context) {
+    public TexCube(Context context) {
         mCubePositions = ByteBuffer.allocateDirect(cubePositionData.length * mBytesPerFloat)
                 .order(ByteOrder.nativeOrder()).asFloatBuffer();
         mCubePositions.put(cubePositionData).position(0);

@@ -113,7 +113,7 @@ public class HeightMap {
     }
 
     /**
-     * 
+     *
      * @param mvpMatrix
      * @param mvMatrix
      * @param mLightPosInEyeSpace
