@@ -160,9 +160,9 @@ public class Icosahedron {
      * @param mLightPosInEyeSpace
      */
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+        float[] tmpModelViewMatrix = new float[16];
+        float[] tmpModelViewProjectionMatrix = new float[16];
         for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {
-            float[] tmpModelViewMatrix = new float[16];
-            float[] tmpModelViewProjectionMatrix = new float[16];
             Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mModelMatrix[i], 0);
             Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
 
