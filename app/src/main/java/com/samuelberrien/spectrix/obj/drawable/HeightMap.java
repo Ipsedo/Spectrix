@@ -49,6 +49,15 @@ public class HeightMap {
     private float lightCoeff;
     private float distanceCoeff;
 
+    /**
+     *
+     * @param context
+     * @param texHMResId
+     * @param texResId
+     * @param coeff
+     * @param lightCoeff
+     * @param distanceCoeff
+     */
     public HeightMap(Context context, int texHMResId, int texResId, float coeff, float lightCoeff, float distanceCoeff){
         int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.height_map_vs));
         int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.height_map_fs));
@@ -67,29 +76,21 @@ public class HeightMap {
 
         this.initPlan();
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
-        ShaderLoader.checkGlError("glUniformLocation");
         mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
-        ShaderLoader.checkGlError("glUniformLocation");
         mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
-        ShaderLoader.checkGlError("glUniformLocation");
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "vp");
-        ShaderLoader.checkGlError("glUniformLocation");
         mTextureHeightMapUniformHandle = GLES20.glGetUniformLocation(mProgram, "textureHeight");
-        ShaderLoader.checkGlError("glUniformLocation");
         mTextureUniformHandle = GLES20.glGetUniformLocation(mProgram, "textureMap");
-        ShaderLoader.checkGlError("glUniformLocation");
         mNbStripsHandles = GLES20.glGetUniformLocation(mProgram, "nbStrips");
-        ShaderLoader.checkGlError("glUniformLocation");
         mNbSlicesHandles = GLES20.glGetUniformLocation(mProgram, "nbSlices");
-        ShaderLoader.checkGlError("glUniformLocation");
         mCoeffHandle = GLES20.glGetUniformLocation(mProgram, "coefficient");
-        ShaderLoader.checkGlError("glUniformLocation");
         mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
-        ShaderLoader.checkGlError("glUniformLocation");
         mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
-        ShaderLoader.checkGlError("glUniformLocation");
     }
 
+    /**
+     *
+     */
     private void initPlan(){
         nbFaces = NBSTRIPS * (NBSLICES + 1) * 2;
         points = new float[ nbFaces * 3 ];
@@ -111,49 +112,39 @@ public class HeightMap {
         mPositions.put(points).position(0);
     }
 
+    /**
+     * 
+     * @param mvpMatrix
+     * @param mvMatrix
+     * @param mLightPosInEyeSpace
+     */
     public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace) {
         GLES20.glUseProgram(this.mProgram);
-        ShaderLoader.checkGlError("glUseProgram");
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
-        // Bind the texture to this unit.
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureHeightMapDataHandle);
-        ShaderLoader.checkGlError("glBindTexture");
-        // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
         GLES20.glUniform1i(mTextureHeightMapUniformHandle, 0);
-        ShaderLoader.checkGlError("glUniform1i");
 
         GLES20.glActiveTexture(GLES20.GL_TEXTURE1);
         GLES20.glBindTexture(GLES20.GL_TEXTURE_2D, mTextureDataHandle);
-        ShaderLoader.checkGlError("glBindTexture");
-        // Tell the texture uniform sampler to use this texture in the shader by binding to texture unit 0.
         GLES20.glUniform1i(mTextureUniformHandle, 1);
-        ShaderLoader.checkGlError("glUniform1i");
 
         mPositions.position(0);
         GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, mPositions);
-        ShaderLoader.checkGlError("glVertexAttribPointer");
         GLES20.glEnableVertexAttribArray(mPositionHandle);
-        ShaderLoader.checkGlError("glEnableVertexAttribArray");
 
         // get handle to shape's transformation matrix
         GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
-        ShaderLoader.checkGlError("glUniformMatrix4fv");
 
         // Apply the projection and view transformation
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
-        ShaderLoader.checkGlError("glUniformMatrix4fv");
 
         GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
-        ShaderLoader.checkGlError("glUniform3fv");
 
         GLES20.glUniform1i(mNbSlicesHandles, NBSLICES);
-        ShaderLoader.checkGlError("glUniform1i");
         GLES20.glUniform1i(mNbStripsHandles, NBSTRIPS);
-        ShaderLoader.checkGlError("glUniform1i");
 
         GLES20.glUniform1f(mCoeffHandle, this.coeff);
-        ShaderLoader.checkGlError("glUniform1i");
 
         GLES20.glUniform1f(mLightCoefHandle, this.lightCoeff);
 
@@ -161,9 +152,7 @@ public class HeightMap {
 
         // Draw the cube.
         int nbStackTriangles = (NBSLICES + 1) * 2;
-        for(int i = 0 ; i < NBSTRIPS; i++) {
+        for(int i = 0 ; i < NBSTRIPS; i++)
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, i * nbStackTriangles, nbStackTriangles);
-            ShaderLoader.checkGlError("glDrawArrays");
-        }
     }
 }
