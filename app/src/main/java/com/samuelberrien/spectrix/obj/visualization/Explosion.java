@@ -136,13 +136,13 @@ public class Explosion {
         float xSpeed = magn * this.maxOctagonSpeed * (float) (Math.cos(phi) * Math.sin(theta));
         float ySpeed = magn * this.maxOctagonSpeed * (float) Math.sin(phi);
         float zSpeed = magn * this.maxOctagonSpeed * (float) (Math.cos(phi) * Math.cos(theta));
-        this.mOctagone.add(new Octagone((this.nbCenter - indiceFreq) * 0.002f + 0.03f, rand.nextFloat() * 360f, new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f}, center, new float[]{xSpeed, ySpeed, zSpeed}, this.mCenterColorBuffer[indCenter]));
+        this.mOctagone.add(new Octagone((this.nbCenter - indiceFreq) * 0.001f + 0.1f, rand.nextFloat() * 360f, new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f}, center, new float[]{xSpeed, ySpeed, zSpeed}, this.mCenterColorBuffer[indCenter]));
     }
 
     /**
      * @param freqArray
      */
-    private void createNewOctagone(float[] freqArray) {
+    private void createNewOctagones(float[] freqArray) {
         for (int i = 0; i < this.nbSameCenter * this.nbCenter; i++) {
             int tmpFreqIndex = i / this.nbSameCenter;
             float tmpMagn = freqArray[tmpFreqIndex] + freqArray[tmpFreqIndex] * tmpFreqIndex * this.mFreqAugmentation;
@@ -205,7 +205,7 @@ public class Explosion {
      */
     public void updateVisualization() {
         this.deleteOldOctagone();
-        this.createNewOctagone(freqArray);
+        this.createNewOctagones(freqArray);
         this.moveOctagone();
         this.updateText();
     }
@@ -306,7 +306,8 @@ public class Explosion {
          * @return
          */
         public double getSpeedVectorNorm() {
-            return Math.sqrt(this.mOctagoneSpeedVector[0] * this.mOctagoneSpeedVector[0] + this.mOctagoneSpeedVector[1] * this.mOctagoneSpeedVector[1] + this.mOctagoneSpeedVector[2] * this.mOctagoneSpeedVector[2]);
+            return Matrix.length(this.mOctagoneSpeedVector[0], this.mOctagoneSpeedVector[1], this.mOctagoneSpeedVector[2]);
+            //return Math.sqrt(this.mOctagoneSpeedVector[0] * this.mOctagoneSpeedVector[0] + this.mOctagoneSpeedVector[1] * this.mOctagoneSpeedVector[1] + this.mOctagoneSpeedVector[2] * this.mOctagoneSpeedVector[2]);
         }
     }
 }
