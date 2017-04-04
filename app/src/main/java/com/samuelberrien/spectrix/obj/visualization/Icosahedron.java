@@ -3,12 +3,8 @@ package com.samuelberrien.spectrix.obj.visualization;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.R;
-import com.samuelberrien.spectrix.obj.ObjModel;
 import com.samuelberrien.spectrix.obj.ObjModelMtl;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Random;
@@ -79,7 +75,7 @@ public class Icosahedron {
      *
      */
     private void setupIcosahedrons() {
-        this.icosahedron = new ObjModelMtl(this.context, "obj/icosahedron_obj.obj", "obj/icosahedron_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF);
+        this.icosahedron = new ObjModelMtl(this.context, "obj/icosahedron/icosahedron_obj.obj", "obj/icosahedron/icosahedron_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF);
         for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {
             /*float[] color = new float[this.icosahedron.getVertexDrawListLength() * 4 / 3];
             float red = rand.nextFloat();

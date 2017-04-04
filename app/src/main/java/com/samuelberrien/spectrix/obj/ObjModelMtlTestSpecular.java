@@ -72,8 +72,8 @@ public class ObjModelMtlTestSpecular {
         this.lightCoef = lightAugmentation;
         this.distanceCoef = distanceCoef;
 
-        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.specular_VS));
-        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.specular_FS));
+        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.specular_vs));
+        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.specular_fs));
 
         this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
         GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
