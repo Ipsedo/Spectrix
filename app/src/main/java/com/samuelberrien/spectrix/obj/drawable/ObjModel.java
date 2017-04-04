@@ -1,4 +1,4 @@
-package com.samuelberrien.spectrix.obj;
+package com.samuelberrien.spectrix.obj.drawable;
 
 import android.content.Context;
 import android.opengl.GLES20;

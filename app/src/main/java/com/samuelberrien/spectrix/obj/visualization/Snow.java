@@ -3,11 +3,9 @@ package com.samuelberrien.spectrix.obj.visualization;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.R;
-import com.samuelberrien.spectrix.obj.ObjModel;
-import com.samuelberrien.spectrix.obj.ObjModelMtl;
+import com.samuelberrien.spectrix.obj.drawable.ObjModel;
+import com.samuelberrien.spectrix.obj.drawable.ObjModelMtl;
 
-import java.nio.FloatBuffer;
 import java.util.Random;
 
 /**

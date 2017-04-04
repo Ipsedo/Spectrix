@@ -5,7 +5,7 @@ import android.media.audiofx.Visualizer;
 import android.opengl.Matrix;
 
 import com.samuelberrien.spectrix.R;
-import com.samuelberrien.spectrix.obj.HeightMap;
+import com.samuelberrien.spectrix.obj.drawable.HeightMap;
 
 /**
  * Created by samuel on 03/04/17.

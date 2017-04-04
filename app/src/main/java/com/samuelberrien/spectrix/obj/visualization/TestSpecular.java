@@ -4,8 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.spectrix.R;
-import com.samuelberrien.spectrix.obj.HeightMap;
-import com.samuelberrien.spectrix.obj.ObjModelMtlTestSpecular;
+import com.samuelberrien.spectrix.obj.drawable.HeightMap;
 
 /**
  * Created by samuel on 21/02/17.

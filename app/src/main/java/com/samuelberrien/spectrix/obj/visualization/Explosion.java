@@ -3,9 +3,8 @@ package com.samuelberrien.spectrix.obj.visualization;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.R;
-import com.samuelberrien.spectrix.obj.ObjModel;
-import com.samuelberrien.spectrix.obj.TextCube;
+import com.samuelberrien.spectrix.obj.drawable.ObjModel;
+import com.samuelberrien.spectrix.obj.drawable.TextCube;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
