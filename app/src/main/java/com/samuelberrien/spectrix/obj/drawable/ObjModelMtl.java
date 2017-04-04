@@ -333,7 +333,7 @@ public class ObjModelMtl {
     }
 
     /**
-     * @param rand A random instance used for random colors generating
+     * @param rand A random instance used for random color generation
      * @return A FloatBuffer ArrayList containing all the colors per material
      */
     public ArrayList<FloatBuffer> makeColor(Random rand) {
