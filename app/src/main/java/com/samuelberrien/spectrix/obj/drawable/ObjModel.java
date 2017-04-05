@@ -153,6 +153,8 @@ public class ObjModel {
                     normalDrawOrderList.add(Integer.parseInt(tmp[3].split("/")[2]));
                 }
             }
+
+            buffreader1.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
