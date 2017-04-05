@@ -7,6 +7,8 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.samuelberrien.spectrix.MainActivity;
+
 
 /**
  * Created by samuel on 15/12/16.
@@ -24,9 +26,9 @@ public class SpectrumActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.useSample = Boolean.parseBoolean(getIntent().getStringExtra("USE_SAMPLE"));
+        this.useSample = Boolean.parseBoolean(getIntent().getStringExtra(MainActivity.USE_SAMPLE));
 
-        this.isPortrait = Boolean.parseBoolean(getIntent().getStringExtra("SCREEN_PORTRAIT"));
+        this.isPortrait = Boolean.parseBoolean(getIntent().getStringExtra(MainActivity.SCREEN_PORTRAIT));
 
         if (this.isPortrait) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

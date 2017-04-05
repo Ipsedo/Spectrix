@@ -22,6 +22,10 @@ import com.samuelberrien.spectrix.utils.FontsOverride;
 
 public class MainActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
+    public static final String USE_SAMPLE = "USE_SAMPLE";
+    public static final String SCREEN_PORTRAIT = "SCREEN_PORTRAIT";
+    public static final String ID_RENDERER = "ID_RENDERER";
+
     private boolean useSample;
     private boolean useVR;
 
@@ -68,19 +72,19 @@ public class MainActivity extends Activity implements AdapterView.OnItemSelected
     public void start(View v) {
         if (this.idVusalisation.equals(this.adapter.getItem(0)) || this.idVusalisation.equals(this.adapter.getItem(1))) {
             Intent intent = new Intent(this, SpectrumActivity.class);
-            intent.putExtra("USE_SAMPLE", Boolean.toString(this.useSample));
-            intent.putExtra("SCREEN_PORTRAIT", Boolean.toString(this.getOrientationPortrait(this.idVusalisation)));
+            intent.putExtra(MainActivity.USE_SAMPLE, Boolean.toString(this.useSample));
+            intent.putExtra(MainActivity.SCREEN_PORTRAIT, Boolean.toString(this.getOrientationPortrait(this.idVusalisation)));
             startActivity(intent);
         } else if (this.useVR) {
             Intent intent = new Intent(this, ObjVRActivity.class);
-            intent.putExtra("USE_SAMPLE", Boolean.toString(this.useSample));
-            intent.putExtra("ID_RENDERER", this.idVusalisation);
+            intent.putExtra(MainActivity.USE_SAMPLE, Boolean.toString(this.useSample));
+            intent.putExtra(MainActivity.ID_RENDERER, this.idVusalisation);
             startActivity(intent);
         } else {
             Intent intent = new Intent(this, ObjActivity.class);
-            intent.putExtra("USE_SAMPLE", Boolean.toString(this.useSample));
-            intent.putExtra("SCREEN_PORTRAIT", Boolean.toString(false));
-            intent.putExtra("ID_RENDERER", this.idVusalisation);
+            intent.putExtra(MainActivity.USE_SAMPLE, Boolean.toString(this.useSample));
+            intent.putExtra(MainActivity.SCREEN_PORTRAIT, Boolean.toString(false));
+            intent.putExtra(MainActivity.ID_RENDERER, this.idVusalisation);
             startActivity(intent);
         }
     }

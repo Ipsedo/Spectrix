@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import com.samuelberrien.spectrix.MainActivity;
+
 public class ObjActivity extends AppCompatActivity {
 
     private ObjGLSurfaceView mGLView;
@@ -18,9 +20,9 @@ public class ObjActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.useSample = Boolean.parseBoolean(getIntent().getStringExtra("USE_SAMPLE"));
-        this.isPortrait = Boolean.parseBoolean(getIntent().getStringExtra("SCREEN_PORTRAIT"));
-        this.id_Visualisation = getIntent().getStringExtra("ID_RENDERER");
+        this.useSample = Boolean.parseBoolean(getIntent().getStringExtra(MainActivity.USE_SAMPLE));
+        this.isPortrait = Boolean.parseBoolean(getIntent().getStringExtra(MainActivity.SCREEN_PORTRAIT));
+        this.id_Visualisation = getIntent().getStringExtra(MainActivity.ID_RENDERER);
 
         if (this.isPortrait) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

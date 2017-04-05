@@ -2,6 +2,7 @@ package com.samuelberrien.spectrix.obj.vr;
 
 import android.os.Bundle;
 import com.google.vr.sdk.base.GvrActivity;
+import com.samuelberrien.spectrix.MainActivity;
 
 public class ObjVRActivity extends GvrActivity {
 
@@ -14,8 +15,8 @@ public class ObjVRActivity extends GvrActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        this.useSample = Boolean.parseBoolean(getIntent().getStringExtra("USE_SAMPLE"));
-        this.id_Visualisation = getIntent().getStringExtra("ID_RENDERER");
+        this.useSample = Boolean.parseBoolean(getIntent().getStringExtra(MainActivity.USE_SAMPLE));
+        this.id_Visualisation = getIntent().getStringExtra(MainActivity.ID_RENDERER);
 
         this.gvrView = new ObjGvrView(this, this.useSample, this.id_Visualisation);
         setContentView(gvrView);
