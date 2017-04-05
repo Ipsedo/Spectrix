@@ -62,35 +62,9 @@ public class ObjModel {
         InputStream inputStream = context.getResources().openRawResource(resId);
         InputStreamReader inputreader = new InputStreamReader(inputStream);
         this.parseObj(inputreader, red, green, blue);
-
-
-        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_vs));
-        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_fs));
-
-        this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
-        GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
-        GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
-        GLES20.glLinkProgram(this.mProgram);
-
-        mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
-        mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
-        mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
-        mColorHandle = GLES20.glGetAttribLocation(mProgram, "a_Color");
-        mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
-        mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
-        mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
-        mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
-    }
-
-    public ObjModel(Context context, String fileName, float red, float green, float blue, float lightAugmentation, float distanceCoef) {
-
-        this.lightCoef = lightAugmentation;
-        this.distanceCoef = distanceCoef;
-
         try {
-            InputStream inputStream = context.getAssets().open(fileName);
-            InputStreamReader inputreader = new InputStreamReader(inputStream);
-            this.parseObj(inputreader, red, green, blue);
+            inputreader.close();
+            inputStream.close();
         } catch(IOException ioe) {
             ioe.printStackTrace();
         }
@@ -104,6 +78,37 @@ public class ObjModel {
         GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
         GLES20.glLinkProgram(this.mProgram);
 
+        this.bind();
+    }
+
+    public ObjModel(Context context, String fileName, float red, float green, float blue, float lightAugmentation, float distanceCoef) {
+
+        this.lightCoef = lightAugmentation;
+        this.distanceCoef = distanceCoef;
+
+        try {
+            InputStream inputStream = context.getAssets().open(fileName);
+            InputStreamReader inputreader = new InputStreamReader(inputStream);
+            this.parseObj(inputreader, red, green, blue);
+            inputreader.close();
+            inputStream.close();
+        } catch(IOException ioe) {
+            ioe.printStackTrace();
+        }
+
+
+        int vertexShader = ShaderLoader.loadShader(GLES20.GL_VERTEX_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_vs));
+        int fragmentShader = ShaderLoader.loadShader(GLES20.GL_FRAGMENT_SHADER, ShaderLoader.openShader(context, R.raw.diffuse_fs));
+
+        this.mProgram = GLES20.glCreateProgram();             // create empty OpenGL Program
+        GLES20.glAttachShader(this.mProgram, vertexShader);   // add the vertex shader to program
+        GLES20.glAttachShader(this.mProgram, fragmentShader); // add the fragment shader to program
+        GLES20.glLinkProgram(this.mProgram);
+
+        this.bind();
+    }
+
+    private void bind(){
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
         mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
         mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
@@ -237,8 +242,7 @@ public class ObjModel {
 
         GLES20.glEnableVertexAttribArray(mNormalHandle);
         GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, normalsBuffer);
-
-
+        
         // get handle to shape's transformation matrix
         GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
 
