@@ -51,7 +51,7 @@ public class ObjStereoRendererCanyon extends ObjStereoRenderer {
     public void onDrawEye(Eye eye) {
         super.onDrawEye(eye);
         float[] cam = new float[4];
-        Matrix.multiplyMV(cam, 0, eye.getEyeView(), 0, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
+        Matrix.multiplyMV(cam, 0, this.mViewMatrix, 0, new float[]{0.0f, 0.0f, 0.0f, 1.0f}, 0);
         this.canyonVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{cam[0], cam[1], cam[2]});
     }
 }
