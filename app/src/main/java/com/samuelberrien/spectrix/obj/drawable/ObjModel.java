@@ -236,13 +236,13 @@ public class ObjModel {
         GLES20.glEnableVertexAttribArray(mPositionHandle);
         // Prepare the triangle coordinate data
         GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, vertexBuffer);
-
+        
         GLES20.glEnableVertexAttribArray(mColorHandle);
         GLES20.glVertexAttribPointer(mColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, colorBuffer);
 
         GLES20.glEnableVertexAttribArray(mNormalHandle);
         GLES20.glVertexAttribPointer(mNormalHandle, 3, GLES20.GL_FLOAT, false, 3 * 4, normalsBuffer);
-        
+
         // get handle to shape's transformation matrix
         GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
 
