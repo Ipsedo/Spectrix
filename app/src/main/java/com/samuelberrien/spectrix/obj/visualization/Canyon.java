@@ -28,7 +28,7 @@ public class Canyon {
      * @param mCanyonScale
      */
     public Canyon(Context context, float mCanyonScale){
-        this.canyon = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.05f, 0.8f, 3e-5f);
+        this.canyon = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f);
         this.mCanyonModelMatrix = new float[16];
         this.mCanyonScale = mCanyonScale;
     }

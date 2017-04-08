@@ -236,7 +236,7 @@ public class ObjModel {
         GLES20.glEnableVertexAttribArray(mPositionHandle);
         // Prepare the triangle coordinate data
         GLES20.glVertexAttribPointer(mPositionHandle, COORDS_PER_VERTEX, GLES20.GL_FLOAT, false, vertexStride, vertexBuffer);
-        
+
         GLES20.glEnableVertexAttribArray(mColorHandle);
         GLES20.glVertexAttribPointer(mColorHandle, 4, GLES20.GL_FLOAT, false, 4 * 4, colorBuffer);
 
