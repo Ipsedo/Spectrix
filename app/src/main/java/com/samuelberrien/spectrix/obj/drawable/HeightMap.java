@@ -97,14 +97,14 @@ public class HeightMap {
         for( int indStrip = 0 ; indStrip < NBSTRIPS ; indStrip++ ) {
             for( int indFace = 0 ; indFace <= NBSLICES ; indFace++ ) {
                 int indPoint = indStrip * (NBSLICES + 1) * 2 + indFace * 2;
-                points[ indPoint * 3 ] = (float)indFace / (float)NBSLICES;
+                points[ indPoint * 3 ] = (float) indFace / (float) NBSLICES;
                 points[ indPoint * 3 + 1 ] = 0.0f;
-                points[ indPoint * 3 + 2 ] = (float)indStrip / (float)NBSTRIPS;
+                points[ indPoint * 3 + 2 ] = (float) indStrip / (float) NBSTRIPS;
 
                 indPoint++;
-                points[ indPoint * 3 ] = (float)indFace / (float)NBSLICES;
+                points[ indPoint * 3 ] = (float) indFace / (float) NBSLICES;
                 points[ indPoint * 3 + 1 ] = 0.0f;
-                points[ indPoint * 3 + 2 ] = ((float)indStrip + 1) / (float)NBSTRIPS;
+                points[ indPoint * 3 + 2 ] = ((float) indStrip + 1) / (float) NBSTRIPS;
             }
         }
         mPositions = ByteBuffer.allocateDirect(points.length * mBytesPerFloat)
@@ -133,10 +133,8 @@ public class HeightMap {
         GLES20.glVertexAttribPointer(mPositionHandle, 3, GLES20.GL_FLOAT, false, 0, mPositions);
         GLES20.glEnableVertexAttribArray(mPositionHandle);
 
-        // get handle to shape's transformation matrix
         GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
 
-        // Apply the projection and view transformation
         GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
 
         GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
@@ -150,7 +148,6 @@ public class HeightMap {
 
         GLES20.glUniform1f(mDistanceCoefHandle, this.distanceCoeff);
 
-        // Draw the cube.
         int nbStackTriangles = (NBSLICES + 1) * 2;
         for(int i = 0 ; i < NBSTRIPS; i++)
             GLES20.glDrawArrays(GLES20.GL_TRIANGLE_STRIP, i * nbStackTriangles, nbStackTriangles);
