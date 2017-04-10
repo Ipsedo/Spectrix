@@ -11,6 +11,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.function.Predicate;
 
 /**
  * Created by samuel on 03/02/17.
@@ -205,7 +206,7 @@ public class Explosion {
      */
     public void updateVisualization() {
         this.deleteOldOctagone();
-        this.createNewOctagones(freqArray);
+        this.createNewOctagones(this.freqArray);
         this.moveOctagone();
         this.updateText();
     }
@@ -228,7 +229,7 @@ public class Explosion {
         if (!this.mOctagone.isEmpty()) {
             this.firstTimeMillisWithoutMusic = System.currentTimeMillis();
         }
-        if (System.currentTimeMillis() - this.firstTimeMillisWithoutMusic > 3000) {
+        if (System.currentTimeMillis() - this.firstTimeMillisWithoutMusic > 3000L) {
             Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mTextModelMatrix, 0);
             Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
             this.texCube.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);

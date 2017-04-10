@@ -273,12 +273,7 @@ public class TexCube {
         GLES20.glLinkProgram(this.mProgram);
 
         mTextureDataHandle = TextureHelper.loadTexture(context, R.drawable.best_experience_with_music);
-    }
-
-    public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace) {
-        GLES20.glUseProgram(this.mProgram);
-        ShaderLoader.checkGlError("glUniformMatrix4fv");
-
+        
         // Set program handles for cube drawing.
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
         mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
@@ -288,6 +283,12 @@ public class TexCube {
         mColorHandle = GLES20.glGetAttribLocation(mProgram, "a_Color");
         mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
         mTextureCoordinateHandle = GLES20.glGetAttribLocation(mProgram, "a_TexCoordinate");
+    }
+
+    public void draw(float[] mvpMatrix, float[] mvMatrix, float[] mLightPosInEyeSpace) {
+        GLES20.glUseProgram(this.mProgram);
+        ShaderLoader.checkGlError("glUniformMatrix4fv");
+
 
         // Set the active texture unit to texture unit 0.
         GLES20.glActiveTexture(GLES20.GL_TEXTURE0);
