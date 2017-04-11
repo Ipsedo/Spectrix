@@ -273,7 +273,7 @@ public class TexCube {
         GLES20.glLinkProgram(this.mProgram);
 
         mTextureDataHandle = TextureHelper.loadTexture(context, R.drawable.best_experience_with_music);
-        
+
         // Set program handles for cube drawing.
         mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
         mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
