@@ -28,6 +28,7 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
     protected float mCameraY = 0f;
     protected float mCameraZ = 0f;
     protected float[] mCameraDirection = new float[3];
+    private float mCameraUp = 1f;
     private float phi = 0f;
     private float theta = 0f;
     private float maxRange = 1f;
@@ -61,50 +62,15 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
      * @param theta angle theta
      */
     public void updateCameraOrientation(float phi, float theta) {
+        float oldPhi = this.phi;
+
         this.phi += phi;
         this.theta += theta;
-        /*if(Math.sin(90) == 1){
-            if(this.phi > 360f){
-                this.phi -= 360f;
-            }
-            if(this.phi < 0){
-                this.phi += 360f;
-            }
-            if(this.theta > 360f){
-                this.theta -= 360f;
-            }
-            if(this.theta < 0){
-                this.theta += 360f;
-            }
-        }else{
-            if(this.phi > Math.PI * 2){
-                this.phi -= Math.PI * 2;
-            }
-            if(this.phi < 0){
-                this.phi += Math.PI * 2;
-            }
-            if(this.theta > Math.PI * 2){
-                this.theta -= Math.PI * 2;
-            }
-            if(this.theta < 0) {
-                this.theta += Math.PI * 2;
-            }
-        }*/
 
-        if (this.phi > Math.PI * 2) {
-            this.phi -= Math.PI * 2;
-        }
-        if (this.phi < 0) {
-            this.phi += Math.PI * 2;
-        }
-        if (this.theta > Math.PI * 2) {
-            this.theta -= Math.PI * 2;
-        }
-        if (this.theta < 0) {
-            this.theta += Math.PI * 2;
-        }
-        if ((this.phi > Math.toRadians(80) && this.phi < Math.toRadians(100)) || (this.phi > Math.toRadians(260) && this.phi < Math.toRadians(280))) {
-            this.phi -= phi * 2;
+        if(oldPhi > 0 && (int) ((oldPhi + Math.toRadians(90)) / Math.toRadians(180)) != (int) ((this.phi + Math.toRadians(90)) / Math.toRadians(180))){
+            this.mCameraUp = - this.mCameraUp;
+        } else if(oldPhi < 0 && (int) ((oldPhi - Math.toRadians(90)) / Math.toRadians(180)) != (int) ((this.phi - Math.toRadians(90)) / Math.toRadians(180))){
+            this.mCameraUp = - this.mCameraUp;
         }
 
         this.mCameraDirection[0] = this.maxRange * (float) (Math.cos(this.phi) * Math.sin(this.theta)) + this.mCameraX;
@@ -163,7 +129,7 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
         }
         this.updateProjection();
         // Set the camera position (View matrix)
-        Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraX, this.mCameraY, this.mCameraZ, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, 1f, 0f);
+        Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraX, this.mCameraY, this.mCameraZ, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, this.mCameraUp, 0f);
     }
 
     @Override
