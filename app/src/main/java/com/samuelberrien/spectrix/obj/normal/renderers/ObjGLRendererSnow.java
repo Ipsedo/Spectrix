@@ -18,7 +18,7 @@ public class ObjGLRendererSnow extends ObjGLRenderer {
 
     public ObjGLRendererSnow(Context context) {
         super(context);
-        this.mCameraY = 2f;
+        super.mCameraPosition[1] = 2f;
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -36,7 +36,7 @@ public class ObjGLRendererSnow extends ObjGLRenderer {
     public void onDrawFrame(GL10 unused) {
         super.onDrawFrame(unused);
         this.snowVisualization.updateSnow();
-        this.snowVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ});
+        this.snowVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, super.mCameraPosition);
     }
 
 }

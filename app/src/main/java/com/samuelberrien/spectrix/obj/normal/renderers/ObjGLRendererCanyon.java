@@ -23,7 +23,7 @@ public class ObjGLRendererCanyon extends ObjGLRenderer {
 
     public ObjGLRendererCanyon(Context context) {
         super(context);
-        this.mCameraY = 4f;
+        super.mCameraPosition[1] = 4f;
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -37,12 +37,12 @@ public class ObjGLRendererCanyon extends ObjGLRenderer {
             //this.explosionVisualization.update(freqArray, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2]);
             this.canyonVisualization.update(freqArray);
         }
-        this.updateLight(0f, 2.5f * this.mapScale, 0f);
+        super.updateLight(0f, 2.5f * this.mapScale, 0f);
     }
 
     public void onDrawFrame(GL10 unused) {
         super.onDrawFrame(unused);
         this.canyonVisualization.updateCanyon();
-        this.canyonVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{super.mCameraX, super.mCameraY, super.mCameraZ});
+        this.canyonVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, super.mCameraPosition);
     }
 }

@@ -24,9 +24,7 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
     private final float[] mLightModelMatrix = new float[16];
     private final float[] mLightPosInWorldSpace = new float[4];
 
-    protected float mCameraX = 0f;
-    protected float mCameraY = 0f;
-    protected float mCameraZ = 0f;
+    protected float[] mCameraPosition = new float[3];
     protected float[] mCameraDirection = new float[3];
     private float mCameraUp = 1f;
     private float phi = 0f;
@@ -45,7 +43,7 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-        this.mCameraDirection = new float[]{mCameraX, mCameraY, mCameraZ + 1f};
+        this.mCameraDirection = new float[]{this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2] + 1f};
         this.isZoomingDoubleTap = false;
         this.isZoomingUp = false;
         GLES20.glEnable(GLES20.GL_DEPTH_TEST);
@@ -73,9 +71,9 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
             this.mCameraUp = - this.mCameraUp;
         }
 
-        this.mCameraDirection[0] = this.maxRange * (float) (Math.cos(this.phi) * Math.sin(this.theta)) + this.mCameraX;
-        this.mCameraDirection[1] = this.maxRange * (float) Math.sin(this.phi) + this.mCameraY;
-        this.mCameraDirection[2] = this.maxRange * (float) (Math.cos(this.phi) * Math.cos(this.theta)) + this.mCameraZ;
+        this.mCameraDirection[0] = this.maxRange * (float) (Math.cos(this.phi) * Math.sin(this.theta)) + this.mCameraPosition[0];
+        this.mCameraDirection[1] = this.maxRange * (float) Math.sin(this.phi) + this.mCameraPosition[1];
+        this.mCameraDirection[2] = this.maxRange * (float) (Math.cos(this.phi) * Math.cos(this.theta)) + this.mCameraPosition[2];
     }
 
     /**
@@ -128,7 +126,7 @@ public abstract class ObjGLRenderer implements GLSurfaceView.Renderer {
         }
         this.updateProjection();
 
-        Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraX, this.mCameraY, this.mCameraZ, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, this.mCameraUp, 0f);
+        Matrix.setLookAtM(this.mViewMatrix, 0, this.mCameraPosition[0], this.mCameraPosition[1], this.mCameraPosition[2], this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2], 0f, this.mCameraUp, 0f);
     }
 
     @Override

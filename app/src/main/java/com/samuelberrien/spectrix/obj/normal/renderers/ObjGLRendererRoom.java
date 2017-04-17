@@ -20,8 +20,8 @@ public class ObjGLRendererRoom extends ObjGLRenderer {
 
     public ObjGLRendererRoom(Context context) {
         super(context);
-        this.mCameraZ = -2f * SCALE;
-        this.mCameraY = 6f * SCALE;
+        super.mCameraPosition[2] = -2f * SCALE;
+        super.mCameraPosition[1] = 6f * SCALE;
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {

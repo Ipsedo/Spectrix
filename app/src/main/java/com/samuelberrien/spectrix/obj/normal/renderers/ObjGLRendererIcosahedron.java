@@ -35,6 +35,6 @@ public class ObjGLRendererIcosahedron extends ObjGLRenderer {
     public void onDrawFrame(GL10 unused) {
         super.onDrawFrame(unused);
         this.icosahedronVisualization.updateIcosahedrons();
-        this.icosahedronVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ});
+        this.icosahedronVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, super.mCameraPosition);
     }
 }

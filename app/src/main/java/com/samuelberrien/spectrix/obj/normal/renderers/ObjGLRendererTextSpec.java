@@ -21,7 +21,7 @@ public class ObjGLRendererTextSpec extends ObjGLRenderer {
 
     public ObjGLRendererTextSpec(Context context) {
         super(context);
-        this.mCameraY = 4f;
+        super.mCameraPosition[1] = 4f;
     }
 
     public void onSurfaceCreated(GL10 unused, EGLConfig config) {
@@ -39,6 +39,6 @@ public class ObjGLRendererTextSpec extends ObjGLRenderer {
 
     public void onDrawFrame(GL10 unused) {
         super.onDrawFrame(unused);
-        this.test.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ});
+        this.test.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, super.mCameraPosition);
     }
 }
