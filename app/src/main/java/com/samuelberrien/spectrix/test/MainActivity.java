@@ -1,9 +1,12 @@
 package com.samuelberrien.spectrix.test;
 
 import android.Manifest;
+import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.Point;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -25,8 +28,7 @@ import android.widget.RelativeLayout;
 import com.samuelberrien.spectrix.R;
 import com.samuelberrien.spectrix.test.visualizations.icosahedron.Icosahedron;
 import com.samuelberrien.spectrix.test.visualizations.spectrum.Spectrum;
-
-import java.util.ArrayList;
+import com.samuelberrien.spectrix.test.vr.MyGvrActivity;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,13 +36,7 @@ public class MainActivity extends AppCompatActivity {
 	public static final String SCREEN_PORTRAIT = "SCREEN_PORTRAIT";
 	public static final String ID_RENDERER = "ID_RENDERER";
 
-	private boolean useSample;
-	private boolean useVR;
-
 	private final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 0;
-
-	private ArrayAdapter<CharSequence> adapter;
-	private String idVusalisation;
 
 	private Toolbar toolbar;
 	private DrawerLayout drawerLayout;
@@ -49,6 +45,11 @@ public class MainActivity extends AppCompatActivity {
 
 	private MyGLSurfaceView myGLSurfaceView;
 
+	private Menu menu;
+
+	private MediaPlayer mPlayer;
+
+	private int idVusalisation = 0;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
-		this.setUpDrawer();
 		this.drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		this.drawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout, 0, 0);
 		this.drawerLayout.addDrawerListener(this.drawerToggle);
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		showToolBarButton = new Button(this);
-		showToolBarButton.setText("⬇");
+		showToolBarButton.setBackground(ContextCompat.getDrawable(this, R.drawable.show_button));
 		Display display = getWindowManager().getDefaultDisplay();
 		Point size = new Point();
 		display.getSize(size);
@@ -94,11 +94,18 @@ public class MainActivity extends AppCompatActivity {
 				ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
 			}
 		}
+
+		this.setUpDrawer();
+
+		this.mPlayer = MediaPlayer.create(this, R.raw.crea_session_8);
+		this.mPlayer.setLooping(true);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
+		this.menu = menu;
+		this.menu.getItem(1).setVisible(false);
 		return true;
 	}
 
@@ -128,6 +135,20 @@ public class MainActivity extends AppCompatActivity {
 				getSupportActionBar().hide();
 				showToolBarButton.setVisibility(View.VISIBLE);
 				return true;
+			case R.id.play_pause_toolbar:
+				if(this.mPlayer.isPlaying()) {
+					menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.play_icon));
+					this.mPlayer.pause();
+				} else {
+					menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.pause_icon));
+					this.mPlayer.start();
+				}
+				return true;
+			case R.id.cardboard_toolbar:
+				Intent intent = new Intent(this, MyGvrActivity.class);
+				intent.putExtra(MainActivity.ID_RENDERER, this.idVusalisation);
+				startActivity(intent);
+				return true;
 		}
 		return super.onOptionsItemSelected(item);
 	}
@@ -142,10 +163,12 @@ public class MainActivity extends AppCompatActivity {
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				idVusalisation = 0;
 				myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);
 				myGLSurfaceView.setVisualization(new Spectrum());
 				linearLayoutSurfaceView.removeAllViews();
 				linearLayoutSurfaceView.addView(myGLSurfaceView);
+				menu.getItem(1).setVisible(false);
 				drawerLayout.closeDrawers();
 			}
 		});
@@ -156,10 +179,12 @@ public class MainActivity extends AppCompatActivity {
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
+				idVusalisation = 1;
 				myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);
 				myGLSurfaceView.setVisualization(new Icosahedron());
 				linearLayoutSurfaceView.removeAllViews();
 				linearLayoutSurfaceView.addView(myGLSurfaceView);
+				menu.getItem(1).setVisible(true);
 				drawerLayout.closeDrawers();
 			}
 		});
@@ -182,7 +207,7 @@ public class MainActivity extends AppCompatActivity {
             intent.putExtra(MainActivity.SCREEN_PORTRAIT, Boolean.toString(this.getOrientationPortrait(this.idVusalisation)));
             startActivity(intent);
         } else if (this.useVR) {
-            Intent intent = new Intent(this, ObjVRActivity.class);
+            Intent intent = new Intent(this, MyGvrActivity.class);
             intent.putExtra(MainActivity.USE_SAMPLE, Boolean.toString(this.useSample));
             intent.putExtra(MainActivity.ID_RENDERER, this.idVusalisation);
             startActivity(intent);

@@ -30,14 +30,12 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 	private final float[] mLightPosInWorldSpace;
 
 	private float[] mCameraPosition;
-	private float[] mCameraDirection;
-	private float[] mCameraUp;
 
 	private float projectionAngle;
 
 	private float ratio;
 
-	private final float TOUCH_SCALE_FACTOR_MOVE = 0.1f;
+	private final float TOUCH_SCALE_FACTOR_MOVE = 0.05f;
 	private final float TOUCH_SCALE_FACTOR_ZOOM = 0.05f;
 	private float mPreviousX;
 	private float mPreviousY;
@@ -53,11 +51,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 
 		ratio = 1f;
 
-		mCameraDirection = new float[3];
-		mCameraDirection[2] = 1f;
 		mCameraPosition = new float[3];
-		mCameraUp = new float[3];
-		mCameraUp[1] = 1f;
 
 		mLightPosInModelSpace = new float[]{0.0f, 0.0f, 0.0f, 1.0f};
 		mLightPosInEyeSpace = new float[4];
