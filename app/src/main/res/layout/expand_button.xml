@@ -21,5 +21,6 @@
         android:layout_weight="0.75"
         android:background="@drawable/start_button"
         android:textColor="@color/black"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        android:text="▶"/>
 </LinearLayout>
