@@ -9,7 +9,7 @@
     <color name="black">#000000</color>
     <color name="colorButton">@color/colorTest2</color>
     <color name="colorNight">#191970</color>
-    <color name="synthBlue1">#00BFFF</color>
+    <color name="synthBlue1">#40BAFF</color>
     <color name="synthBlue2">#33B5E5</color>
     <color name="colorAnneSo">#061820</color>
     <color name="grey">#909090</color>

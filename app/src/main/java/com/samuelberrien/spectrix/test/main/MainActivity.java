@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
@@ -57,14 +58,12 @@ public class MainActivity extends AppCompatActivity {
 		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		this.drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		this.drawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout, 0, 0){
+		this.drawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout, 0, 0) {
 			@Override
-			public void onDrawerStateChanged(int newState){
-				if(newState == DrawerLayout.STATE_SETTLING) {
-					if(!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-						showToolBarButton.setVisibility(View.GONE);
-						getSupportActionBar().show();
-					}
+			public void onDrawerSlide(View drawerView, float slideOffset) {
+				if (slideOffset != 0) {
+					showToolBarButton.setVisibility(View.GONE);
+					getSupportActionBar().show();
 				}
 			}
 		};
@@ -145,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
 				showToolBarButton.setVisibility(View.VISIBLE);
 				return true;
 			case R.id.play_pause_toolbar:
-				if(this.mPlayer.isPlaying()) {
+				if (this.mPlayer.isPlaying()) {
 					menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.play_icon));
 					this.mPlayer.pause();
 				} else {
@@ -167,7 +166,11 @@ public class MainActivity extends AppCompatActivity {
 
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_scroll_view_visualisations);
 
-		Button button = new Button(this);
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+		layoutParams.setMargins(margin, margin, margin, 0);
+
+		Button button = (Button) getLayoutInflater().inflate(R.layout.button_drawer, null);
 		button.setText("Spectrum");
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -181,9 +184,10 @@ public class MainActivity extends AppCompatActivity {
 				drawerLayout.closeDrawers();
 			}
 		});
+		button.setLayoutParams(layoutParams);
 		linearLayout.addView(button);
 
-		button = new Button(this);
+		button = (Button) getLayoutInflater().inflate(R.layout.button_drawer, null);
 		button.setText("Icosahedrons");
 		button.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -197,6 +201,7 @@ public class MainActivity extends AppCompatActivity {
 				drawerLayout.closeDrawers();
 			}
 		});
+		button.setLayoutParams(layoutParams);
 		linearLayout.addView(button);
 
 		myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);

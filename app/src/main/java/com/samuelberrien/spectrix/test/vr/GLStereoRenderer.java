@@ -85,7 +85,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
 		// Apply the eye transformation to the camera.
-		Matrix.multiplyMM(mViewMatrix, 0, eye.getEyeView(), 0, mCamera, 0);
+		//Matrix.multiplyMM(mViewMatrix, 0, eye.getEyeView(), 0, mCamera, 0);
 
 		mProjectionMatrix = eye.getPerspective(Z_NEAR, Z_FAR);
 
@@ -97,7 +97,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 		float[] cam = new float[4];
 		Matrix.multiplyMV(cam, 0, this.mViewMatrix, 0, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ, 1.0f}, 0);
 
-		visualization.draw(mProjectionMatrix.clone(), mViewMatrix.clone(), mLightPosInEyeSpace.clone(), new float[]{cam[0], cam[1], cam[2]});
+		visualization.draw(mProjectionMatrix.clone(), eye.getEyeView().clone(), mLightPosInEyeSpace.clone(), new float[]{cam[0], cam[1], cam[2]});
 	}
 
 	@Override
