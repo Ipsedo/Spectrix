@@ -81,7 +81,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 				float dy = e.getY() + 1f - mPreviousY;
 
 				dy = -dy;
-				
+
 				float[] tmp1 = new float[16];
 				Matrix.setRotateM(tmp1, 0, dx * TOUCH_SCALE_FACTOR_MOVE, 0f, 1f, 0f);
 
