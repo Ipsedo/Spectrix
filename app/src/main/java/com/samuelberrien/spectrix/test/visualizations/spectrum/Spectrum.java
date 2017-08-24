@@ -84,7 +84,6 @@ public class Spectrum implements Visualization {
 				Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mMVPMatrix.clone(), 0);
 				square.draw(mMVPMatrix);
 			}
-			System.out.println("drawing");
 		}
 	}
 }

@@ -57,7 +57,17 @@ public class MainActivity extends AppCompatActivity {
 		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 		this.drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		this.drawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout, 0, 0);
+		this.drawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout, 0, 0){
+			@Override
+			public void onDrawerStateChanged(int newState){
+				if(newState == DrawerLayout.STATE_SETTLING) {
+					if(!drawerLayout.isDrawerOpen(GravityCompat.START)) {
+						showToolBarButton.setVisibility(View.GONE);
+						getSupportActionBar().show();
+					}
+				}
+			}
+		};
 		this.drawerLayout.addDrawerListener(this.drawerToggle);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
