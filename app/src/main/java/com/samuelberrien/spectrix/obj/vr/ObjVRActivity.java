@@ -3,7 +3,7 @@ package com.samuelberrien.spectrix.obj.vr;
 import android.os.Bundle;
 
 import com.google.vr.sdk.base.GvrActivity;
-import com.samuelberrien.spectrix.test.MainActivity;
+import com.samuelberrien.spectrix.test.main.MainActivity;
 
 public class ObjVRActivity extends GvrActivity {
 

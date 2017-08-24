@@ -8,7 +8,7 @@ import com.google.vr.sdk.base.Eye;
 import com.google.vr.sdk.base.GvrView;
 import com.google.vr.sdk.base.HeadTransform;
 import com.google.vr.sdk.base.Viewport;
-import com.samuelberrien.spectrix.test.Visualization;
+import com.samuelberrien.spectrix.test.utils.Visualization;
 
 import javax.microedition.khronos.egl.EGLConfig;
 

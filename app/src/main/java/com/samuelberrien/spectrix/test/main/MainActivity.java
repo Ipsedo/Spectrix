@@ -1,7 +1,6 @@
-package com.samuelberrien.spectrix.test;
+package com.samuelberrien.spectrix.test.main;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -20,12 +19,12 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 
 import com.samuelberrien.spectrix.R;
+import com.samuelberrien.spectrix.test.normal.MyGLSurfaceView;
 import com.samuelberrien.spectrix.test.visualizations.icosahedron.Icosahedron;
 import com.samuelberrien.spectrix.test.visualizations.spectrum.Spectrum;
 import com.samuelberrien.spectrix.test.vr.MyGvrActivity;

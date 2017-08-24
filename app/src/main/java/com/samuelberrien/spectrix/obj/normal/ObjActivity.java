@@ -6,7 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.samuelberrien.spectrix.test.MainActivity;
+import com.samuelberrien.spectrix.test.main.MainActivity;
 
 public class ObjActivity extends AppCompatActivity {
 

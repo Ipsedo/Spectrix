@@ -7,7 +7,7 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.samuelberrien.spectrix.test.MainActivity;
+import com.samuelberrien.spectrix.test.main.MainActivity;
 
 
 /**

@@ -1,4 +1,4 @@
-package com.samuelberrien.spectrix.test;
+package com.samuelberrien.spectrix.test.utils;
 
 import android.content.Context;
 

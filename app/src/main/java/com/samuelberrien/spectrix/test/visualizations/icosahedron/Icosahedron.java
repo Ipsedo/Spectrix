@@ -4,7 +4,7 @@ import android.content.Context;
 import android.opengl.Matrix;
 
 import com.samuelberrien.spectrix.obj.drawable.ObjModelMtl;
-import com.samuelberrien.spectrix.test.Visualization;
+import com.samuelberrien.spectrix.test.utils.Visualization;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;

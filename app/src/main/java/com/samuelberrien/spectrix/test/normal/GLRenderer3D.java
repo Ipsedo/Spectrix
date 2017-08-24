@@ -1,4 +1,4 @@
-package com.samuelberrien.spectrix.test;
+package com.samuelberrien.spectrix.test.normal;
 
 import android.content.Context;
 import android.opengl.GLES20;
@@ -6,10 +6,10 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.view.MotionEvent;
 
+import com.samuelberrien.spectrix.test.utils.Visualization;
+
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
-
-import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
 /**
  * Created by samuel on 23/08/17.

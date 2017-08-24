@@ -1,9 +1,12 @@
-package com.samuelberrien.spectrix.test;
+package com.samuelberrien.spectrix.test.normal;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+
+import com.samuelberrien.spectrix.test.utils.UpdateThread;
+import com.samuelberrien.spectrix.test.utils.Visualization;
 
 /**
  * Created by samuel on 23/08/17.

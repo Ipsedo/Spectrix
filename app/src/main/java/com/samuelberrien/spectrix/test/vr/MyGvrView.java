@@ -1,20 +1,10 @@
 package com.samuelberrien.spectrix.test.vr;
 
 import android.content.Context;
-import android.media.MediaPlayer;
-import android.media.audiofx.Visualizer;
-import android.os.AsyncTask;
 
 import com.google.vr.sdk.base.GvrView;
-import com.samuelberrien.spectrix.R;
-import com.samuelberrien.spectrix.obj.vr.ObjStereoRenderer;
-import com.samuelberrien.spectrix.obj.vr.renderers.ObjStereoRendererCanyon;
-import com.samuelberrien.spectrix.obj.vr.renderers.ObjStereoRendererExplosion;
-import com.samuelberrien.spectrix.obj.vr.renderers.ObjStereoRendererIcosahedron;
-import com.samuelberrien.spectrix.obj.vr.renderers.ObjStereoRendererRoom;
-import com.samuelberrien.spectrix.obj.vr.renderers.ObjStereoRendererSnow;
-import com.samuelberrien.spectrix.test.UpdateThread;
-import com.samuelberrien.spectrix.test.Visualization;
+import com.samuelberrien.spectrix.test.utils.UpdateThread;
+import com.samuelberrien.spectrix.test.utils.Visualization;
 
 /**
  * Created by samuel on 11/01/17.

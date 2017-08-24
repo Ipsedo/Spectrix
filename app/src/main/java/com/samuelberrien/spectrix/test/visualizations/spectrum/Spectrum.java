@@ -3,7 +3,7 @@ package com.samuelberrien.spectrix.test.visualizations.spectrum;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.test.Visualization;
+import com.samuelberrien.spectrix.test.utils.Visualization;
 
 import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
 
