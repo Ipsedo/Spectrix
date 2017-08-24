@@ -118,6 +118,11 @@ public class Icosahedron implements Visualization {
 		}
 	}
 
+	@Override
+	public String getString() {
+		return "Icosahedron";
+	}
+
 	private void setupIcosahedrons() {
 		this.icosahedron = new ObjModelMtl(this.context, "obj/icosahedron/icosahedron_obj.obj", "obj/icosahedron/icosahedron_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF);
 		for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {

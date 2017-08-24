@@ -23,12 +23,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.samuelberrien.spectrix.R;
 import com.samuelberrien.spectrix.test.normal.MyGLSurfaceView;
+import com.samuelberrien.spectrix.test.utils.VisualizationHelper;
 import com.samuelberrien.spectrix.test.visualizations.icosahedron.Icosahedron;
 import com.samuelberrien.spectrix.test.visualizations.spectrum.Spectrum;
 import com.samuelberrien.spectrix.test.vr.MyGvrActivity;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -51,9 +55,12 @@ public class MainActivity extends AppCompatActivity {
 
 	private int idVusalisation = 0;
 
+	ArrayList<Button> buttonsDrawer;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		buttonsDrawer = new ArrayList<>();
 		setContentView(R.layout.activity_main);
 		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -169,40 +176,45 @@ public class MainActivity extends AppCompatActivity {
 		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
 		layoutParams.setMargins(margin, margin, margin, 0);
+		layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
 
-		Button button = (Button) getLayoutInflater().inflate(R.layout.button_drawer, null);
-		button.setText("Spectrum");
-		button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				idVusalisation = 0;
-				myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);
-				myGLSurfaceView.setVisualization(new Spectrum());
-				linearLayoutSurfaceView.removeAllViews();
-				linearLayoutSurfaceView.addView(myGLSurfaceView);
-				menu.getItem(1).setVisible(false);
-				drawerLayout.closeDrawers();
-			}
-		});
-		button.setLayoutParams(layoutParams);
-		linearLayout.addView(button);
+		for (int i = 0; i < VisualizationHelper.NB_VISUALIZATIONS; i++) {
+			LinearLayout expandButton = (LinearLayout) getLayoutInflater().inflate(R.layout.expand_button, null);
 
-		button = (Button) getLayoutInflater().inflate(R.layout.button_drawer, null);
-		button.setText("Icosahedrons");
-		button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				idVusalisation = 1;
-				myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);
-				myGLSurfaceView.setVisualization(new Icosahedron());
-				linearLayoutSurfaceView.removeAllViews();
-				linearLayoutSurfaceView.addView(myGLSurfaceView);
-				menu.getItem(1).setVisible(true);
-				drawerLayout.closeDrawers();
-			}
-		});
-		button.setLayoutParams(layoutParams);
-		linearLayout.addView(button);
+			TextView levelName = (TextView) expandButton.findViewById(R.id.expand_text);
+			levelName.setText(VisualizationHelper.getVisualization(i).getString());
+
+			final int index = i;
+			final Button start = (Button) expandButton.findViewById(R.id.expand_button);
+			buttonsDrawer.add(start);
+			start.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					idVusalisation = index;
+					myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);
+					myGLSurfaceView.setVisualization(VisualizationHelper.getVisualization(index));
+					linearLayoutSurfaceView.removeAllViews();
+					linearLayoutSurfaceView.addView(myGLSurfaceView);
+					if(index == 0) {
+						menu.getItem(1).setVisible(false);
+					} else {
+						menu.getItem(1).setVisible(true);
+					}
+					drawerLayout.closeDrawers();
+				}
+			});
+
+			levelName.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					for (Button b : buttonsDrawer)
+						b.setVisibility(View.GONE);
+					start.setVisibility(View.VISIBLE);
+				}
+			});
+			expandButton.setLayoutParams(layoutParams);
+			linearLayout.addView(expandButton);
+		}
 
 		myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);
 		myGLSurfaceView.setVisualization(new Spectrum());

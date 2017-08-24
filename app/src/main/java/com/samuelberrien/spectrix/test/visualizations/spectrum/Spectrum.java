@@ -86,4 +86,9 @@ public class Spectrum implements Visualization {
 			}
 		}
 	}
+
+	@Override
+	public String getString() {
+		return "Spectrum";
+	}
 }

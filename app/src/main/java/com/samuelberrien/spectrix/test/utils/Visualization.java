@@ -2,12 +2,14 @@ package com.samuelberrien.spectrix.test.utils;
 
 import android.content.Context;
 
+import com.samuelberrien.spectrix.test.visualizations.icosahedron.Icosahedron;
+import com.samuelberrien.spectrix.test.visualizations.spectrum.Spectrum;
+
 /**
  * Created by samuel on 23/08/17.
  */
 
 public interface Visualization {
-
 	void init(Context context);
 
 	boolean isInit();
@@ -17,4 +19,6 @@ public interface Visualization {
 	void update(float[] freqArray);
 
 	void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
+
+	String getString();
 }
