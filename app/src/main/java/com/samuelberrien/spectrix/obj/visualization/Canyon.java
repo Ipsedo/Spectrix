@@ -15,63 +15,60 @@ import com.samuelberrien.spectrix.obj.drawable.HeightMap;
  */
 
 public class Canyon {
-    
-    private float[] freqArray = new float[Visualizer.getCaptureSizeRange()[1]];
 
-    private HeightMap canyon;
-    private float mCanyonScale;
-    private float[] mCanyonModelMatrix;
+	private float[] freqArray = new float[Visualizer.getCaptureSizeRange()[1]];
 
-    /**
-     *
-     * @param context
-     * @param mCanyonScale
-     */
-    public Canyon(Context context, float mCanyonScale){
-        this.canyon = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f);
-        this.mCanyonModelMatrix = new float[16];
-        this.mCanyonScale = mCanyonScale;
-    }
+	private HeightMap canyon;
+	private float mCanyonScale;
+	private float[] mCanyonModelMatrix;
 
-    /**
-     *
-     */
-    private void updateMap() {
-        float[] mModelMatrix = new float[16];
-        Matrix.setIdentityM(mModelMatrix, 0);
+	/**
+	 * @param context
+	 * @param mCanyonScale
+	 */
+	public Canyon(Context context, float mCanyonScale) {
+		this.canyon = new HeightMap(context, R.drawable.canyon_6_hm_2, R.drawable.canyon_6_tex_2, 0.025f, 0.8f, 3e-5f);
+		this.mCanyonModelMatrix = new float[16];
+		this.mCanyonScale = mCanyonScale;
+	}
 
-        Matrix.translateM(mModelMatrix, 0, -0.5f * this.mCanyonScale, -0.5f, -0.5f * this.mCanyonScale);
-        Matrix.scaleM(mModelMatrix, 0, this.mCanyonScale, this.mCanyonScale, this.mCanyonScale);
-        this.mCanyonModelMatrix = mModelMatrix.clone();
-    }
+	/**
+	 *
+	 */
+	private void updateMap() {
+		float[] mModelMatrix = new float[16];
+		Matrix.setIdentityM(mModelMatrix, 0);
 
-    /**
-     *
-     */
-    public void updateCanyon(){
-        this.updateMap();
-    }
+		Matrix.translateM(mModelMatrix, 0, -0.5f * this.mCanyonScale, -0.5f, -0.5f * this.mCanyonScale);
+		Matrix.scaleM(mModelMatrix, 0, this.mCanyonScale, this.mCanyonScale, this.mCanyonScale);
+		this.mCanyonModelMatrix = mModelMatrix.clone();
+	}
 
-    /**
-     *
-     * @param freqArray
-     */
-    public void update(float[] freqArray){
-        this.freqArray = freqArray;
-    }
+	/**
+	 *
+	 */
+	public void updateCanyon() {
+		this.updateMap();
+	}
 
-    /**
-     *
-     * @param mProjectionMatrix
-     * @param mViewMatrix
-     * @param mLightPosInEyeSpace
-     * @param mCameraPosition
-     */
-    public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-        float[] tmpMVMatrix = new float[16];
-        float[] tmpMVPMatrix = new float[16];
-        Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mCanyonModelMatrix, 0);
-        Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-        this.canyon.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace);
-    }
+	/**
+	 * @param freqArray
+	 */
+	public void update(float[] freqArray) {
+		this.freqArray = freqArray;
+	}
+
+	/**
+	 * @param mProjectionMatrix
+	 * @param mViewMatrix
+	 * @param mLightPosInEyeSpace
+	 * @param mCameraPosition
+	 */
+	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+		float[] tmpMVMatrix = new float[16];
+		float[] tmpMVPMatrix = new float[16];
+		Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, this.mCanyonModelMatrix, 0);
+		Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
+		this.canyon.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace);
+	}
 }

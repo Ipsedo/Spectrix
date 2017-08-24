@@ -17,28 +17,28 @@ import javax.microedition.khronos.opengles.GL10;
  */
 
 public class ObjGLRendererTextSpec extends ObjGLRenderer {
-    private TestSpecular test;
+	private TestSpecular test;
 
-    public ObjGLRendererTextSpec(Context context) {
-        super(context);
-        super.mCameraPosition[1] = 4f;
-    }
+	public ObjGLRendererTextSpec(Context context) {
+		super(context);
+		super.mCameraPosition[1] = 4f;
+	}
 
-    public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-        super.onSurfaceCreated(unused, config);
-        GLES20.glClearColor(0.5f, 0.9f, 0.9f, 1.0f);
-        this.test = new TestSpecular(this.context);
-    }
+	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
+		super.onSurfaceCreated(unused, config);
+		GLES20.glClearColor(0.5f, 0.9f, 0.9f, 1.0f);
+		this.test = new TestSpecular(this.context);
+	}
 
-    public void update(float[] freqArray) {
-        if (this.test != null) {
-            this.test.update();
-        }
-        this.updateLight(0f, 5f * 50f, 0f);
-    }
+	public void update(float[] freqArray) {
+		if (this.test != null) {
+			this.test.update();
+		}
+		this.updateLight(0f, 5f * 50f, 0f);
+	}
 
-    public void onDrawFrame(GL10 unused) {
-        super.onDrawFrame(unused);
-        this.test.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, super.mCameraPosition);
-    }
+	public void onDrawFrame(GL10 unused) {
+		super.onDrawFrame(unused);
+		this.test.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, super.mCameraPosition);
+	}
 }

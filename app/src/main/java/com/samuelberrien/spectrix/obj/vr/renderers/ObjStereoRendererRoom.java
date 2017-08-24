@@ -13,39 +13,39 @@ import javax.microedition.khronos.egl.EGLConfig;
  * Created by samuel on 14/01/17.
  */
 
-public class ObjStereoRendererRoom extends ObjStereoRenderer{
+public class ObjStereoRendererRoom extends ObjStereoRenderer {
 
-    private final float SCALE = 1f;
+	private final float SCALE = 1f;
 
-    private Room roomVisualization;
+	private Room roomVisualization;
 
-    public ObjStereoRendererRoom(Context context){
-        super(context);
-        this.mCameraZ = -2f * SCALE;
-        this.mCameraY = 6f * SCALE;
-    }
+	public ObjStereoRendererRoom(Context context) {
+		super(context);
+		this.mCameraZ = -2f * SCALE;
+		this.mCameraY = 6f * SCALE;
+	}
 
-    public void onSurfaceCreated(EGLConfig config) {
-        super.onSurfaceCreated(config);
-        this.roomVisualization = new Room(this.context, SCALE);
-    }
+	public void onSurfaceCreated(EGLConfig config) {
+		super.onSurfaceCreated(config);
+		this.roomVisualization = new Room(this.context, SCALE);
+	}
 
-    public void update(float[] freqArray) {
-        float tmp[] = new float[3];
-        if(this.roomVisualization != null) {
-            this.roomVisualization.update(freqArray);
-            tmp = this.roomVisualization.getLightPos();
-        }
-        this.updateLight(tmp[0], tmp[1], tmp[2]);
-    }
+	public void update(float[] freqArray) {
+		float tmp[] = new float[3];
+		if (this.roomVisualization != null) {
+			this.roomVisualization.update(freqArray);
+			tmp = this.roomVisualization.getLightPos();
+		}
+		this.updateLight(tmp[0], tmp[1], tmp[2]);
+	}
 
-    public void onNewFrame(HeadTransform headTransform) {
-        super.onNewFrame(headTransform);
-        this.roomVisualization.updateRoom();
-    }
+	public void onNewFrame(HeadTransform headTransform) {
+		super.onNewFrame(headTransform);
+		this.roomVisualization.updateRoom();
+	}
 
-    public void onDrawEye(Eye eye) {
-        super.onDrawEye(eye);
-        this.roomVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
-    }
+	public void onDrawEye(Eye eye) {
+		super.onDrawEye(eye);
+		this.roomVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
+	}
 }

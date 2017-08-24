@@ -17,27 +17,27 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class ObjGLRendererExplosion extends ObjGLRenderer {
 
-    private Explosion explosionVisualization;
+	private Explosion explosionVisualization;
 
-    public ObjGLRendererExplosion(Context context) {
-        super(context);
-    }
+	public ObjGLRendererExplosion(Context context) {
+		super(context);
+	}
 
-    public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-        super.onSurfaceCreated(unused, config);
-        this.explosionVisualization = new Explosion(this.context, 256, 3, 5, 2.5f, 20f, 5f);
-    }
+	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
+		super.onSurfaceCreated(unused, config);
+		this.explosionVisualization = new Explosion(this.context, 256, 3, 5, 2.5f, 20f, 5f);
+	}
 
-    public void update(float[] freqArray) {
-        if (this.explosionVisualization != null) {
-            this.explosionVisualization.update(freqArray, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2]);
-        }
-        this.updateLight(0f, 0f, 0f);
-    }
+	public void update(float[] freqArray) {
+		if (this.explosionVisualization != null) {
+			this.explosionVisualization.update(freqArray, this.mCameraDirection[0], this.mCameraDirection[1], this.mCameraDirection[2]);
+		}
+		this.updateLight(0f, 0f, 0f);
+	}
 
-    public void onDrawFrame(GL10 unused) {
-        super.onDrawFrame(unused);
-        this.explosionVisualization.updateVisualization();
-        this.explosionVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
-    }
+	public void onDrawFrame(GL10 unused) {
+		super.onDrawFrame(unused);
+		this.explosionVisualization.updateVisualization();
+		this.explosionVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
+	}
 }

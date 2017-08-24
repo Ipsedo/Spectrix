@@ -14,29 +14,29 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class ObjGLRendererSnow extends ObjGLRenderer {
 
-    private Snow snowVisualization;
+	private Snow snowVisualization;
 
-    public ObjGLRendererSnow(Context context) {
-        super(context);
-        super.mCameraPosition[1] = 2f;
-    }
+	public ObjGLRendererSnow(Context context) {
+		super(context);
+		super.mCameraPosition[1] = 2f;
+	}
 
-    public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-        super.onSurfaceCreated(unused, config);
-        this.snowVisualization = new Snow(this.context, 16, 16, 3, 16);
-    }
+	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
+		super.onSurfaceCreated(unused, config);
+		this.snowVisualization = new Snow(this.context, 16, 16, 3, 16);
+	}
 
-    public void update(float[] freqArray) {
-        if (this.snowVisualization != null) {
-            this.snowVisualization.update(freqArray);
-        }
-        this.updateLight(0f, 2f, 0f);
-    }
+	public void update(float[] freqArray) {
+		if (this.snowVisualization != null) {
+			this.snowVisualization.update(freqArray);
+		}
+		this.updateLight(0f, 2f, 0f);
+	}
 
-    public void onDrawFrame(GL10 unused) {
-        super.onDrawFrame(unused);
-        this.snowVisualization.updateSnow();
-        this.snowVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, super.mCameraPosition);
-    }
+	public void onDrawFrame(GL10 unused) {
+		super.onDrawFrame(unused);
+		this.snowVisualization.updateSnow();
+		this.snowVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, super.mCameraPosition);
+	}
 
 }

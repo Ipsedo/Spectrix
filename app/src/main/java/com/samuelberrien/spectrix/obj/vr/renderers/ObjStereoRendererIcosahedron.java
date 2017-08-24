@@ -16,33 +16,33 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 public class ObjStereoRendererIcosahedron extends ObjStereoRenderer {
 
-    private Icosahedron icosahedronVisualization;
+	private Icosahedron icosahedronVisualization;
 
-    public ObjStereoRendererIcosahedron(Context context){
-        super(context);
-    }
+	public ObjStereoRendererIcosahedron(Context context) {
+		super(context);
+	}
 
-    public void onSurfaceCreated(EGLConfig config) {
-        super.onSurfaceCreated(config);
-        this.icosahedronVisualization = new Icosahedron(this.context, 128, 2, 10f, 10f);
-    }
+	public void onSurfaceCreated(EGLConfig config) {
+		super.onSurfaceCreated(config);
+		this.icosahedronVisualization = new Icosahedron(this.context, 128, 2, 10f, 10f);
+	}
 
-    public void update(float[] freqArray) {
-        if(this.icosahedronVisualization != null) {
-            this.icosahedronVisualization.updateFreq(freqArray);
-        }
-        this.updateLight(0f, 0f, 0f);
-    }
+	public void update(float[] freqArray) {
+		if (this.icosahedronVisualization != null) {
+			this.icosahedronVisualization.updateFreq(freqArray);
+		}
+		this.updateLight(0f, 0f, 0f);
+	}
 
-    public void onNewFrame(HeadTransform headTransform) {
-        super.onNewFrame(headTransform);
-        this.icosahedronVisualization.updateIcosahedrons();
-    }
+	public void onNewFrame(HeadTransform headTransform) {
+		super.onNewFrame(headTransform);
+		this.icosahedronVisualization.updateIcosahedrons();
+	}
 
-    public void onDrawEye(Eye eye) {
-        super.onDrawEye(eye);
-        float[] cam = new float[4];
-        Matrix.multiplyMV(cam, 0, this.mViewMatrix, 0, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ, 1.0f}, 0);
-        this.icosahedronVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{cam[0], cam[1], cam[2]});
-    }
+	public void onDrawEye(Eye eye) {
+		super.onDrawEye(eye);
+		float[] cam = new float[4];
+		Matrix.multiplyMV(cam, 0, this.mViewMatrix, 0, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ, 1.0f}, 0);
+		this.icosahedronVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{cam[0], cam[1], cam[2]});
+	}
 }

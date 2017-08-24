@@ -14,4 +14,5 @@
     <color name="colorAnneSo">#061820</color>
     <color name="grey">#909090</color>
     <color name="colorText">@color/black</color>
+    <color name="white">#EEEEEE</color>
 </resources>

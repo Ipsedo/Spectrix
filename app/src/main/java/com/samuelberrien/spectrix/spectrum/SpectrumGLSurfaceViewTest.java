@@ -16,112 +16,112 @@ import com.samuelberrien.spectrix.R;
 
 public class SpectrumGLSurfaceViewTest extends GLSurfaceView {
 
-    private final SpectrumGLRendererLand mRendererLand = new SpectrumGLRendererLand();
-    private final SpectrumGLRenderer mRenderer = new SpectrumGLRenderer();
+	private final SpectrumGLRendererLand mRendererLand = new SpectrumGLRendererLand();
+	private final SpectrumGLRenderer mRenderer = new SpectrumGLRenderer();
 
-    private GetFFT getFft;
+	private GetFFT getFft;
 
-    private MediaPlayer mPlayer;
+	private MediaPlayer mPlayer;
 
-    private boolean useSample;
+	private boolean useSample;
 
-    private boolean isPortrait;
+	private boolean isPortrait;
 
-    public SpectrumGLSurfaceViewTest(Context context, boolean useSample, boolean isPortrait) {
-        super(context);
+	public SpectrumGLSurfaceViewTest(Context context, boolean useSample, boolean isPortrait) {
+		super(context);
 
-        setEGLContextClientVersion(2);
+		setEGLContextClientVersion(2);
 
-        this.useSample = useSample;
+		this.useSample = useSample;
 
-        this.isPortrait = isPortrait;
+		this.isPortrait = isPortrait;
 
-        // Set the Renderer for drawing on the GLSurfaceView
-        if (this.isPortrait) {
-            setRenderer(mRenderer);
-        } else {
-            setRenderer(mRendererLand);
-        }
+		// Set the Renderer for drawing on the GLSurfaceView
+		if (this.isPortrait) {
+			setRenderer(mRenderer);
+		} else {
+			setRenderer(mRendererLand);
+		}
 
-        if (this.useSample) {
-            this.mPlayer = MediaPlayer.create(context, R.raw.crea_session_8);
-            this.mPlayer.start();
-        }
+		if (this.useSample) {
+			this.mPlayer = MediaPlayer.create(context, R.raw.crea_session_8);
+			this.mPlayer.start();
+		}
 
-        this.getFft = new GetFFT();
-        this.getFft.execute();
+		this.getFft = new GetFFT();
+		this.getFft.execute();
 
-    }
+	}
 
-    public void onPause() {
-        this.getFft.cancel(true);
-        if (this.useSample) {
-            this.mPlayer.pause();
-        }
-        super.onPause();
-    }
+	public void onPause() {
+		this.getFft.cancel(true);
+		if (this.useSample) {
+			this.mPlayer.pause();
+		}
+		super.onPause();
+	}
 
-    public void onResume() {
-        super.onResume();
-        if (this.useSample) {
-            this.mPlayer.start();
-        }
-        if (this.getFft.isCancelled()) {
-            this.getFft.cancel(false);
-        }
-        if (this.getFft.getStatus() == AsyncTask.Status.FINISHED) {
-            this.getFft = new GetFFT();
-            this.getFft.execute();
-        }
-    }
+	public void onResume() {
+		super.onResume();
+		if (this.useSample) {
+			this.mPlayer.start();
+		}
+		if (this.getFft.isCancelled()) {
+			this.getFft.cancel(false);
+		}
+		if (this.getFft.getStatus() == AsyncTask.Status.FINISHED) {
+			this.getFft = new GetFFT();
+			this.getFft.execute();
+		}
+	}
 
-    public void updateVolume(int keycode) {
-    }
+	public void updateVolume(int keycode) {
+	}
 
-    private class GetFFT extends AsyncTask<String, Void, Void> {
+	private class GetFFT extends AsyncTask<String, Void, Void> {
 
-        private static final int RECORDER_SAMPLERATE = 8000;
-        private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
-        private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
-        private AudioRecord recorder;
-        private int bufferElements;
-        private int bytesPerElement = 2; // 2 bytes in 16bit format
+		private static final int RECORDER_SAMPLERATE = 8000;
+		private static final int RECORDER_CHANNELS = AudioFormat.CHANNEL_IN_MONO;
+		private static final int RECORDER_AUDIO_ENCODING = AudioFormat.ENCODING_PCM_16BIT;
+		private AudioRecord recorder;
+		private int bufferElements;
+		private int bytesPerElement = 2; // 2 bytes in 16bit format
 
-        private byte[] short2byte(short[] sData) {
-            int shortArrsize = sData.length;
-            byte[] bytes = new byte[shortArrsize * 2];
-            for (int i = 0; i < shortArrsize; i++) {
-                bytes[i * 2] = (byte) (sData[i] & 0x00FF);
-                bytes[(i * 2) + 1] = (byte) (sData[i] >> 8);
-                sData[i] = 0;
-            }
-            return bytes;
-        }
+		private byte[] short2byte(short[] sData) {
+			int shortArrsize = sData.length;
+			byte[] bytes = new byte[shortArrsize * 2];
+			for (int i = 0; i < shortArrsize; i++) {
+				bytes[i * 2] = (byte) (sData[i] & 0x00FF);
+				bytes[(i * 2) + 1] = (byte) (sData[i] >> 8);
+				sData[i] = 0;
+			}
+			return bytes;
+		}
 
-        @Override
-        protected Void doInBackground(String[] param) {
-            this.bufferElements = AudioRecord.getMinBufferSize(RECORDER_SAMPLERATE, RECORDER_CHANNELS, RECORDER_AUDIO_ENCODING);
-            this.recorder = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, RECORDER_SAMPLERATE, RECORDER_CHANNELS, RECORDER_AUDIO_ENCODING, bufferElements * bytesPerElement);
+		@Override
+		protected Void doInBackground(String[] param) {
+			this.bufferElements = AudioRecord.getMinBufferSize(RECORDER_SAMPLERATE, RECORDER_CHANNELS, RECORDER_AUDIO_ENCODING);
+			this.recorder = new AudioRecord(MediaRecorder.AudioSource.DEFAULT, RECORDER_SAMPLERATE, RECORDER_CHANNELS, RECORDER_AUDIO_ENCODING, bufferElements * bytesPerElement);
 
-            this.recorder.startRecording();
+			this.recorder.startRecording();
 
-            short sData[] = new short[bufferElements];
+			short sData[] = new short[bufferElements];
 
-            while (!this.isCancelled()) {
-                this.recorder.read(sData, 0, bufferElements);
-                System.out.println(sData.length + " " + sData[(int) (Math.random() * sData.length)]);
-                try {
-                    Thread.sleep(1000L / 120L);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
+			while (!this.isCancelled()) {
+				this.recorder.read(sData, 0, bufferElements);
+				System.out.println(sData.length + " " + sData[(int) (Math.random() * sData.length)]);
+				try {
+					Thread.sleep(1000L / 120L);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 
-            this.recorder.stop();
-            this.recorder.release();
-            this.recorder = null;
+			this.recorder.stop();
+			this.recorder.release();
+			this.recorder = null;
 
-            return null;
-        }
-    }
+			return null;
+		}
+	}
 }

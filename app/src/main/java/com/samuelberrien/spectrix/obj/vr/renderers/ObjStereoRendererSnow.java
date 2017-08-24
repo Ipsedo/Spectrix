@@ -16,34 +16,34 @@ import javax.microedition.khronos.egl.EGLConfig;
 
 public class ObjStereoRendererSnow extends ObjStereoRenderer {
 
-    private Snow snowVisualization;
+	private Snow snowVisualization;
 
-    public ObjStereoRendererSnow(Context context){
-        super(context);
-        this.mCameraY = 2f;
-    }
+	public ObjStereoRendererSnow(Context context) {
+		super(context);
+		this.mCameraY = 2f;
+	}
 
-    public void onSurfaceCreated(EGLConfig config) {
-        super.onSurfaceCreated(config);
-        this.snowVisualization = new Snow(this.context, 10, 16, 3, 10);
-    }
+	public void onSurfaceCreated(EGLConfig config) {
+		super.onSurfaceCreated(config);
+		this.snowVisualization = new Snow(this.context, 10, 16, 3, 10);
+	}
 
-    public void update(float[] freqArray) {
-        if(this.snowVisualization != null) {
-            this.snowVisualization.update(freqArray);
-        }
-        this.updateLight(0f, 2f, 0f);
-    }
+	public void update(float[] freqArray) {
+		if (this.snowVisualization != null) {
+			this.snowVisualization.update(freqArray);
+		}
+		this.updateLight(0f, 2f, 0f);
+	}
 
-    public void onNewFrame(HeadTransform headTransform) {
-        super.onNewFrame(headTransform);
-        this.snowVisualization.updateSnow();
-    }
+	public void onNewFrame(HeadTransform headTransform) {
+		super.onNewFrame(headTransform);
+		this.snowVisualization.updateSnow();
+	}
 
-    public void onDrawEye(Eye eye) {
-        super.onDrawEye(eye);
-        float[] cam = new float[4];
-        Matrix.multiplyMV(cam, 0, this.mViewMatrix, 0, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ, 1.0f}, 0);
-        this.snowVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{cam[0], cam[1], cam[2]});
-    }
+	public void onDrawEye(Eye eye) {
+		super.onDrawEye(eye);
+		float[] cam = new float[4];
+		Matrix.multiplyMV(cam, 0, this.mViewMatrix, 0, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ, 1.0f}, 0);
+		this.snowVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace, new float[]{cam[0], cam[1], cam[2]});
+	}
 }

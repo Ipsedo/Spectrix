@@ -14,33 +14,33 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class ObjGLRendererRoom extends ObjGLRenderer {
 
-    private Room roomVisualization;
+	private Room roomVisualization;
 
-    private final float SCALE = 1f;
+	private final float SCALE = 1f;
 
-    public ObjGLRendererRoom(Context context) {
-        super(context);
-        super.mCameraPosition[2] = -2f * SCALE;
-        super.mCameraPosition[1] = 6f * SCALE;
-    }
+	public ObjGLRendererRoom(Context context) {
+		super(context);
+		super.mCameraPosition[2] = -2f * SCALE;
+		super.mCameraPosition[1] = 6f * SCALE;
+	}
 
-    public void onSurfaceCreated(GL10 unused, EGLConfig config) {
-        super.onSurfaceCreated(unused, config);
-        this.roomVisualization = new Room(this.context, SCALE);
-    }
+	public void onSurfaceCreated(GL10 unused, EGLConfig config) {
+		super.onSurfaceCreated(unused, config);
+		this.roomVisualization = new Room(this.context, SCALE);
+	}
 
-    public void update(float[] freqArray) {
-        float tmp[] = new float[3];
-        if (this.roomVisualization != null) {
-            this.roomVisualization.update(freqArray);
-            tmp = this.roomVisualization.getLightPos();
-        }
-        this.updateLight(tmp[0], tmp[1], tmp[2]);
-    }
+	public void update(float[] freqArray) {
+		float tmp[] = new float[3];
+		if (this.roomVisualization != null) {
+			this.roomVisualization.update(freqArray);
+			tmp = this.roomVisualization.getLightPos();
+		}
+		this.updateLight(tmp[0], tmp[1], tmp[2]);
+	}
 
-    public void onDrawFrame(GL10 unused) {
-        super.onDrawFrame(unused);
-        this.roomVisualization.updateRoom();
-        this.roomVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
-    }
+	public void onDrawFrame(GL10 unused) {
+		super.onDrawFrame(unused);
+		this.roomVisualization.updateRoom();
+		this.roomVisualization.draw(this.mProjectionMatrix, this.mViewMatrix, this.mLightPosInEyeSpace);
+	}
 }
