@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <android.support.v4.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
@@ -30,26 +29,50 @@
     </LinearLayout>
 
 
-    <FrameLayout
+    <!--<FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="left">-->
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="left"
-        android:background="@color/colorDrawer">
+        android:orientation="vertical">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="0.7"
+            android:background="@color/white"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitStart"
+                android:src="@drawable/spectrix_logo"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="0.3"
+            android:background="@color/colorButton"
             android:orientation="vertical">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="20dp"
                 android:gravity="center"
                 android:text="Choose your visualization :"/>
 
             <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <LinearLayout
                     android:id="@+id/layout_scroll_view_visualisations"
                     android:layout_width="match_parent"
@@ -57,7 +80,9 @@
                     android:orientation="vertical"/>
             </ScrollView>
         </LinearLayout>
+    </LinearLayout>
 
-    </FrameLayout>
+
+    <!--</FrameLayout>-->
 </android.support.v4.widget.DrawerLayout>
 

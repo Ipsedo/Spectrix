@@ -64,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
 		setContentView(R.layout.activity_main);
 		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+
 		this.drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		this.drawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout, 0, 0) {
 			@Override
@@ -72,6 +73,9 @@ public class MainActivity extends AppCompatActivity {
 					showToolBarButton.setVisibility(View.GONE);
 					getSupportActionBar().show();
 				}
+				super.onDrawerSlide(drawerView, slideOffset);
+				//drawerLayout.bringChildToFront(drawerView);
+				drawerLayout.requestLayout();
 			}
 		};
 		this.drawerLayout.addDrawerListener(this.drawerToggle);
@@ -170,6 +174,10 @@ public class MainActivity extends AppCompatActivity {
 
 	private void setUpDrawer() {
 		final LinearLayout linearLayoutSurfaceView = (LinearLayout) findViewById(R.id.layout_surface_view);
+		myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);
+		myGLSurfaceView.setVisualization(new Spectrum());
+		linearLayoutSurfaceView.removeAllViews();
+		linearLayoutSurfaceView.addView(myGLSurfaceView);
 
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_scroll_view_visualisations);
 
@@ -215,11 +223,6 @@ public class MainActivity extends AppCompatActivity {
 			expandButton.setLayoutParams(layoutParams);
 			linearLayout.addView(expandButton);
 		}
-
-		myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);
-		myGLSurfaceView.setVisualization(new Spectrum());
-		linearLayoutSurfaceView.removeAllViews();
-		linearLayoutSurfaceView.addView(myGLSurfaceView);
 	}
 
     /*private boolean getOrientationPortrait(String idSpectrumAnalyser) {
