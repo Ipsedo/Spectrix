@@ -69,5 +69,6 @@ public class UpdateThread extends Thread {
 		}
 
 		visualizer.setEnabled(false);
+		visualizer.release();
 	}
 }

@@ -1,6 +1,7 @@
 package com.samuelberrien.spectrix.test.vr;
 
 import android.content.Context;
+import android.media.audiofx.Visualizer;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
 
@@ -39,6 +40,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 	private float mLightX, mLightY, mLightZ;
 
 	private Visualization visualization;
+	private float[] freqArray;
 
 	/**
 	 * @param context
@@ -46,6 +48,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 	public GLStereoRenderer(Context context, Visualization visualization) {
 		this.context = context;
 		this.visualization = visualization;
+		this.freqArray = new float[Visualizer.getCaptureSizeRange()[1]];
 	}
 
 	@Override
@@ -73,6 +76,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 	public void onNewFrame(HeadTransform headTransform) {
 		Matrix.setLookAtM(this.mCamera, 0, this.mCameraX, this.mCameraY, this.mCameraZ, 0.0f + this.mCameraX, 0.0f + this.mCameraY, 1f + this.mCameraZ, 0.0f, 1.0f, 0.0f);
 		headTransform.getHeadView(this.mHeadView, 0);
+		visualization.update(freqArray);
 	}
 
 	@Override
@@ -110,5 +114,9 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 
 	@Override
 	public void onRendererShutdown() {
+	}
+
+	public void updateFreqArray(float[] newFreqArray) {
+		freqArray = newFreqArray;
 	}
 }
