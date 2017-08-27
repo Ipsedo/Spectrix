@@ -1,5 +1,6 @@
 package com.samuelberrien.spectrix.test.utils;
 
+import com.samuelberrien.spectrix.test.visualizations.explosion.Explosion;
 import com.samuelberrien.spectrix.test.visualizations.icosahedron.Icosahedron;
 import com.samuelberrien.spectrix.test.visualizations.spectrum.Spectrum;
 
@@ -17,6 +18,8 @@ public final class VisualizationHelper {
 				return new Spectrum();
 			case 1:
 				return new Icosahedron();
+			case 2:
+				return new Explosion();
 			default:
 				return new Spectrum();
 		}
