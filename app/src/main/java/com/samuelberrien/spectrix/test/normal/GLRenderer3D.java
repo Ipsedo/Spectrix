@@ -5,6 +5,7 @@ import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 
 import com.samuelberrien.spectrix.test.utils.Visualization;
 
@@ -42,6 +43,10 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 
 	private float[] cameraRotation;
 
+	private boolean moreThanOneTouch;
+
+	private ScaleGestureDetector myScaleGestureDetector;
+
 	public GLRenderer3D(Context context, Visualization visualization) {
 		this.context = context;
 
@@ -58,18 +63,29 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 		mLightModelMatrix = new float[16];
 		mLightPosInWorldSpace = new float[4];
 
+		moreThanOneTouch = false;
+
 		mProjectionMatrix = new float[16];
 		mViewMatrix = new float[16];
 
 		cameraRotation = new float[16];
 		Matrix.setIdentityM(cameraRotation, 0);
+
+		myScaleGestureDetector = new ScaleGestureDetector(context,
+				new MyScaleGestureDetector());
 	}
 
 	public void handleEvent(MotionEvent e) {
+		if (moreThanOneTouch && e.getPointerCount() == 1) {
+			moreThanOneTouch = false;
+			mPreviousX = e.getX() + 1f;
+			mPreviousY = e.getY() + 1f;
+		}
 		switch (e.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 				mPreviousX = e.getX() + 1f;
 				mPreviousY = e.getY() + 1f;
+				break;
 			case MotionEvent.ACTION_MOVE:
 				float dx = e.getX() + 1f - mPreviousX;
 				float dy = e.getY() + 1f - mPreviousY;
@@ -85,10 +101,16 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 				Matrix.multiplyMM(tmp1, 0, tmp1.clone(), 0, tmp2.clone(), 0);
 
 				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, tmp1, 0);
+				break;
+			case MotionEvent.ACTION_POINTER_UP:
+				moreThanOneTouch = true;
+				break;
+
 		}
 		mPreviousX = e.getX() + 1f;
 		mPreviousY = e.getY() + 1f;
 
+		myScaleGestureDetector.onTouchEvent(e);
 	}
 
 	@Override
@@ -117,13 +139,13 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 	public void onDrawFrame(GL10 gl10) {
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-
 		float[] camDir = new float[]{0f, 0f, 1f, 0f};
 		float[] camUp = new float[]{0f, 1f, 0f, 0f};
 		Matrix.multiplyMV(camDir, 0, cameraRotation, 0, camDir.clone(), 0);
 		Matrix.multiplyMV(camUp, 0, cameraRotation, 0, camUp.clone(), 0);
 
 		Matrix.setLookAtM(mViewMatrix, 0, mCameraPosition[0], mCameraPosition[1], mCameraPosition[2], camDir[0], camDir[1], camDir[2], camUp[0], camUp[1], camUp[2]);
+		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, 50f);
 
 		visualization.draw(mProjectionMatrix.clone(), mViewMatrix.clone(), mLightPosInEyeSpace.clone(), mCameraPosition.clone());
 	}
@@ -138,5 +160,36 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 		Matrix.translateM(mLightModelMatrix, 0, x, y, z);
 		Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
 		Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
+	}
+
+	private class MyScaleGestureDetector extends ScaleGestureDetector.SimpleOnScaleGestureListener {
+
+		@Override
+		public boolean onScale(ScaleGestureDetector detector) {
+			if (projectionAngle <= 120f && projectionAngle >= 10f) {
+				float toAdd;
+				if (detector.getScaleFactor() < 1f) {
+					toAdd = 1f / detector.getScaleFactor();
+				} else {
+					toAdd = -detector.getScaleFactor();
+				}
+				projectionAngle += toAdd;
+			} else if (projectionAngle > 120f) {
+				projectionAngle = 120f;
+			} else if (projectionAngle < 10f) {
+				projectionAngle = 10f;
+			}
+			return true;
+		}
+
+		@Override
+		public boolean onScaleBegin(ScaleGestureDetector detector) {
+			return true;
+		}
+
+		@Override
+		public void onScaleEnd(ScaleGestureDetector detector) {
+
+		}
 	}
 }

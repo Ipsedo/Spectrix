@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.google.vr.sdk.base.GvrActivity;
 import com.samuelberrien.spectrix.test.main.MainActivity;
 import com.samuelberrien.spectrix.test.utils.Visualization;
+import com.samuelberrien.spectrix.test.visualizations.explosion.Explosion;
 import com.samuelberrien.spectrix.test.visualizations.icosahedron.Icosahedron;
 
 public class MyGvrActivity extends GvrActivity {
@@ -22,6 +23,8 @@ public class MyGvrActivity extends GvrActivity {
 		Visualization visualization;
 		if(id_Visualisation == 1) {
 			visualization = new Icosahedron();
+		} else if(id_Visualisation == 2) {
+			visualization = new Explosion();
 		} else {
 			throw new RuntimeException("Unsuported Visualisation");
 		}

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 
 import com.samuelberrien.spectrix.test.utils.UpdateThread;
 import com.samuelberrien.spectrix.test.utils.Visualization;

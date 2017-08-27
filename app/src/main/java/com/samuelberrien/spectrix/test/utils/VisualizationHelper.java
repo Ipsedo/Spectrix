@@ -10,7 +10,7 @@ import com.samuelberrien.spectrix.test.visualizations.spectrum.Spectrum;
 
 public final class VisualizationHelper {
 
-	public static int NB_VISUALIZATIONS = 2;
+	public static int NB_VISUALIZATIONS = 3;
 
 	public static Visualization getVisualization(int index) {
 		switch (index) {

@@ -10,13 +10,15 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public class Explosion implements Visualization {
 
 	private Context context;
 
-	private final float LIGHTAUGMENTATION = 2f;
+	private final float LIGHTAUGMENTATION = 1f;
 	private final float DISTANCECOEFF = 0f;
 
 	private Random rand;
@@ -37,7 +39,7 @@ public class Explosion implements Visualization {
 	private float[] freqArray = new float[1024];
 
 	private ObjModel octagone;
-	private ArrayList<Octagone> mOctagone;
+	private List<Octagone> mOctagone;
 
 	private boolean isInit = false;
 
@@ -53,8 +55,11 @@ public class Explosion implements Visualization {
 		this.nbMaxOctagonePerExplosion = 5;
 		this.mCenterPoint = new float[this.nbCenter * this.nbSameCenter][3];
 		this.octagone = new ObjModel(this.context, "obj/octagone.obj", 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
-		this.maxOctagonSpeed = 1.25f;
-		this.mOctagone = new ArrayList<>();
+		this.maxOctagonSpeed = 1f;
+		this.mOctagone = Collections.synchronizedList(new ArrayList<Octagone>());
+
+		this.setupCenter();
+
 		isInit = true;
 	}
 
@@ -72,7 +77,7 @@ public class Explosion implements Visualization {
 	public void update(float[] freqArray) {
 		this.freqArray = freqArray;
 		this.deleteOldOctagone();
-		this.createNewOctagones(this.freqArray);
+		this.createNewOctagones();
 		this.moveOctagone();
 	}
 
@@ -80,11 +85,13 @@ public class Explosion implements Visualization {
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		float[] tmpModelViewMatrix = new float[16];
 		float[] tmpModelViewProjectionMatrix = new float[16];
-		for (int i = 0; i < this.mOctagone.size(); i++) {
-			Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mOctagone.get(i).getmOctagoneModelMatrix(), 0);
+		ArrayList<Octagone> octagones = new ArrayList<>();
+		octagones.addAll(mOctagone);
+		for (Octagone o : octagones) {
+			Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, o.getmOctagoneModelMatrix(), 0);
 			Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
 
-			this.octagone.setColor(this.mOctagone.get(i).getmOctagoneColorBuffer());
+			this.octagone.setColor(o.getmOctagoneColorBuffer());
 			this.octagone.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 		}
 	}
@@ -137,10 +144,7 @@ public class Explosion implements Visualization {
 		this.mOctagone.add(new Octagone((this.nbCenter - indiceFreq) * 0.001f + 0.1f, rand.nextFloat() * 360f, new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f}, center, new float[]{xSpeed, ySpeed, zSpeed}, this.mCenterColorBuffer[indCenter]));
 	}
 
-	/**
-	 * @param freqArray
-	 */
-	private void createNewOctagones(float[] freqArray) {
+	private void createNewOctagones() {
 		for (int i = 0; i < this.nbSameCenter * this.nbCenter; i++) {
 			int tmpFreqIndex = i / this.nbSameCenter;
 			float tmpMagn = freqArray[tmpFreqIndex] + freqArray[tmpFreqIndex] * tmpFreqIndex * this.mFreqAugmentation;
@@ -155,7 +159,7 @@ public class Explosion implements Visualization {
 	 *
 	 */
 	private void deleteOldOctagone() {
-		for (int i = 0; i < this.mOctagone.size(); i++) {
+		for (int i = this.mOctagone.size() - 1; i >= 0; i--) {
 			if (this.mOctagone.get(i).getSpeedVectorNorm() < 0.2f) {
 				this.mOctagone.remove(i);
 			}
@@ -166,10 +170,8 @@ public class Explosion implements Visualization {
 	 *
 	 */
 	private void moveOctagone() {
-		for (int i = 0; i < this.mOctagone.size(); i++) {
-			Octagone tmpOct = this.mOctagone.get(i);
-			tmpOct.move();
-			this.mOctagone.set(i, tmpOct);
-		}
+		ArrayList<Octagone> octagones = new ArrayList<>(mOctagone);
+		for (Octagone o : octagones)
+			o.move();
 	}
 }
