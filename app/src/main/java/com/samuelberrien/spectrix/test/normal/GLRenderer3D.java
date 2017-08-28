@@ -37,7 +37,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 	private float ratio;
 
 	private final float TOUCH_SCALE_FACTOR_MOVE = 0.05f;
-	private final float TOUCH_SCALE_FACTOR_ZOOM = 0.05f;
+	private final float TOUCH_SCALE_FACTOR_ZOOM = 2f;
 	private float mPreviousX;
 	private float mPreviousY;
 
@@ -166,19 +166,14 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 
 		@Override
 		public boolean onScale(ScaleGestureDetector detector) {
-			if (projectionAngle <= 120f && projectionAngle >= 10f) {
-				float toAdd;
-				if (detector.getScaleFactor() < 1f) {
-					toAdd = 1f / detector.getScaleFactor();
-				} else {
-					toAdd = -detector.getScaleFactor();
-				}
-				projectionAngle += toAdd;
-			} else if (projectionAngle > 120f) {
-				projectionAngle = 120f;
-			} else if (projectionAngle < 10f) {
-				projectionAngle = 10f;
+			float toAdd;
+			if (detector.getScaleFactor() < 1f) {
+				toAdd = TOUCH_SCALE_FACTOR_ZOOM * 1f / detector.getScaleFactor();
+			} else {
+				toAdd = -TOUCH_SCALE_FACTOR_ZOOM * detector.getScaleFactor();
 			}
+			projectionAngle = toAdd + projectionAngle > 120f ? 120f : toAdd + projectionAngle < 10f ? 10f : toAdd + projectionAngle;
+
 			return true;
 		}
 
