@@ -4,9 +4,8 @@ import android.content.Context;
 import android.opengl.GLSurfaceView;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
-import android.view.ScaleGestureDetector;
 
-import com.samuelberrien.spectrix.test.utils.UpdateThread;
+import com.samuelberrien.spectrix.test.utils.threads.UpdateThread;
 import com.samuelberrien.spectrix.test.utils.Visualization;
 
 /**
@@ -81,8 +80,13 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
-		if(glRenderer3D != null)
-			glRenderer3D.handleEvent(e);
-		return true;
+		if (glRenderer3D != null)
+			try {
+				glRenderer3D.onTouchEvent(e);
+				return true;
+			} catch (Exception iae) {
+				iae.printStackTrace();
+			}
+		return false;
 	}
 }

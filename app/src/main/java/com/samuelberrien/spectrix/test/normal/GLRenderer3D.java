@@ -43,7 +43,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 
 	private float[] cameraRotation;
 
-	private boolean moreThanOneTouch;
+	private boolean otherPointerUp;
 
 	private ScaleGestureDetector myScaleGestureDetector;
 
@@ -63,7 +63,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 		mLightModelMatrix = new float[16];
 		mLightPosInWorldSpace = new float[4];
 
-		moreThanOneTouch = false;
+		otherPointerUp = false;
 
 		mProjectionMatrix = new float[16];
 		mViewMatrix = new float[16];
@@ -75,20 +75,41 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 				new MyScaleGestureDetector());
 	}
 
-	public void handleEvent(MotionEvent e) {
-		if (moreThanOneTouch && e.getPointerCount() == 1) {
-			moreThanOneTouch = false;
-			mPreviousX = e.getX() + 1f;
-			mPreviousY = e.getY() + 1f;
+	public void onTouchEvent(MotionEvent e) {
+		if (otherPointerUp) {
+			int moyX = 0;
+			int moyY = 0;
+			for (int i = 0; i < e.getPointerCount(); i++) {
+				moyX += e.getX(e.getPointerId(i));
+				moyY += e.getY(e.getPointerId(i));
+			}
+			moyX /= e.getPointerCount();
+			moyY /= e.getPointerCount();
+			otherPointerUp = false;
+			mPreviousX = moyX + 1f;
+			mPreviousY = moyY + 1f;
 		}
+
+		int moyX;
+		int moyY;
+
 		switch (e.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 				mPreviousX = e.getX() + 1f;
 				mPreviousY = e.getY() + 1f;
 				break;
 			case MotionEvent.ACTION_MOVE:
-				float dx = e.getX() + 1f - mPreviousX;
-				float dy = e.getY() + 1f - mPreviousY;
+				moyX = 0;
+				moyY = 0;
+				for (int i = 0; i < e.getPointerCount(); i++) {
+					moyX += e.getX(e.getPointerId(i));
+					moyY += e.getY(e.getPointerId(i));
+				}
+				moyX /= e.getPointerCount();
+				moyY /= e.getPointerCount();
+
+				float dx = moyX + 1f - mPreviousX;
+				float dy = moyY + 1f - mPreviousY;
 
 				dy = -dy;
 
@@ -103,12 +124,31 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, tmp1, 0);
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
-				moreThanOneTouch = true;
+				otherPointerUp = true;
 				break;
+			case MotionEvent.ACTION_POINTER_DOWN:
+				moyX = 0;
+				moyY = 0;
+				for (int i = 0; i < e.getPointerCount(); i++) {
+					moyX += e.getX(e.getPointerId(i));
+					moyY += e.getY(e.getPointerId(i));
+				}
+				moyX /= e.getPointerCount();
+				moyY /= e.getPointerCount();
+				mPreviousX = moyX + 1f;
+				mPreviousY = moyY + 1f;
 
 		}
-		mPreviousX = e.getX() + 1f;
-		mPreviousY = e.getY() + 1f;
+		moyX = 0;
+		moyY = 0;
+		for (int i = 0; i < e.getPointerCount(); i++) {
+			moyX += e.getX(e.getPointerId(i));
+			moyY += e.getY(e.getPointerId(i));
+		}
+		moyX /= e.getPointerCount();
+		moyY /= e.getPointerCount();
+		mPreviousX = moyX + 1f;
+		mPreviousY = moyY + 1f;
 
 		myScaleGestureDetector.onTouchEvent(e);
 	}

@@ -1,6 +1,8 @@
-package com.samuelberrien.spectrix.test.utils;
+package com.samuelberrien.spectrix.test.utils.threads;
 
 import android.media.audiofx.Visualizer;
+
+import com.samuelberrien.spectrix.test.utils.Visualization;
 
 /**
  * Created by samuel on 23/08/17.

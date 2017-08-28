@@ -3,9 +3,7 @@ package com.samuelberrien.spectrix.test.vr;
 import android.content.Context;
 import android.media.audiofx.Visualizer;
 
-import com.google.vr.cardboard.ThreadUtils;
 import com.google.vr.sdk.base.GvrView;
-import com.samuelberrien.spectrix.test.utils.UpdateThread;
 import com.samuelberrien.spectrix.test.utils.Visualization;
 
 /**
