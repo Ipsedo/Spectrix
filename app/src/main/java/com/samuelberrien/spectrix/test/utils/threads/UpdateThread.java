@@ -1,6 +1,8 @@
-package com.samuelberrien.spectrix.test.utils;
+package com.samuelberrien.spectrix.test.utils.threads;
 
 import android.media.audiofx.Visualizer;
+
+import com.samuelberrien.spectrix.test.utils.Visualization;
 
 /**
  * Created by samuel on 23/08/17.
@@ -43,20 +45,16 @@ public class UpdateThread extends Thread {
 			}
 		}
 
-		//Visualizer.MeasurementPeakRms measurementPeakRms = new Visualizer.MeasurementPeakRms();
-
 		while (!this.isCanceled) {
 			if (visualization.isInit()) {
 				byte[] bytes = new byte[visualizer.getCaptureSize()];
 				visualizer.getFft(bytes);
 				float[] fft = new float[bytes.length / 2];
 
-				//visualizer.getMeasurementPeakRms(measurementPeakRms);
-
 				for (int i = 0; i < fft.length; i++) {
 					float real = (float) (bytes[(i * 2) + 0]) / 128.0f;
 					float imag = (float) (bytes[(i * 2) + 1]) / 128.0f;
-					fft[i] = ((real * real) + (imag * imag));//* 9600f / ((float) measurementPeakRms.mPeak + 9601f);
+					fft[i] = ((real * real) + (imag * imag));
 				}
 				visualization.update(fft);
 			}
@@ -69,5 +67,6 @@ public class UpdateThread extends Thread {
 		}
 
 		visualizer.setEnabled(false);
+		visualizer.release();
 	}
 }

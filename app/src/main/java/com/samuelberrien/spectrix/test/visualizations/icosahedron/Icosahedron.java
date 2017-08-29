@@ -34,6 +34,7 @@ public class Icosahedron implements Visualization {
 	private ArrayList<FloatBuffer>[] mSpecColorBuffer;
 	private float[] mScale;
 	private float[] mAngle;
+	private float[] mAngleToAdd;
 	private float[][] mTranslateVector;
 	private float[][] mRotationOrientation;
 	private float[][] mRotationMatrix;
@@ -62,6 +63,7 @@ public class Icosahedron implements Visualization {
 		this.mSpecColorBuffer = new ArrayList[this.nbSameIcosahedron * this.nbIcosahedron];
 		this.mScale = new float[this.nbIcosahedron * this.nbSameIcosahedron];
 		this.mAngle = new float[this.nbIcosahedron * this.nbSameIcosahedron];
+		this.mAngleToAdd = new float[this.nbIcosahedron * this.nbSameIcosahedron];
 		this.mTranslateVector = new float[this.nbIcosahedron * this.nbSameIcosahedron][3];
 		this.mRotationOrientation = new float[this.nbIcosahedron * this.nbSameIcosahedron][3];
 		this.mRotationMatrix = new float[this.nbIcosahedron * this.nbSameIcosahedron][16];
@@ -88,7 +90,7 @@ public class Icosahedron implements Visualization {
 			float[] mModelMatrix = new float[16];
 			Matrix.setIdentityM(mModelMatrix, 0);
 			Matrix.translateM(mModelMatrix, 0, this.mTranslateVector[i][0], this.mTranslateVector[i][1], this.mTranslateVector[i][2]);
-			Matrix.setRotateM(mRotationMatrix[i], 0, mAngle[i] += 3f, this.mRotationOrientation[i][0], this.mRotationOrientation[i][1], this.mRotationOrientation[i][2]);
+			Matrix.setRotateM(mRotationMatrix[i], 0, mAngle[i] += mAngleToAdd[i], this.mRotationOrientation[i][0], this.mRotationOrientation[i][1], this.mRotationOrientation[i][2]);
 			float[] tmpMat = mModelMatrix.clone();
 			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, mRotationMatrix[i], 0);
 			int tmpFreqIndex = i / this.nbSameIcosahedron;
@@ -118,6 +120,11 @@ public class Icosahedron implements Visualization {
 		}
 	}
 
+	@Override
+	public String getName() {
+		return "Icosahedron";
+	}
+
 	private void setupIcosahedrons() {
 		this.icosahedron = new ObjModelMtl(this.context, "obj/icosahedron/icosahedron_obj.obj", "obj/icosahedron/icosahedron_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF);
 		for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {
@@ -140,6 +147,7 @@ public class Icosahedron implements Visualization {
 			this.mTranslateVector[i][2] = z;
 
 			this.mAngle[i] = rand.nextFloat() * 360f;
+			this.mAngleToAdd[i] = 1f + rand.nextFloat() * 3f;
 			this.mRotationOrientation[i][0] = rand.nextFloat() * 2f - 1f;
 			this.mRotationOrientation[i][1] = rand.nextFloat() * 2f - 1f;
 			this.mRotationOrientation[i][2] = rand.nextFloat() * 2f - 1f;

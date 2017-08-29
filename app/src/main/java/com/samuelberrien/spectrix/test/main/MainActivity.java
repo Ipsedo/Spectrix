@@ -14,6 +14,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.Menu;
@@ -22,12 +23,16 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.samuelberrien.spectrix.R;
 import com.samuelberrien.spectrix.test.normal.MyGLSurfaceView;
-import com.samuelberrien.spectrix.test.visualizations.icosahedron.Icosahedron;
+import com.samuelberrien.spectrix.test.utils.Visualization;
+import com.samuelberrien.spectrix.test.utils.VisualizationHelper;
 import com.samuelberrien.spectrix.test.visualizations.spectrum.Spectrum;
 import com.samuelberrien.spectrix.test.vr.MyGvrActivity;
+
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -50,22 +55,27 @@ public class MainActivity extends AppCompatActivity {
 
 	private int idVusalisation = 0;
 
+	ArrayList<Button> buttonsDrawer;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		buttonsDrawer = new ArrayList<>();
 		setContentView(R.layout.activity_main);
 		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
+
 		this.drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		this.drawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout, 0, 0){
+		this.drawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout, 0, 0) {
 			@Override
-			public void onDrawerStateChanged(int newState){
-				if(newState == DrawerLayout.STATE_SETTLING) {
-					if(!drawerLayout.isDrawerOpen(GravityCompat.START)) {
-						showToolBarButton.setVisibility(View.GONE);
-						getSupportActionBar().show();
-					}
+			public void onDrawerSlide(View drawerView, float slideOffset) {
+				if (slideOffset != 0) {
+					showToolBarButton.setVisibility(View.GONE);
+					getSupportActionBar().show();
 				}
+				super.onDrawerSlide(drawerView, slideOffset);
+				//drawerLayout.bringChildToFront(drawerView);
+				drawerLayout.requestLayout();
 			}
 		};
 		this.drawerLayout.addDrawerListener(this.drawerToggle);
@@ -145,7 +155,7 @@ public class MainActivity extends AppCompatActivity {
 				showToolBarButton.setVisibility(View.VISIBLE);
 				return true;
 			case R.id.play_pause_toolbar:
-				if(this.mPlayer.isPlaying()) {
+				if (this.mPlayer.isPlaying()) {
 					menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.play_icon));
 					this.mPlayer.pause();
 				} else {
@@ -164,95 +174,58 @@ public class MainActivity extends AppCompatActivity {
 
 	private void setUpDrawer() {
 		final LinearLayout linearLayoutSurfaceView = (LinearLayout) findViewById(R.id.layout_surface_view);
+		Visualization startVisu = new Spectrum();
+		myGLSurfaceView = new MyGLSurfaceView(this, startVisu);
+		getSupportActionBar().setTitle(startVisu.getName());
+		linearLayoutSurfaceView.removeAllViews();
+		linearLayoutSurfaceView.addView(myGLSurfaceView);
 
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_scroll_view_visualisations);
 
-		Button button = new Button(this);
-		button.setText("Spectrum");
-		button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				idVusalisation = 0;
-				myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);
-				myGLSurfaceView.setVisualization(new Spectrum());
-				linearLayoutSurfaceView.removeAllViews();
-				linearLayoutSurfaceView.addView(myGLSurfaceView);
-				menu.getItem(1).setVisible(false);
-				drawerLayout.closeDrawers();
-			}
-		});
-		linearLayout.addView(button);
+		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
+		layoutParams.setMargins(margin, margin, margin, 0);
+		layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
 
-		button = new Button(this);
-		button.setText("Icosahedrons");
-		button.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				idVusalisation = 1;
-				myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);
-				myGLSurfaceView.setVisualization(new Icosahedron());
-				linearLayoutSurfaceView.removeAllViews();
-				linearLayoutSurfaceView.addView(myGLSurfaceView);
-				menu.getItem(1).setVisible(true);
-				drawerLayout.closeDrawers();
-			}
-		});
-		linearLayout.addView(button);
+		for (int i = 0; i < VisualizationHelper.NB_VISUALIZATIONS; i++) {
+			LinearLayout expandButton = (LinearLayout) getLayoutInflater().inflate(R.layout.expand_button, null);
 
-		myGLSurfaceView = (MyGLSurfaceView) getLayoutInflater().inflate(R.layout.gl_surface_view_layout, null);
-		myGLSurfaceView.setVisualization(new Spectrum());
-		linearLayoutSurfaceView.removeAllViews();
-		linearLayoutSurfaceView.addView(myGLSurfaceView);
+			TextView levelName = (TextView) expandButton.findViewById(R.id.expand_text);
+			final String name = VisualizationHelper.getVisualization(i).getName();
+			levelName.setText(name);
+
+			final int index = i;
+			final Button start = (Button) expandButton.findViewById(R.id.expand_button);
+			buttonsDrawer.add(start);
+			start.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					idVusalisation = index;
+					myGLSurfaceView = new MyGLSurfaceView(getApplicationContext(), VisualizationHelper.getVisualization(index));
+					linearLayoutSurfaceView.removeAllViews();
+					linearLayoutSurfaceView.addView(myGLSurfaceView);
+					if(index == 0) {
+						menu.getItem(1).setVisible(false);
+					} else {
+						menu.getItem(1).setVisible(true);
+					}
+					getSupportActionBar().setTitle(name);
+					drawerLayout.closeDrawers();
+				}
+			});
+
+			levelName.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					for (Button b : buttonsDrawer)
+						b.setVisibility(View.GONE);
+					start.setVisibility(View.VISIBLE);
+				}
+			});
+			expandButton.setLayoutParams(layoutParams);
+			linearLayout.addView(expandButton);
+		}
 	}
-
-    /*private boolean getOrientationPortrait(String idSpectrumAnalyser) {
-		return idSpectrumAnalyser.equals(this.adapter.getItem(0));
-    }
-
-    public void start(View v) {
-        if (this.idVusalisation.equals(this.adapter.getItem(0)) || this.idVusalisation.equals(this.adapter.getItem(1))) {
-            Intent intent = new Intent(this, SpectrumActivity.class);
-            intent.putExtra(MainActivity.USE_SAMPLE, Boolean.toString(this.useSample));
-            intent.putExtra(MainActivity.SCREEN_PORTRAIT, Boolean.toString(this.getOrientationPortrait(this.idVusalisation)));
-            startActivity(intent);
-        } else if (this.useVR) {
-            Intent intent = new Intent(this, MyGvrActivity.class);
-            intent.putExtra(MainActivity.USE_SAMPLE, Boolean.toString(this.useSample));
-            intent.putExtra(MainActivity.ID_RENDERER, this.idVusalisation);
-            startActivity(intent);
-        } else {
-            Intent intent = new Intent(this, ObjActivity.class);
-            intent.putExtra(MainActivity.USE_SAMPLE, Boolean.toString(this.useSample));
-            intent.putExtra(MainActivity.SCREEN_PORTRAIT, Boolean.toString(false));
-            intent.putExtra(MainActivity.ID_RENDERER, this.idVusalisation);
-            startActivity(intent);
-        }
-    }
-
-    public void useSample(View v) {
-        this.useSample = ((CheckBox) findViewById(R.id.use_sample_check_box)).isChecked();
-    }
-
-    public void useVr(View v) {
-        this.useVR = ((CheckBox) findViewById(R.id.use_vr_check_box)).isChecked();
-    }
-
-    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
-        this.idVusalisation = (String) parent.getItemAtPosition(pos);
-        if (pos > 1) {
-            CheckBox useVRCheckBox = (CheckBox) findViewById(R.id.use_vr_check_box);
-            useVRCheckBox.setEnabled(true);
-            this.useVR = ((CheckBox) findViewById(R.id.use_vr_check_box)).isChecked();
-        } else {
-            CheckBox useVRCheckBox = (CheckBox) findViewById(R.id.use_vr_check_box);
-            useVRCheckBox.setEnabled(false);
-            useVRCheckBox.setChecked(false);
-            this.useVR = ((CheckBox) findViewById(R.id.use_vr_check_box)).isChecked();
-        }
-    }
-
-    public void onNothingSelected(AdapterView<?> parent) {
-    }*/
 
 	@Override
 	protected void onPause() {
