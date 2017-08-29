@@ -2,11 +2,10 @@ package com.samuelberrien.spectrix.test.normal;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-import com.samuelberrien.spectrix.test.utils.threads.UpdateThread;
 import com.samuelberrien.spectrix.test.utils.Visualization;
+import com.samuelberrien.spectrix.test.utils.threads.UpdateThread;
 
 /**
  * Created by samuel on 23/08/17.
@@ -81,12 +80,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	@Override
 	public boolean onTouchEvent(MotionEvent e) {
 		if (glRenderer3D != null)
-			try {
-				glRenderer3D.onTouchEvent(e);
-				return true;
-			} catch (Exception iae) {
-				iae.printStackTrace();
-			}
-		return false;
+			glRenderer3D.onTouchEvent(e);
+
+		return true;
 	}
 }

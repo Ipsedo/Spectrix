@@ -99,7 +99,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 			otherPointerUp = false;
 		}
 
-		switch (e.getAction()) {
+		switch (e.getActionMasked()) {
 			case MotionEvent.ACTION_DOWN:
 				mPreviousX = e.getX(0) + 1f;
 				mPreviousY = e.getY(0) + 1f;
@@ -139,13 +139,11 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 				moyX = 0;
 				moyY = 0;
 				for (int i = 0; i < e.getPointerCount(); i++) {
-					moyX += e.getX(e.getPointerId(i));
-					moyY += e.getY(e.getPointerId(i));
+					moyX += e.getX(i);
+					moyY += e.getY(i);
 				}
 				moyX *= invNbPointer;
 				moyY *= invNbPointer;
-				/*moyX = (mPreviousX - 1f) * ((float) e.getPointerCount() - 1f) / (float) e.getPointerCount() + e.getX(index);
-				moyY = (mPreviousY - 1f) * ((float) e.getPointerCount() - 1f) / (float) e.getPointerCount() + e.getY(index);*/
 				mPreviousX = moyX + 1f;
 				mPreviousY = moyY + 1f;
 
