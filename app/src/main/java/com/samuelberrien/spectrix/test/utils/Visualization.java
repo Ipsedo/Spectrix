@@ -20,5 +20,5 @@ public interface Visualization {
 
 	void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 
-	String getString();
+	String getName();
 }

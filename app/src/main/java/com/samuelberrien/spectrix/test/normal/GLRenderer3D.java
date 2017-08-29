@@ -45,6 +45,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 
 	private boolean otherPointerUp;
 
+	private Object semaphoreTouchEvent;
 	private ScaleGestureDetector myScaleGestureDetector;
 
 	public GLRenderer3D(Context context, Visualization visualization) {
@@ -71,42 +72,50 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 		cameraRotation = new float[16];
 		Matrix.setIdentityM(cameraRotation, 0);
 
+		semaphoreTouchEvent = new Object();
+
 		myScaleGestureDetector = new ScaleGestureDetector(context,
 				new MyScaleGestureDetector());
 	}
 
 	public void onTouchEvent(MotionEvent e) {
+		int index = e.getActionIndex();
+		float invNbPointer = 1f / (float) e.getPointerCount();
+
+		float moyX;
+		float moyY;
+
 		if (otherPointerUp) {
-			int moyX = 0;
-			int moyY = 0;
+			moyX = 0;
+			moyY = 0;
 			for (int i = 0; i < e.getPointerCount(); i++) {
-				moyX += e.getX(e.getPointerId(i));
-				moyY += e.getY(e.getPointerId(i));
+				moyX += e.getX(i);
+				moyY += e.getY(i);
 			}
-			moyX /= e.getPointerCount();
-			moyY /= e.getPointerCount();
-			otherPointerUp = false;
+			moyX *= invNbPointer;
+			moyY *= invNbPointer;
 			mPreviousX = moyX + 1f;
 			mPreviousY = moyY + 1f;
+			otherPointerUp = false;
 		}
-
-		int moyX;
-		int moyY;
 
 		switch (e.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				mPreviousX = e.getX() + 1f;
-				mPreviousY = e.getY() + 1f;
+				mPreviousX = e.getX(0) + 1f;
+				mPreviousY = e.getY(0) + 1f;
+				break;
+			case MotionEvent.ACTION_UP:
+				otherPointerUp = true;
 				break;
 			case MotionEvent.ACTION_MOVE:
 				moyX = 0;
 				moyY = 0;
 				for (int i = 0; i < e.getPointerCount(); i++) {
-					moyX += e.getX(e.getPointerId(i));
-					moyY += e.getY(e.getPointerId(i));
+					moyX += e.getX(i);
+					moyY += e.getY(i);
 				}
-				moyX /= e.getPointerCount();
-				moyY /= e.getPointerCount();
+				moyX *= invNbPointer;
+				moyY *= invNbPointer;
 
 				float dx = moyX + 1f - mPreviousX;
 				float dy = moyY + 1f - mPreviousY;
@@ -133,8 +142,10 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 					moyX += e.getX(e.getPointerId(i));
 					moyY += e.getY(e.getPointerId(i));
 				}
-				moyX /= e.getPointerCount();
-				moyY /= e.getPointerCount();
+				moyX *= invNbPointer;
+				moyY *= invNbPointer;
+				/*moyX = (mPreviousX - 1f) * ((float) e.getPointerCount() - 1f) / (float) e.getPointerCount() + e.getX(index);
+				moyY = (mPreviousY - 1f) * ((float) e.getPointerCount() - 1f) / (float) e.getPointerCount() + e.getY(index);*/
 				mPreviousX = moyX + 1f;
 				mPreviousY = moyY + 1f;
 
@@ -142,15 +153,16 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 		moyX = 0;
 		moyY = 0;
 		for (int i = 0; i < e.getPointerCount(); i++) {
-			moyX += e.getX(e.getPointerId(i));
-			moyY += e.getY(e.getPointerId(i));
+			moyX += e.getX(i);
+			moyY += e.getY(i);
 		}
-		moyX /= e.getPointerCount();
-		moyY /= e.getPointerCount();
+		moyX *= invNbPointer;
+		moyY *= invNbPointer;
 		mPreviousX = moyX + 1f;
 		mPreviousY = moyY + 1f;
 
-		myScaleGestureDetector.onTouchEvent(e);
+		if (e.getPointerCount() < 3)
+			myScaleGestureDetector.onTouchEvent(e);
 	}
 
 	@Override

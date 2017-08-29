@@ -97,7 +97,7 @@ public class Explosion implements Visualization {
 	}
 
 	@Override
-	public String getString() {
+	public String getName() {
 		return "Explosion";
 	}
 
