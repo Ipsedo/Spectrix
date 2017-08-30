@@ -5,9 +5,9 @@ import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
 import com.samuelberrien.spectrix.test.utils.Visualization;
-import com.samuelberrien.spectrix.test.utils.threads.CancelableThread;
-import com.samuelberrien.spectrix.test.utils.threads.MicThread;
-import com.samuelberrien.spectrix.test.utils.threads.StreamThread;
+import com.samuelberrien.spectrix.test.threads.CancelableThread;
+import com.samuelberrien.spectrix.test.threads.MicThread;
+import com.samuelberrien.spectrix.test.threads.StreamThread;
 
 /**
  * Created by samuel on 23/08/17.
