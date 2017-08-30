@@ -57,6 +57,8 @@ public class MainActivity extends AppCompatActivity {
 
 	ArrayList<Button> buttonsDrawer;
 
+	private int currentListeningId;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -115,6 +117,8 @@ public class MainActivity extends AppCompatActivity {
 		}
 
 		this.setUpDrawer();
+
+		currentListeningId = MyGLSurfaceView.STREAM_MUSIC;
 
 		this.mPlayer = MediaPlayer.create(this, R.raw.crea_session_8);
 		this.mPlayer.setLooping(true);
@@ -175,7 +179,7 @@ public class MainActivity extends AppCompatActivity {
 	private void setUpDrawer() {
 		final LinearLayout linearLayoutSurfaceView = (LinearLayout) findViewById(R.id.layout_surface_view);
 		Visualization startVisu = new Spectrum();
-		myGLSurfaceView = new MyGLSurfaceView(this, startVisu);
+		myGLSurfaceView = new MyGLSurfaceView(this, startVisu, currentListeningId);
 		getSupportActionBar().setTitle(startVisu.getName());
 		linearLayoutSurfaceView.removeAllViews();
 		linearLayoutSurfaceView.addView(myGLSurfaceView);
@@ -201,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
 				@Override
 				public void onClick(View v) {
 					idVusalisation = index;
-					myGLSurfaceView = new MyGLSurfaceView(getApplicationContext(), VisualizationHelper.getVisualization(index));
+					myGLSurfaceView = new MyGLSurfaceView(getApplicationContext(), VisualizationHelper.getVisualization(index), currentListeningId);
 					linearLayoutSurfaceView.removeAllViews();
 					linearLayoutSurfaceView.addView(myGLSurfaceView);
 					if(index == 0) {
@@ -237,5 +241,15 @@ public class MainActivity extends AppCompatActivity {
 	protected void onResume() {
 		super.onResume();
 		myGLSurfaceView.onResume();
+	}
+
+	public void stream(View v) {
+		currentListeningId = MyGLSurfaceView.STREAM_MUSIC;
+		myGLSurfaceView.setListening(MyGLSurfaceView.STREAM_MUSIC);
+	}
+
+	public void mic(View view) {
+		currentListeningId = MyGLSurfaceView.MIC_MUSIC;
+		myGLSurfaceView.setListening(MyGLSurfaceView.MIC_MUSIC);
 	}
 }

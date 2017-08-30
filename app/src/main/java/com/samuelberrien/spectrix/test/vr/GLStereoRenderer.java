@@ -100,9 +100,9 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 		Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
 
 		float[] cam = new float[4];
-		Matrix.multiplyMV(cam, 0, this.mViewMatrix, 0, new float[]{mCameraX, mCameraY, mCameraZ, 1.0f}, 0);
+		Matrix.multiplyMV(cam, 0, mViewMatrix, 0, new float[]{mCameraX, mCameraY, mCameraZ, 1.0f}, 0);
 
-		visualization.draw(mProjectionMatrix.clone(), eye.getEyeView().clone(), mLightPosInEyeSpace.clone(), new float[]{cam[0], cam[1], cam[2]});
+		visualization.draw(mProjectionMatrix.clone(), mViewMatrix.clone(), mLightPosInEyeSpace.clone(), new float[]{cam[0], cam[1], cam[2]});
 	}
 
 	@Override

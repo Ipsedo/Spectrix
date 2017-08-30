@@ -77,6 +77,7 @@
                     android:button="@null"
                     android:gravity="center"
                     android:text="Stream"
+                    android:onClick="stream"
                     android:checked="true"/>
 
                 <RadioButton
@@ -87,7 +88,8 @@
                     android:background="@drawable/toggle_widget_background"
                     android:button="@null"
                     android:gravity="center"
-                    android:text="MIC"/>
+                    android:text="MIC"
+                    android:onClick="mic"/>
             </RadioGroup>
 
             <TextView

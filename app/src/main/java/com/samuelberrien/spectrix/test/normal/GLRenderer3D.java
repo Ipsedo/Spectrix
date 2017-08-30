@@ -36,7 +36,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 	private float ratio;
 
 	private final float TOUCH_SCALE_FACTOR_MOVE = 0.05f;
-	private final float TOUCH_SCALE_FACTOR_ZOOM = 2f;
+	private final float TOUCH_SCALE_FACTOR_ZOOM = 1f;
 	private final float TOUCH_SCALE_FACTOR_ROLL = 1f;
 	private float mPreviousX;
 	private float mPreviousY;
@@ -132,7 +132,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 				float[] tmp2 = new float[16];
 				Matrix.setRotateM(tmp2, 0, dy * TOUCH_SCALE_FACTOR_MOVE, 1f, 0f, 0f);
 
-				Matrix.multiplyMM(tmp1, 0, tmp1.clone(), 0, tmp2, 0);
+				Matrix.multiplyMM(tmp1, 0, tmp2, 0, tmp1.clone(), 0);
 
 				Matrix.setRotateM(tmp2, 0, rollDelta * TOUCH_SCALE_FACTOR_ROLL, 0f, 0f, 1f);
 

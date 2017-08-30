@@ -5,7 +5,9 @@ import android.opengl.GLSurfaceView;
 import android.view.MotionEvent;
 
 import com.samuelberrien.spectrix.test.utils.Visualization;
-import com.samuelberrien.spectrix.test.utils.threads.UpdateThread;
+import com.samuelberrien.spectrix.test.utils.threads.CancelableThread;
+import com.samuelberrien.spectrix.test.utils.threads.MicThread;
+import com.samuelberrien.spectrix.test.utils.threads.StreamThread;
 
 /**
  * Created by samuel on 23/08/17.
@@ -14,13 +16,16 @@ import com.samuelberrien.spectrix.test.utils.threads.UpdateThread;
 public class MyGLSurfaceView extends GLSurfaceView {
 
 	private Visualization visualization;
-	private UpdateThread updateThread;
-
-	private boolean isRendererSetted = false;
+	private CancelableThread cancelableThread;
 
 	private GLRenderer3D glRenderer3D;
 
-	public MyGLSurfaceView(Context context, Visualization visualization) {
+	public static final int STREAM_MUSIC = 0;
+	public static final int MIC_MUSIC = 1;
+
+	private int currentListening;
+
+	public MyGLSurfaceView(Context context, Visualization visualization, int currentListening) {
 		super(context);
 		setEGLContextClientVersion(2);
 		setPreserveEGLContextOnPause(true);
@@ -34,28 +39,22 @@ public class MyGLSurfaceView extends GLSurfaceView {
 			setRenderer(glRenderer2D);
 		}
 
-		updateThread = new UpdateThread(this.visualization);
-		updateThread.start();
-	}
+		this.currentListening = currentListening;
 
-	/*public void setVisualization(Visualization visualization) {
-		if (isRendererSetted)
-			throw new RuntimeException();
-		this.visualization = visualization;
-
-		if (updateThread != null && !updateThread.isCanceled()) {
-			updateThread.cancel();
+		if(this.currentListening == STREAM_MUSIC) {
+			cancelableThread = new StreamThread(visualization);
+			cancelableThread.start();
+		} else {
+			cancelableThread = new MicThread(visualization);
+			cancelableThread.start();
 		}
-		updateThread = new UpdateThread(this.visualization);
-		updateThread.start();
-		isRendererSetted = true;
-	}*/
+	}
 
 	@Override
 	public void onPause() {
-		updateThread.cancel();
+		cancelableThread.cancel();
 		try {
-			updateThread.join();
+			cancelableThread.join();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
@@ -65,16 +64,21 @@ public class MyGLSurfaceView extends GLSurfaceView {
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (updateThread != null) {
-			updateThread.cancel();
+		if (cancelableThread != null) {
+			cancelableThread.cancel();
 			try {
-				updateThread.join();
+				cancelableThread.join();
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 		}
-		updateThread = new UpdateThread(visualization);
-		updateThread.start();
+		if(currentListening == STREAM_MUSIC) {
+			cancelableThread = new StreamThread(visualization);
+			cancelableThread.start();
+		} else {
+			cancelableThread = new MicThread(visualization);
+			cancelableThread.start();
+		}
 	}
 
 	@Override
@@ -83,5 +87,27 @@ public class MyGLSurfaceView extends GLSurfaceView {
 			glRenderer3D.onTouchEvent(e);
 
 		return true;
+	}
+
+	public void setListening(int listeningId) {
+		if (cancelableThread != null) {
+			cancelableThread.cancel();
+			try {
+				cancelableThread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+		switch (listeningId) {
+			case STREAM_MUSIC:
+				cancelableThread = new StreamThread(visualization);
+				cancelableThread.start();
+				return;
+			case MIC_MUSIC:
+				cancelableThread = new MicThread(visualization);
+				cancelableThread.start();
+				return;
+		}
+		throw new IllegalArgumentException("Wrong listening identifiant !");
 	}
 }
