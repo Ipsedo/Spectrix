@@ -12,6 +12,8 @@ public class StreamThread extends CancelableThread {
 
 	private Visualizer visualizer;
 
+	private static float fresAugmentation = 0.3f;
+
 	public StreamThread(Visualization visualization) {
 		super("StreamThread", visualization);
 
@@ -33,6 +35,7 @@ public class StreamThread extends CancelableThread {
 			float real = (float) (bytes[(i * 2) + 0]) / 128.0f;
 			float imag = (float) (bytes[(i * 2) + 1]) / 128.0f;
 			fft[i] = ((real * real) + (imag * imag));
+			fft[i] += fft[i] * i * fresAugmentation;
 		}
 		visualization.update(fft);
 	}

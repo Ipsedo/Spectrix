@@ -1,5 +1,6 @@
 package com.samuelberrien.spectrix.test.utils;
 
+import com.samuelberrien.spectrix.test.visualizations.room.Room;
 import com.samuelberrien.spectrix.test.visualizations.snow.Snow;
 import com.samuelberrien.spectrix.test.visualizations.explosion.Explosion;
 import com.samuelberrien.spectrix.test.visualizations.icosahedron.Icosahedron;
@@ -11,7 +12,7 @@ import com.samuelberrien.spectrix.test.visualizations.spectrum.Spectrum;
 
 public final class VisualizationHelper {
 
-	public static int NB_VISUALIZATIONS = 4;
+	public static int NB_VISUALIZATIONS = 5;
 
 	public static Visualization getVisualization(int index) {
 		switch (index) {
@@ -23,6 +24,8 @@ public final class VisualizationHelper {
 				return new Explosion();
 			case 3:
 				return new Snow();
+			case 4:
+				return new Room();
 			default:
 				return new Spectrum();
 		}

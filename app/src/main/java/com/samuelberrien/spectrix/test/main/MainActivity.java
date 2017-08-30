@@ -16,9 +16,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -59,16 +61,18 @@ public class MainActivity extends AppCompatActivity {
 
 	private int currentListeningId;
 
+	private DoubleTapGesture doubleTapGesture;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		buttonsDrawer = new ArrayList<>();
 		setContentView(R.layout.activity_main);
-		this.toolbar = (Toolbar) findViewById(R.id.toolbar);
+		toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		this.drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		this.drawerToggle = new ActionBarDrawerToggle(this, this.drawerLayout, 0, 0) {
+		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0) {
 			@Override
 			public void onDrawerSlide(View drawerView, float slideOffset) {
 				if (slideOffset != 0) {
@@ -80,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
 				drawerLayout.requestLayout();
 			}
 		};
-		this.drawerLayout.addDrawerListener(this.drawerToggle);
+		drawerLayout.addDrawerListener(drawerToggle);
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
 		Point size = new Point();
 		display.getSize(size);
 		int width = size.x;
-		RelativeLayout.LayoutParams tmp = new RelativeLayout.LayoutParams(width / 10, width / 10);
+		RelativeLayout.LayoutParams tmp = new RelativeLayout.LayoutParams(width / 15, width / 15);
 		showToolBarButton.setVisibility(View.GONE);
 		showToolBarButton.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -116,12 +120,12 @@ public class MainActivity extends AppCompatActivity {
 			}
 		}
 
-		this.setUpDrawer();
+		setUpDrawer();
 
 		currentListeningId = MyGLSurfaceView.STREAM_MUSIC;
 
-		this.mPlayer = MediaPlayer.create(this, R.raw.crea_session_8);
-		this.mPlayer.setLooping(true);
+		mPlayer = MediaPlayer.create(this, R.raw.crea_session_8);
+		mPlayer.setLooping(true);
 	}
 
 	@Override
@@ -159,17 +163,17 @@ public class MainActivity extends AppCompatActivity {
 				showToolBarButton.setVisibility(View.VISIBLE);
 				return true;
 			case R.id.play_pause_toolbar:
-				if (this.mPlayer.isPlaying()) {
+				if (mPlayer.isPlaying()) {
 					menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.play_icon));
-					this.mPlayer.pause();
+					mPlayer.pause();
 				} else {
 					menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.pause_icon));
-					this.mPlayer.start();
+					mPlayer.start();
 				}
 				return true;
 			case R.id.cardboard_toolbar:
 				Intent intent = new Intent(this, MyGvrActivity.class);
-				intent.putExtra(MainActivity.ID_RENDERER, this.idVusalisation);
+				intent.putExtra(MainActivity.ID_RENDERER, idVusalisation);
 				startActivity(intent);
 				return true;
 		}
@@ -177,7 +181,16 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void setUpDrawer() {
+		DoubleTapGesture doubleTapGesture = new DoubleTapGesture();
+		final GestureDetector gestureDetector = new GestureDetector(this, doubleTapGesture);
 		final LinearLayout linearLayoutSurfaceView = (LinearLayout) findViewById(R.id.layout_surface_view);
+		linearLayoutSurfaceView.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View view, MotionEvent motionEvent) {
+				gestureDetector.onTouchEvent(motionEvent);
+				return view.onTouchEvent(motionEvent);
+			}
+		});
 		Visualization startVisu = new Spectrum();
 		myGLSurfaceView = new MyGLSurfaceView(this, startVisu, currentListeningId);
 		getSupportActionBar().setTitle(startVisu.getName());
@@ -205,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
 				@Override
 				public void onClick(View v) {
 					idVusalisation = index;
+					myGLSurfaceView.onPause();
 					myGLSurfaceView = new MyGLSurfaceView(getApplicationContext(), VisualizationHelper.getVisualization(index), currentListeningId);
 					linearLayoutSurfaceView.removeAllViews();
 					linearLayoutSurfaceView.addView(myGLSurfaceView);
@@ -251,5 +265,17 @@ public class MainActivity extends AppCompatActivity {
 	public void mic(View view) {
 		currentListeningId = MyGLSurfaceView.MIC_MUSIC;
 		myGLSurfaceView.setListening(MyGLSurfaceView.MIC_MUSIC);
+	}
+
+	private class DoubleTapGesture extends GestureDetector.SimpleOnGestureListener {
+
+		@Override
+		public boolean onDoubleTap(MotionEvent e) {
+			if(showToolBarButton.getVisibility() == View.VISIBLE) {
+				showToolBarButton.setVisibility(View.GONE);
+				getSupportActionBar().show();
+			}
+			return true;
+		}
 	}
 }

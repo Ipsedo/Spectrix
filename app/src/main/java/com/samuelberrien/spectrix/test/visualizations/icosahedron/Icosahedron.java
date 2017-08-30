@@ -95,7 +95,7 @@ public class Icosahedron implements Visualization {
 			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, mRotationMatrix[i], 0);
 			int tmpFreqIndex = i / this.nbSameIcosahedron;
 			float scale = this.mScale[i];
-			float tmp = freqArray[tmpFreqIndex] + freqArray[tmpFreqIndex] * tmpFreqIndex * this.mFreqAugmentation;
+			float tmp = freqArray[tmpFreqIndex];// + freqArray[tmpFreqIndex] * tmpFreqIndex * this.mFreqAugmentation;
 			if (tmp > 0.7f) {
 				scale += 0.7f * mScale[i];
 			} else {

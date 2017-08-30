@@ -403,6 +403,7 @@ public class Snow implements Visualization {
 			float[] tmpMat = mModelMatrix.clone();
 			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, mIglooRotationMatrix[i], 0);
 			float scale = SCALE + freqArray[i] * mIglooFreqAttenuation;
+			scale = scale <= 2f ? scale : 2f;
 			Matrix.scaleM(mModelMatrix, 0, scale, scale, scale);
 			mIglooModelMatrix[i] = mModelMatrix.clone();
 		}

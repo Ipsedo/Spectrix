@@ -85,18 +85,18 @@ public class Spectrum implements Visualization {
 			for (int i = 0; i < nbSquare; i++) {
 				Matrix.setIdentityM(mModelMatrix, 0);
 				Matrix.translateM(mModelMatrix, 0, mSquaresPortraitPosition[i][0], mSquaresPortraitPosition[i][1], mSquaresPortraitPosition[i][2]); //0f, (float) i / (float) (nbSquare / 2) - 1f, 0f);
-				Matrix.scaleM(mModelMatrix, 0, freqArray[i] + freqArray[i] * (float) i / this.hightFreqsAugmentation, mSquaresPortraitHeight, 1f);
+				Matrix.scaleM(mModelMatrix, 0, freqArray[i] /*+ freqArray[i] * (float) i / this.hightFreqsAugmentation*/, mSquaresPortraitHeight, 1f);
 				mSquaresPortraitModelMatrix[i] = mModelMatrix.clone();
 			}
 		} else {
 			for (int i = 0; i < nbSquare; i++) {
 				Matrix.setIdentityM(mModelMatrix, 0);
 				Matrix.translateM(mModelMatrix, 0, mSquaresLandPosition[i + nbSquare][0], mSquaresLandPosition[i + nbSquare][1], mSquaresLandPosition[i + nbSquare][2]);
-				Matrix.scaleM(mModelMatrix, 0, mSquaresLandWidth, freqArray[i] + freqArray[i] * (float) i / this.hightFreqsAugmentation, 1f);
+				Matrix.scaleM(mModelMatrix, 0, mSquaresLandWidth, freqArray[i] /*+ freqArray[i] * (float) i / this.hightFreqsAugmentation*/, 1f);
 				mSquaresLandModelMatrix[i + nbSquare] = mModelMatrix.clone();
 				Matrix.setIdentityM(mModelMatrix, 0);
 				Matrix.translateM(mModelMatrix, 0, mSquaresLandPosition[nbSquare - 1 - i][0], mSquaresLandPosition[nbSquare - 1 - i][1], mSquaresLandPosition[nbSquare - 1 - i][2]);
-				Matrix.scaleM(mModelMatrix, 0, mSquaresLandWidth, freqArray[i] + freqArray[i] * (float) i / this.hightFreqsAugmentation, 1f);
+				Matrix.scaleM(mModelMatrix, 0, mSquaresLandWidth, freqArray[i] /*+ freqArray[i] * (float) i / this.hightFreqsAugmentation*/, 1f);
 				mSquaresLandModelMatrix[nbSquare - 1 - i] = mModelMatrix.clone();
 			}
 		}

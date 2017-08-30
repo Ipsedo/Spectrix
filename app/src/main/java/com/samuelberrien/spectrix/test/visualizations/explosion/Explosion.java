@@ -152,7 +152,7 @@ public class Explosion implements Visualization {
 	private void createNewOctagones() {
 		for (int i = 0; i < this.nbSameCenter * this.nbCenter; i++) {
 			int tmpFreqIndex = i / this.nbSameCenter;
-			float tmpMagn = freqArray[tmpFreqIndex] + freqArray[tmpFreqIndex] * tmpFreqIndex * this.mFreqAugmentation;
+			float tmpMagn = freqArray[tmpFreqIndex];// + freqArray[tmpFreqIndex] * tmpFreqIndex * this.mFreqAugmentation;
 			int nbNewOct = (int) (tmpMagn * (float) this.nbMaxOctagonePerExplosion);
 			for (int j = 0; j < nbNewOct; j++) {
 				this.addNewOctagone(this.mCenterPoint[i], tmpMagn, tmpFreqIndex, i);
