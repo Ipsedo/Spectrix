@@ -10,13 +10,15 @@ import com.samuelberrien.spectrix.test.visualizations.spectrum.Spectrum;
  */
 
 public interface Visualization {
-	void init(Context context);
+	void init(Context context, boolean isVR);
 
 	boolean isInit();
 
 	boolean is3D();
 
 	void update(float[] freqArray);
+
+	float[] getCameraPosition();
 
 	void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 

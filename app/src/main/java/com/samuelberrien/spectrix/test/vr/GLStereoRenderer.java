@@ -58,7 +58,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 		GLES20.glDepthFunc(GLES20.GL_LEQUAL);
 		GLES20.glDepthMask(true);
 		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		this.visualization.init(context);
+		this.visualization.init(context, true);
 	}
 
 	/**
@@ -74,8 +74,9 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 
 	@Override
 	public void onNewFrame(HeadTransform headTransform) {
-		Matrix.setLookAtM(this.mCamera, 0, this.mCameraX, this.mCameraY, this.mCameraZ, 0.0f + this.mCameraX, 0.0f + this.mCameraY, 1f + this.mCameraZ, 0.0f, 1.0f, 0.0f);
-		headTransform.getHeadView(this.mHeadView, 0);
+		float[] camPos = visualization.getCameraPosition();
+		Matrix.setLookAtM(mCamera, 0, camPos[0], camPos[1], camPos[2], 0.0f + camPos[0], 0.0f + camPos[1], 1f + camPos[2], 0.0f, 1.0f, 0.0f);
+		headTransform.getHeadView(mHeadView, 0);
 		visualization.update(freqArray);
 	}
 
@@ -89,17 +90,17 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
 		// Apply the eye transformation to the camera.
-		//Matrix.multiplyMM(mViewMatrix, 0, eye.getEyeView(), 0, mCamera, 0);
+		Matrix.multiplyMM(mViewMatrix, 0, eye.getEyeView(), 0, mCamera, 0);
 
 		mProjectionMatrix = eye.getPerspective(Z_NEAR, Z_FAR);
 
 		Matrix.setIdentityM(mLightModelMatrix, 0);
-		Matrix.translateM(mLightModelMatrix, 0, this.mLightX, this.mLightY, this.mLightZ);
+		Matrix.translateM(mLightModelMatrix, 0, mLightX, mLightY, mLightZ);
 		Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
 		Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
 
 		float[] cam = new float[4];
-		Matrix.multiplyMV(cam, 0, this.mViewMatrix, 0, new float[]{this.mCameraX, this.mCameraY, this.mCameraZ, 1.0f}, 0);
+		Matrix.multiplyMV(cam, 0, this.mViewMatrix, 0, new float[]{mCameraX, mCameraY, mCameraZ, 1.0f}, 0);
 
 		visualization.draw(mProjectionMatrix.clone(), eye.getEyeView().clone(), mLightPosInEyeSpace.clone(), new float[]{cam[0], cam[1], cam[2]});
 	}

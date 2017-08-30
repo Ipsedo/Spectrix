@@ -32,7 +32,7 @@ public class GLRenderer2D implements GLSurfaceView.Renderer {
 	@Override
 	public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
 		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
-		visualization.init(context);
+		visualization.init(context, false);
 	}
 
 	@Override

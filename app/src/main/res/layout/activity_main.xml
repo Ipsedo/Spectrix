@@ -57,12 +57,50 @@
             android:background="@color/colorButton"
             android:orientation="vertical">
 
+            <RadioGroup
+                android:id="@+id/toggle"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_marginStart="5dp"
+                android:layout_marginEnd="5dp"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/out_line"
+                android:checkedButton="@+id/offer"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/stream_toggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/toggle_widget_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="Stream"
+                    android:checked="true"/>
+
+                <RadioButton
+                    android:id="@+id/mic_toggle"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.5"
+                    android:background="@drawable/toggle_widget_background"
+                    android:button="@null"
+                    android:gravity="center"
+                    android:text="MIC"/>
+            </RadioGroup>
+
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
                 android:gravity="center"
                 android:text="Choose your visualization :"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="3dp"
+                android:background="@drawable/black_shape"/>
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -72,7 +110,9 @@
                     android:id="@+id/layout_scroll_view_visualisations"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"/>
+                    android:orientation="vertical"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"/>
             </ScrollView>
         </LinearLayout>
     </LinearLayout>

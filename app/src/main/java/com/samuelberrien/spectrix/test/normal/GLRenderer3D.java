@@ -8,6 +8,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 
 import com.samuelberrien.spectrix.test.utils.Visualization;
+import com.samuelberrien.spectrix.test.utils.gesture.RotationGestureDetector;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -16,7 +17,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by samuel on 23/08/17.
  */
 
-public class GLRenderer3D implements GLSurfaceView.Renderer {
+public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDetector.OnRotationGestureListener {
 
 	private Visualization visualization;
 
@@ -30,14 +31,13 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 	private final float[] mLightModelMatrix;
 	private final float[] mLightPosInWorldSpace;
 
-	private float[] mCameraPosition;
-
 	private float projectionAngle;
 
 	private float ratio;
 
 	private final float TOUCH_SCALE_FACTOR_MOVE = 0.05f;
 	private final float TOUCH_SCALE_FACTOR_ZOOM = 2f;
+	private final float TOUCH_SCALE_FACTOR_ROLL = 1f;
 	private float mPreviousX;
 	private float mPreviousY;
 
@@ -45,8 +45,12 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 
 	private boolean otherPointerUp;
 
-	private Object semaphoreTouchEvent;
 	private ScaleGestureDetector myScaleGestureDetector;
+
+	private float rollAngle;
+	private float rollDelta;
+
+	private RotationGestureDetector rotationGestureDetector;
 
 	public GLRenderer3D(Context context, Visualization visualization) {
 		this.context = context;
@@ -57,8 +61,6 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 
 		ratio = 1f;
 
-		mCameraPosition = new float[3];
-
 		mLightPosInModelSpace = new float[]{0.0f, 0.0f, 0.0f, 1.0f};
 		mLightPosInEyeSpace = new float[4];
 		mLightModelMatrix = new float[16];
@@ -66,20 +68,22 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 
 		otherPointerUp = false;
 
+		rollAngle = 0f;
+		rollDelta = 0f;
+
 		mProjectionMatrix = new float[16];
 		mViewMatrix = new float[16];
 
 		cameraRotation = new float[16];
 		Matrix.setIdentityM(cameraRotation, 0);
 
-		semaphoreTouchEvent = new Object();
-
 		myScaleGestureDetector = new ScaleGestureDetector(context,
 				new MyScaleGestureDetector());
+
+		rotationGestureDetector = new RotationGestureDetector(this);
 	}
 
 	public void onTouchEvent(MotionEvent e) {
-		int index = e.getActionIndex();
 		float invNbPointer = 1f / (float) e.getPointerCount();
 
 		float moyX;
@@ -128,7 +132,11 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 				float[] tmp2 = new float[16];
 				Matrix.setRotateM(tmp2, 0, dy * TOUCH_SCALE_FACTOR_MOVE, 1f, 0f, 0f);
 
-				Matrix.multiplyMM(tmp1, 0, tmp1.clone(), 0, tmp2.clone(), 0);
+				Matrix.multiplyMM(tmp1, 0, tmp1.clone(), 0, tmp2, 0);
+
+				Matrix.setRotateM(tmp2, 0, rollDelta * TOUCH_SCALE_FACTOR_ROLL, 0f, 0f, 1f);
+
+				Matrix.multiplyMM(tmp1, 0, tmp1.clone(), 0, tmp2, 0);
 
 				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, tmp1, 0);
 				break;
@@ -159,8 +167,10 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 		mPreviousX = moyX + 1f;
 		mPreviousY = moyY + 1f;
 
-		if (e.getPointerCount() < 3)
+		if (e.getPointerCount() < 3) {
 			myScaleGestureDetector.onTouchEvent(e);
+			rotationGestureDetector.onTouchEvent(e);
+		}
 	}
 
 	@Override
@@ -171,14 +181,14 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 		GLES20.glDepthMask(true);
 		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-		visualization.init(context);
+		visualization.init(context, false);
 	}
 
 	@Override
 	public void onSurfaceChanged(GL10 gl10, int width, int height) {
 		GLES20.glViewport(0, 0, width, height);
 
-		this.ratio = (float) width / height;
+		ratio = (float) width / height;
 
 		//Matrix.frustumM(mProjectionMatrix, 0, -this.ratio, this.ratio, -1, 1, 3, 50f);
 
@@ -194,7 +204,8 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 		Matrix.multiplyMV(camDir, 0, cameraRotation, 0, camDir.clone(), 0);
 		Matrix.multiplyMV(camUp, 0, cameraRotation, 0, camUp.clone(), 0);
 
-		Matrix.setLookAtM(mViewMatrix, 0, mCameraPosition[0], mCameraPosition[1], mCameraPosition[2], camDir[0], camDir[1], camDir[2], camUp[0], camUp[1], camUp[2]);
+		float[] mCameraPosition = visualization.getCameraPosition();
+		Matrix.setLookAtM(mViewMatrix, 0, mCameraPosition[0], mCameraPosition[1], mCameraPosition[2], camDir[0] + mCameraPosition[0], camDir[1] + mCameraPosition[1], camDir[2] + mCameraPosition[2], camUp[0], camUp[1], camUp[2]);
 		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, 50f);
 
 		visualization.draw(mProjectionMatrix.clone(), mViewMatrix.clone(), mLightPosInEyeSpace.clone(), mCameraPosition.clone());
@@ -210,6 +221,17 @@ public class GLRenderer3D implements GLSurfaceView.Renderer {
 		Matrix.translateM(mLightModelMatrix, 0, x, y, z);
 		Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
 		Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
+	}
+
+	@Override
+	public void onRotationBegin() {
+		rollAngle = 0f;
+	}
+
+	@Override
+	public void onRotation(RotationGestureDetector rotationDetector) {
+		rollDelta = rollAngle + rotationDetector.getAngle();
+		rollAngle = -rotationDetector.getAngle();
 	}
 
 	private class MyScaleGestureDetector extends ScaleGestureDetector.SimpleOnScaleGestureListener {

@@ -48,7 +48,7 @@ public class Icosahedron implements Visualization {
 	}
 
 	@Override
-	public void init(Context context) {
+	public void init(Context context, boolean isVR) {
 		this.context = context;
 
 		this.minDist = 10f;
@@ -57,7 +57,7 @@ public class Icosahedron implements Visualization {
 		this.rand = new Random(System.currentTimeMillis());
 
 		this.nbIcosahedron = 30;
-		this.nbSameIcosahedron = 10;
+		this.nbSameIcosahedron = !isVR ? 10 : 5;
 		this.mAmbColorBuffer = new ArrayList[this.nbSameIcosahedron * this.nbIcosahedron];
 		this.mDiffColorBuffer = new ArrayList[this.nbSameIcosahedron * this.nbIcosahedron];
 		this.mSpecColorBuffer = new ArrayList[this.nbSameIcosahedron * this.nbIcosahedron];
@@ -105,6 +105,11 @@ public class Icosahedron implements Visualization {
 
 			this.mModelMatrix[i] = mModelMatrix.clone();
 		}
+	}
+
+	@Override
+	public float[] getCameraPosition() {
+		return new float[]{0f, 0f, 0f};
 	}
 
 	@Override

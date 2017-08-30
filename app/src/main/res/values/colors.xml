@@ -16,4 +16,6 @@
     <color name="colorText">@color/black</color>
     <color name="white">#FFFFFF</color>
     <color name="green1">#00FF11</color>
+    <color name="jaune_logo">#f8b131</color>
+    <color name="transparent">#00000000</color>
 </resources>

@@ -36,7 +36,7 @@ public class Spectrum implements Visualization {
 	}
 
 	@Override
-	public void init(Context context) {
+	public void init(Context context, boolean isVR) {
 		square = new Square();
 
 		mSquaresPortraitModelMatrix = new float[nbSquare][16];
@@ -100,6 +100,11 @@ public class Spectrum implements Visualization {
 				mSquaresLandModelMatrix[nbSquare - 1 - i] = mModelMatrix.clone();
 			}
 		}
+	}
+
+	@Override
+	public float[] getCameraPosition() {
+		return new float[]{0f, 0f, -3f};
 	}
 
 	@Override

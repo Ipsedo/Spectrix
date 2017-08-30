@@ -7,6 +7,7 @@ import com.samuelberrien.spectrix.test.main.MainActivity;
 import com.samuelberrien.spectrix.test.utils.Visualization;
 import com.samuelberrien.spectrix.test.visualizations.explosion.Explosion;
 import com.samuelberrien.spectrix.test.visualizations.icosahedron.Icosahedron;
+import com.samuelberrien.spectrix.test.visualizations.snow.Snow;
 
 public class MyGvrActivity extends GvrActivity {
 
@@ -18,13 +19,15 @@ public class MyGvrActivity extends GvrActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		this.id_Visualisation = getIntent().getIntExtra(MainActivity.ID_RENDERER, 0);
+		id_Visualisation = getIntent().getIntExtra(MainActivity.ID_RENDERER, 0);
 
 		Visualization visualization;
 		if(id_Visualisation == 1) {
 			visualization = new Icosahedron();
 		} else if(id_Visualisation == 2) {
 			visualization = new Explosion();
+		} else if (id_Visualisation == 3) {
+			visualization = new Snow();
 		} else {
 			throw new RuntimeException("Unsuported Visualisation");
 		}

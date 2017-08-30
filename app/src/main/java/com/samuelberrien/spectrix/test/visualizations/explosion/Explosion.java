@@ -44,7 +44,7 @@ public class Explosion implements Visualization {
 	private boolean isInit = false;
 
 	@Override
-	public void init(Context context) {
+	public void init(Context context, boolean isVR) {
 		this.context = context;
 		this.rand = new Random(System.currentTimeMillis());
 		this.minDist = 5f;
@@ -52,7 +52,7 @@ public class Explosion implements Visualization {
 		this.nbCenter = 30;
 		this.nbSameCenter = 5;
 		this.mCenterColorBuffer = new FloatBuffer[this.nbSameCenter * this.nbCenter];
-		this.nbMaxOctagonePerExplosion = 5;
+		this.nbMaxOctagonePerExplosion = !isVR ? 5 : 2;
 		this.mCenterPoint = new float[this.nbCenter * this.nbSameCenter][3];
 		this.octagone = new ObjModel(this.context, "obj/octagone.obj", 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
 		this.maxOctagonSpeed = 1f;
@@ -79,6 +79,11 @@ public class Explosion implements Visualization {
 		this.deleteOldOctagone();
 		this.createNewOctagones();
 		this.moveOctagone();
+	}
+
+	@Override
+	public float[] getCameraPosition() {
+		return new float[]{0f, 0f, 0f};
 	}
 
 	@Override
