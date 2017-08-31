@@ -16,7 +16,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name=".test.main.MainActivity"
+            android:name=".main.MainActivity"
             android:configChanges="orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -24,16 +24,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".spectrum.SpectrumActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize"
-            android:screenOrientation="portrait" />
-        <activity android:name=".obj.normal.ObjActivity" />
-        <activity android:name=".test.vr.MyGvrActivity"
-            android:screenOrientation="landscape"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:enableVrMode="true"
-            android:resizeableActivity="false">
+        <activity android:name=".vr.MyGvrActivity"
+                  android:screenOrientation="landscape"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+                  android:enableVrMode="true"
+                  android:resizeableActivity="false">
             <intent-filter>
                 <category android:name="com.google.intent.category.CARDBOARD" />
                 <category android:name="com.google.intent.category.DAYDREAM" />

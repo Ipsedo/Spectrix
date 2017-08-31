@@ -2,7 +2,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".test.main.MainActivity">
+      tools:context=".main.MainActivity">
     <item
         android:id="@+id/hide_toolbar"
         android:orderInCategory="3"
