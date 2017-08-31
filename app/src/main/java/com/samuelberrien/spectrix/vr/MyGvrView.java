@@ -20,8 +20,6 @@ public class MyGvrView extends GvrView {
 
 	private boolean listeningStream;
 
-	private static float freqAugmentation = 0.3f;
-
 	public MyGvrView(Context context, Visualization visualization, boolean listeningStream) {
 		super(context);
 		setEGLContextClientVersion(2);
@@ -31,7 +29,7 @@ public class MyGvrView extends GvrView {
 
 		this.visualization = visualization;
 
-		glStereoRenderer = new GLStereoRenderer(context, visualization);
+		glStereoRenderer = new GLStereoRenderer(context, this.visualization);
 		setRenderer(glStereoRenderer);
 	}
 
@@ -68,8 +66,7 @@ public class MyGvrView extends GvrView {
 
 	private class StreamVrThread extends StreamThread {
 
-
-		public StreamVrThread(Visualization visualization) {
+		StreamVrThread(Visualization visualization) {
 			super(visualization);
 		}
 
@@ -81,7 +78,7 @@ public class MyGvrView extends GvrView {
 
 	private class MicVrThread extends MicThread {
 
-		public MicVrThread(Visualization visualization) {
+		MicVrThread(Visualization visualization) {
 			super(visualization);
 		}
 

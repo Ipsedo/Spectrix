@@ -18,9 +18,6 @@ public class StreamThread extends VisualizationThread {
 		super("StreamThread", visualization);
 
 		visualizer = new Visualizer(0);
-		visualizer.setEnabled(false);
-		/*visualizer.setScalingMode(Visualizer.SCALING_MODE_NORMALIZED);
-		visualizer.setMeasurementMode(Visualizer.MEASUREMENT_MODE_PEAK_RMS);*/
 		visualizer.setCaptureSize(Visualizer.getCaptureSizeRange()[1]);
 		visualizer.setEnabled(true);
 	}
@@ -32,7 +29,6 @@ public class StreamThread extends VisualizationThread {
 
 	@Override
 	protected void onEnd() {
-		visualizer.setEnabled(false);
 		visualizer.release();
 	}
 
