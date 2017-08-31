@@ -251,7 +251,7 @@ public class Snow implements Visualization {
 			double r2 = rand.nextDouble() * 5d;
 
             /*if(Math.cos(90) == 0){
-                theta = rand.nextDouble() * 360f;
+				theta = rand.nextDouble() * 360f;
                 phi = rand.nextDouble() * 135f + 22.5f;
                 mOctagoneAngle[i] = rand.nextFloat() * 360f;
             }else{*/
