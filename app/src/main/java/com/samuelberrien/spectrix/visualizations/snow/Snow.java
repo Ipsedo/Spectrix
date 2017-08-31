@@ -226,8 +226,8 @@ public class Snow implements Visualization {
 		for (int i = 0; i < nbPing; i++) {
 			double r = 5d * rand.nextDouble();
 			double theta;
-            /*if(Math.sin(90) == 1){
-                theta = rand.nextDouble() * 360d;
+			/*if(Math.sin(90) == 1){
+				theta = rand.nextDouble() * 360d;
             }else{*/
 			theta = rand.nextDouble() * Math.PI * 2d;
 			//}
