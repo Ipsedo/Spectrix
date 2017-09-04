@@ -17,6 +17,8 @@ public interface Visualization {
 
 	float[] getCameraPosition();
 
+	float[] getInitCamLookDirVec();
+
 	void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);
 
 	String getName();

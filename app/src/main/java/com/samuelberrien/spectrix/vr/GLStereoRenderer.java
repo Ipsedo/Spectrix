@@ -23,9 +23,6 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 
 	private static final float Z_NEAR = 1f;
 	private static final float Z_FAR = 50.0f;
-	protected float mCameraX = 0f;
-	protected float mCameraY = 0f;
-	protected float mCameraZ = 0.001f;
 
 	protected float[] mProjectionMatrix = new float[16];
 	protected final float[] mViewMatrix = new float[16];
@@ -63,7 +60,8 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 	@Override
 	public void onNewFrame(HeadTransform headTransform) {
 		float[] camPos = visualization.getCameraPosition();
-		Matrix.setLookAtM(mCamera, 0, camPos[0], camPos[1], camPos[2], 0.0f + camPos[0], 0.0f + camPos[1], 1f + camPos[2], 0.0f, 1.0f, 0.0f);
+		float[] camDir = visualization.getInitCamLookDirVec();
+		Matrix.setLookAtM(mCamera, 0, camPos[0], camPos[1], camPos[2], camDir[0] + camPos[0], camDir[1] + camPos[1], camDir[2] + camPos[2], 0.0f, 1.0f, 0.0f);
 		headTransform.getHeadView(mHeadView, 0);
 		visualization.update(freqArray);
 	}

@@ -26,6 +26,8 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 	protected final float[] mProjectionMatrix;
 	protected final float[] mViewMatrix;
 
+	private final float[] initCamLookDirVec;
+
 	private final float[] mLightPosInModelSpace;
 	private final float[] mLightPosInEyeSpace;
 	private final float[] mLightModelMatrix;
@@ -52,7 +54,9 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 
 	private RotationGestureDetector rotationGestureDetector;
 
-	public GLRenderer3D(Context context, Visualization visualization) {
+	private MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish;
+
+	public GLRenderer3D(Context context, Visualization visualization, MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish) {
 		this.context = context;
 
 		this.visualization = visualization;
@@ -74,6 +78,8 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 		mProjectionMatrix = new float[16];
 		mViewMatrix = new float[16];
 
+		updateLight(0f, 0f, 0f);
+
 		cameraRotation = new float[16];
 		Matrix.setIdentityM(cameraRotation, 0);
 
@@ -81,6 +87,10 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 				new MyScaleGestureDetector());
 
 		rotationGestureDetector = new RotationGestureDetector(this);
+
+		this.onVisualizationInitFinish = onVisualizationInitFinish;
+
+		initCamLookDirVec = visualization.getInitCamLookDirVec();
 	}
 
 	public void onTouchEvent(MotionEvent e) {
@@ -167,10 +177,8 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 		mPreviousX = moyX + 1f;
 		mPreviousY = moyY + 1f;
 
-		if (e.getPointerCount() < 3) {
-			myScaleGestureDetector.onTouchEvent(e);
-			rotationGestureDetector.onTouchEvent(e);
-		}
+		myScaleGestureDetector.onTouchEvent(e);
+		rotationGestureDetector.onTouchEvent(e);
 	}
 
 	@Override
@@ -182,6 +190,8 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
 		visualization.init(context, false);
+
+		onVisualizationInitFinish.onFinish();
 	}
 
 	@Override
@@ -199,7 +209,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 	public void onDrawFrame(GL10 gl10) {
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-		float[] camDir = new float[]{0f, 0f, 1f, 0f};
+		float[] camDir = new float[]{initCamLookDirVec[0], initCamLookDirVec[1], initCamLookDirVec[2], 0f};
 		float[] camUp = new float[]{0f, 1f, 0f, 0f};
 		Matrix.multiplyMV(camDir, 0, cameraRotation, 0, camDir.clone(), 0);
 		Matrix.multiplyMV(camUp, 0, cameraRotation, 0, camUp.clone(), 0);

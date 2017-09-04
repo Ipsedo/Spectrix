@@ -84,6 +84,11 @@ public class Explosion implements Visualization {
 	}
 
 	@Override
+	public float[] getInitCamLookDirVec() {
+		return new float[]{0f, 0f, 1f};
+	}
+
+	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		float[] tmpModelViewMatrix = new float[16];
 		float[] tmpModelViewProjectionMatrix = new float[16];

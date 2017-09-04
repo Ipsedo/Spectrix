@@ -108,6 +108,11 @@ public class Spectrum implements Visualization {
 	}
 
 	@Override
+	public float[] getInitCamLookDirVec() {
+		return new float[]{0f, 0f, 3f};
+	}
+
+	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] unused1, float[] unused2) {
 		float[] mMVPMatrix = new float[16];
 		if (context.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {

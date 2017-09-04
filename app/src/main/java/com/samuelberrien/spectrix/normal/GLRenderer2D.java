@@ -22,17 +22,21 @@ public class GLRenderer2D implements GLSurfaceView.Renderer {
 	private final float[] mProjectionMatrix;
 	private final float[] mViewMatrix;
 
-	public GLRenderer2D(Context context, Visualization visualization) {
+	private MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish;
+
+	public GLRenderer2D(Context context, Visualization visualization, MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish) {
 		this.context = context;
 		this.visualization = visualization;
 		mProjectionMatrix = new float[16];
 		mViewMatrix = new float[16];
+		this.onVisualizationInitFinish = onVisualizationInitFinish;
 	}
 
 	@Override
 	public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
 		GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		visualization.init(context, false);
+		onVisualizationInitFinish.onFinish();
 	}
 
 	@Override
@@ -48,7 +52,10 @@ public class GLRenderer2D implements GLSurfaceView.Renderer {
 	public void onDrawFrame(GL10 gl10) {
 		GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
-		Matrix.setLookAtM(mViewMatrix, 0, 0, 0, -3, 0f, 0f, 0f, 0f, 1.0f, 0.0f);
+		float[] camPos = visualization.getCameraPosition();
+		float[] camDir = visualization.getInitCamLookDirVec();
+
+		Matrix.setLookAtM(mViewMatrix, 0, camPos[0], camPos[1], camPos[2], camDir[0] + camPos[0], camDir[1] + camPos[1], camDir[2] + camPos[2], 0f, 1.0f, 0.0f);
 
 		//Matrix.multiplyMM(mMVPMatrix, 0, mProjectionMatrix, 0, mViewMatrix, 0);
 

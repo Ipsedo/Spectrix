@@ -22,17 +22,17 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 	private int currentListening;
 
-	public MyGLSurfaceView(Context context, Visualization visualization, int currentListening) {
+	public MyGLSurfaceView(Context context, Visualization visualization, int currentListening, OnVisualizationInitFinish onVisualizationInitFinish) {
 		super(context);
 		setEGLContextClientVersion(2);
 		setPreserveEGLContextOnPause(true);
 
 		this.visualization = visualization;
 		if (this.visualization.is3D()) {
-			glRenderer3D = new GLRenderer3D(getContext(), this.visualization);
+			glRenderer3D = new GLRenderer3D(getContext(), this.visualization, onVisualizationInitFinish);
 			setRenderer(glRenderer3D);
 		} else {
-			GLRenderer2D glRenderer2D = new GLRenderer2D(getContext(), this.visualization);
+			GLRenderer2D glRenderer2D = new GLRenderer2D(getContext(), this.visualization, onVisualizationInitFinish);
 			setRenderer(glRenderer2D);
 		}
 
@@ -95,7 +95,8 @@ public class MyGLSurfaceView extends GLSurfaceView {
 				e.printStackTrace();
 			}
 		}
-		switch (listeningId) {
+		currentListening = listeningId;
+		switch (currentListening) {
 			case VisualizationThread.STREAM_MUSIC:
 				visualizationThread = new StreamThread(visualization);
 				visualizationThread.start();
@@ -106,5 +107,9 @@ public class MyGLSurfaceView extends GLSurfaceView {
 				return;
 		}
 		throw new IllegalArgumentException("Wrong listening identifiant !");
+	}
+
+	public interface OnVisualizationInitFinish {
+		void onFinish();
 	}
 }

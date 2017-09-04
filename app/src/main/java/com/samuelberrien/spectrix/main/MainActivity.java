@@ -20,8 +20,11 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -130,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		this.menu = menu;
-		this.menu.getItem(1).setVisible(false);
+		//this.menu.getItem(1).setVisible(false);
 		return true;
 	}
 
@@ -153,10 +156,6 @@ public class MainActivity extends AppCompatActivity {
 				drawerLayout.openDrawer(GravityCompat.START);
 				return true;
 			case R.id.hide_toolbar:
-				/*toolbar.animate()
-						.alpha(0) //la rendre invisible
-						.translationY(-toolbar.getHeight())
-						.start();*/
 				getSupportActionBar().hide();
 				showToolBarButton.setVisibility(View.VISIBLE);
 				return true;
@@ -180,25 +179,23 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void setUpDrawer() {
-		/*DoubleTapGesture doubleTapGesture = new DoubleTapGesture();
-		final GestureDetector gestureDetector = new GestureDetector(this, doubleTapGesture);*/
-		final LinearLayout linearLayoutSurfaceView = (LinearLayout) findViewById(R.id.layout_surface_view);
+		final FrameLayout frameLayoutSurfaceView = (FrameLayout) findViewById(R.id.layout_surface_view);
 		Visualization startVisu = new Spectrum();
-		myGLSurfaceView = new MyGLSurfaceView(this, startVisu, currentListeningId);
-		/*myGLSurfaceView.setOnTouchListener(new View.OnTouchListener() {
+
+		myGLSurfaceView = new MyGLSurfaceView(this, startVisu, currentListeningId, new MyGLSurfaceView.OnVisualizationInitFinish() {
 			@Override
-			public boolean onTouch(View view, MotionEvent motionEvent) {
-				gestureDetector.onTouchEvent(motionEvent);
-				return view.onTouchEvent(motionEvent);
+			public void onFinish() {
+
 			}
-		});*/
+		});
+
 		getSupportActionBar().setTitle(startVisu.getName());
-		linearLayoutSurfaceView.removeAllViews();
-		linearLayoutSurfaceView.addView(myGLSurfaceView);
+		frameLayoutSurfaceView.removeAllViews();
+		frameLayoutSurfaceView.addView(myGLSurfaceView);
 
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_scroll_view_visualisations);
 
-		LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
 		layoutParams.setMargins(margin, margin, margin, 0);
 		layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
@@ -218,21 +215,41 @@ public class MainActivity extends AppCompatActivity {
 				public void onClick(View v) {
 					idVusalisation = index;
 					myGLSurfaceView.onPause();
-					myGLSurfaceView = new MyGLSurfaceView(getApplicationContext(), VisualizationHelper.getVisualization(index), currentListeningId);
-					linearLayoutSurfaceView.removeAllViews();
-					linearLayoutSurfaceView.addView(myGLSurfaceView);
-					/*myGLSurfaceView.setOnTouchListener(new View.OnTouchListener() {
-						@Override
-						public boolean onTouch(View view, MotionEvent motionEvent) {
-							gestureDetector.onTouchEvent(motionEvent);
-							return view.onTouchEvent(motionEvent);
-						}
-					});*/
-					if (index == 0) {
+
+					frameLayoutSurfaceView.removeAllViews();
+
+					final ProgressBar progressBar = new ProgressBar(MainActivity.this);
+					progressBar.setIndeterminate(true);
+					progressBar.setIndeterminateDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.rotate_progress_bar));
+
+					Visualization visualization = VisualizationHelper.getVisualization(index);
+
+					myGLSurfaceView = new MyGLSurfaceView(getApplicationContext(),
+							visualization,
+							currentListeningId,
+							new MyGLSurfaceView.OnVisualizationInitFinish() {
+								@Override
+								public void onFinish() {
+									runOnUiThread(new Runnable() {
+										@Override
+										public void run() {
+											frameLayoutSurfaceView.removeView(progressBar);
+										}
+									});
+								}
+							});
+					frameLayoutSurfaceView.addView(myGLSurfaceView);
+
+					FrameLayout.LayoutParams layoutParamsProgressBar = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+					layoutParamsProgressBar.gravity = Gravity.CENTER;
+					frameLayoutSurfaceView.addView(progressBar, layoutParamsProgressBar);
+
+					/*if (index == 0) {
 						menu.getItem(1).setVisible(false);
 					} else {
 						menu.getItem(1).setVisible(true);
-					}
+					}*/
+
 					getSupportActionBar().setTitle(name);
 					drawerLayout.closeDrawers();
 				}

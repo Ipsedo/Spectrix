@@ -152,6 +152,11 @@ public class Snow implements Visualization {
 	}
 
 	@Override
+	public float[] getInitCamLookDirVec() {
+		return new float[]{0f, 0f, 1f};
+	}
+
+	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		float[] tmpMVMatrix = new float[16];
 		float[] tmpMVPMatrix = new float[16];
