@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
 					getSupportActionBar().show();
 				}
 				super.onDrawerSlide(drawerView, slideOffset);
-				//drawerLayout.bringChildToFront(drawerView);
 				drawerLayout.requestLayout();
 			}
 		};
@@ -126,14 +125,22 @@ public class MainActivity extends AppCompatActivity {
 		currentListeningId = VisualizationThread.STREAM_MUSIC;
 
 		mPlayer = MediaPlayer.create(this, R.raw.crea_session_8);
-		mPlayer.setLooping(true);
+		mPlayer.setLooping(false);
+		mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+			@Override
+			public void onCompletion(MediaPlayer mediaPlayer) {
+				menu.getItem(0).setIcon(ContextCompat.getDrawable(MainActivity.this, R.drawable.play_icon));
+			}
+		});
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		this.menu = menu;
-		//this.menu.getItem(1).setVisible(false);
+
+		this.menu.getItem(1).setVisible(false);
+
 		return true;
 	}
 
@@ -244,11 +251,11 @@ public class MainActivity extends AppCompatActivity {
 					layoutParamsProgressBar.gravity = Gravity.CENTER;
 					frameLayoutSurfaceView.addView(progressBar, layoutParamsProgressBar);
 
-					/*if (index == 0) {
-						menu.getItem(1).setVisible(false);
-					} else {
+					if (visualization.is3D()) {
 						menu.getItem(1).setVisible(true);
-					}*/
+					} else {
+						menu.getItem(1).setVisible(false);
+					}
 
 					getSupportActionBar().setTitle(name);
 					drawerLayout.closeDrawers();
