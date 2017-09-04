@@ -25,8 +25,6 @@ public class Spectrum implements Visualization {
 	private float[][] mSquaresLandPosition;
 	private float[][] mSquaresLandModelMatrix;
 
-	private float hightFreqsAugmentation = 30f;
-
 	private Square square;
 
 	private Context context;

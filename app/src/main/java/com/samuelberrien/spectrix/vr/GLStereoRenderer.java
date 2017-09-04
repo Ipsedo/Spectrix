@@ -24,8 +24,8 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 	private static final float Z_NEAR = 1f;
 	private static final float Z_FAR = 50.0f;
 
-	protected float[] mProjectionMatrix = new float[16];
-	protected final float[] mViewMatrix = new float[16];
+	private float[] mProjectionMatrix = new float[16];
+	private final float[] mViewMatrix = new float[16];
 
 	private float[] mHeadView = new float[16];
 	private float[] mCamera = new float[16];
@@ -41,7 +41,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 	/**
 	 * @param context
 	 */
-	public GLStereoRenderer(Context context, Visualization visualization) {
+	GLStereoRenderer(Context context, Visualization visualization) {
 		this.context = context;
 		this.visualization = visualization;
 		this.freqArray = new float[Visualizer.getCaptureSizeRange()[1]];
@@ -103,7 +103,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 	public void onRendererShutdown() {
 	}
 
-	public void updateFreqArray(float[] newFreqArray) {
+	void updateFreqArray(float[] newFreqArray) {
 		freqArray = newFreqArray;
 	}
 }

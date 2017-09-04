@@ -60,6 +60,14 @@ public class ShaderLoader {
 		GLES20.glShaderSource(shader, shaderCode);
 		GLES20.glCompileShader(shader);
 
+		int[] compiled = new int[1];
+
+		GLES20.glGetShaderiv(shader, GLES20.GL_COMPILE_STATUS, compiled, 0);
+
+		if (compiled[0] == 0) {
+			throw new RuntimeException("SHADER NOT COMPILED");
+		}
+
 		return shader;
 	}
 
