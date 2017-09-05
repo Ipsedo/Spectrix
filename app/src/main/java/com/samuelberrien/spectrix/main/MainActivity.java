@@ -62,8 +62,6 @@ public class MainActivity extends AppCompatActivity {
 
 	private int currentListeningId;
 
-	//private DoubleTapGesture doubleTapGesture;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -114,10 +112,11 @@ public class MainActivity extends AppCompatActivity {
 		addContentView(relativeLayout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
 
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-			if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
+			/*if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
 			} else {
 				ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
-			}
+			}*/
+			ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
 		}
 
 		setUpDrawer();
@@ -132,6 +131,8 @@ public class MainActivity extends AppCompatActivity {
 				menu.getItem(0).setIcon(ContextCompat.getDrawable(MainActivity.this, R.drawable.play_icon));
 			}
 		});
+
+		switchOrientation(this.getResources().getConfiguration().orientation);
 	}
 
 	@Override
@@ -139,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		this.menu = menu;
 
-		this.menu.getItem(1).setVisible(false);
+		//this.menu.getItem(1).setVisible(false);
 
 		return true;
 	}
@@ -154,6 +155,33 @@ public class MainActivity extends AppCompatActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		drawerToggle.onConfigurationChanged(newConfig);
+
+		switchOrientation(newConfig.orientation);
+
+	}
+
+	private void switchOrientation(int orientation) {
+		LinearLayout menuDrawer = (LinearLayout) findViewById(R.id.layout_menu_drawer);
+		LinearLayout layoutToggle = (LinearLayout) findViewById(R.id.layout_toggle);
+		LinearLayout layoutScroll = (LinearLayout) findViewById(R.id.layout_scroll);
+
+		LinearLayout.LayoutParams layoutPortraitParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+		LinearLayout.LayoutParams layoutLandParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f);
+
+		switch (orientation) {
+			case Configuration.ORIENTATION_LANDSCAPE:
+				menuDrawer.setOrientation(LinearLayout.HORIZONTAL);
+				layoutScroll.setLayoutParams(layoutLandParams);
+				layoutToggle.setLayoutParams(layoutLandParams);
+				findViewById(R.id.about_disco_text_view).setVisibility(View.VISIBLE);
+				break;
+			case Configuration.ORIENTATION_PORTRAIT:
+				menuDrawer.setOrientation(LinearLayout.VERTICAL);
+				layoutToggle.setLayoutParams(layoutPortraitParams);
+				layoutScroll.setLayoutParams(layoutPortraitParams);
+				findViewById(R.id.about_disco_text_view).setVisibility(View.GONE);
+				break;
+		}
 	}
 
 	@Override
@@ -251,11 +279,11 @@ public class MainActivity extends AppCompatActivity {
 					layoutParamsProgressBar.gravity = Gravity.CENTER;
 					frameLayoutSurfaceView.addView(progressBar, layoutParamsProgressBar);
 
-					if (visualization.is3D()) {
+					/*if (visualization.is3D()) {
 						menu.getItem(1).setVisible(true);
 					} else {
 						menu.getItem(1).setVisible(false);
-					}
+					}*/
 
 					getSupportActionBar().setTitle(name);
 					drawerLayout.closeDrawers();

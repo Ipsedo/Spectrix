@@ -29,7 +29,7 @@ public abstract class VisualizationThread extends Thread {
 	public void run() {
 		while (!isCanceled && !visualization.isInit()) {
 			try {
-				Thread.sleep(50L);
+				Thread.sleep(getTimeToWait());
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 			}
@@ -38,7 +38,7 @@ public abstract class VisualizationThread extends Thread {
 		while (!this.isCanceled) {
 			work(visualization);
 			try {
-				Thread.sleep(50L);
+				Thread.sleep(getTimeToWait());
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 			}
@@ -52,4 +52,6 @@ public abstract class VisualizationThread extends Thread {
 	protected abstract void onEnd();
 
 	protected abstract float[] getFrequencyMagns();
+
+	protected abstract long getTimeToWait();
 }

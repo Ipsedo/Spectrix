@@ -1,23 +1,6 @@
 <resources>
     <string name="app_name">Spectrix</string>
-    <string name="icosahedron">Icosahedron</string>
-    <string name="snow">Snow</string>
-    <string name="room">Room</string>
-    <string name="explosion">Explosion</string>
-    <string name="test">Test</string>
-    <string name="canyon">Canyon</string>
-    <string name="visualization_instruction">Choose your Visualisation :</string>
-    <string name="music_instruction">Visualize streaming Music or Sample</string>
-    <string name="use_sample_check_box">Use Music Sample</string>
-    <string name="use_vr_check_box">VR Cardboard</string>
-    <string name="start_button">Start</string>
-    <string-array name="visualisation_names">
-        <item>Spectrum Portrait</item>
-        <item>Spectrum Landscape</item>
-        <item>@string/icosahedron</item>
-        <item>@string/snow</item>
-        <item>@string/room</item>
-        <item>@string/explosion</item>
-        <item>@string/canyon</item>
-    </string-array>
+    <string name="about_spectrix">
+        Spectrix is more than a simple music visualizer,\nit\'s a unique music experience !\n\nCredits :\n\n© Samuel Berrien
+    </string>
 </resources>

@@ -66,6 +66,11 @@ public class MicThread extends VisualizationThread {
 		return fft;
 	}
 
+	@Override
+	protected long getTimeToWait() {
+		return 30L;
+	}
+
 	private int getValidSampleRates() {
 		int res = 0;
 		for (int rate : new int[]{8000, 11025, 16000, 22050, 44100}) {  // add the rates you wish to check against

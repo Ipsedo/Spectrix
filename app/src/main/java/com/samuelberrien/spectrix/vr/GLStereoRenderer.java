@@ -21,8 +21,14 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 
 	protected Context context;
 
-	private static final float Z_NEAR = 1f;
-	private static final float Z_FAR = 50.0f;
+	private static final float Z_NEAR_3D = 1f;
+	private static final float Z_FAR_3D = 50f;
+
+	private static final float Z_NEAR_2D = 3f;
+	private static final float Z_FAR_2D = 7f;
+
+	private final float Z_NEAR;
+	private final float Z_FAR;
 
 	private float[] mProjectionMatrix = new float[16];
 	private final float[] mViewMatrix = new float[16];
@@ -45,6 +51,14 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 		this.context = context;
 		this.visualization = visualization;
 		this.freqArray = new float[Visualizer.getCaptureSizeRange()[1]];
+
+		if (visualization.is3D()) {
+			Z_NEAR = Z_NEAR_3D;
+			Z_FAR = Z_FAR_3D;
+		} else {
+			Z_NEAR = Z_NEAR_2D;
+			Z_FAR = Z_FAR_2D;
+		}
 	}
 
 	@Override
@@ -81,7 +95,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 		mProjectionMatrix = eye.getPerspective(Z_NEAR, Z_FAR);
 
 		Matrix.setIdentityM(mLightModelMatrix, 0);
-		//TODO light pos
+		//TODO light pos selon visualization
 		Matrix.translateM(mLightModelMatrix, 0, 0f, 0f, 0f);
 		Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
 		Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
