@@ -52,6 +52,10 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 	private float rollAngle;
 	private float rollDelta;
 
+	private float currCamPitch;
+	private float currCamRoll;
+	private float currCamYaw;
+
 	private RotationGestureDetector rotationGestureDetector;
 
 	private MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish;
@@ -74,6 +78,10 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 
 		rollAngle = 0f;
 		rollDelta = 0f;
+
+		currCamPitch = 0f;
+		currCamRoll = 0f;
+		currCamYaw = 0f;
 
 		mProjectionMatrix = new float[16];
 		mViewMatrix = new float[16];
@@ -149,6 +157,25 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 				Matrix.multiplyMM(tmp1, 0, tmp1.clone(), 0, tmp2, 0);
 
 				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, tmp1, 0);
+
+				/*currCamYaw += dx * TOUCH_SCALE_FACTOR_MOVE;
+				//currCamRoll += rollDelta * TOUCH_SCALE_FACTOR_ROLL;
+				currCamPitch += dy * TOUCH_SCALE_FACTOR_MOVE;
+
+				float[] yawM = new float[16];
+				Matrix.setRotateM(yawM, 0, currCamYaw, 0, 1f, 0f);
+				float[] pitchM = new float[16];
+				Matrix.setRotateM(pitchM, 0, currCamPitch, 1f, 0f, 0f);
+				float[] rollM = new float[16];
+				Matrix.setRotateM(rollM, 0, currCamRoll, 0f, 0f, 1f);
+
+				float[] acc = new float[16];
+				Matrix.multiplyMM(acc, 0, yawM, 0, pitchM, 0);
+				Matrix.multiplyMM(acc, 0, rollM, 0, acc.clone(), 0);
+
+				cameraRotation = acc.clone();*/
+
+				/*Matrix.setRotateEulerM(cameraRotation, 0, currCamPitch, currCamRoll, currCamYaw);*/
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
 				otherPointerUp = true;

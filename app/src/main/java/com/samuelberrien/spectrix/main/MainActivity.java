@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
-import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
@@ -15,14 +14,10 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.TypedValue;
-import android.view.Display;
-import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -62,6 +57,9 @@ public class MainActivity extends AppCompatActivity {
 
 	private int currentListeningId;
 
+	private RelativeLayout frameLayoutSurfaceView;
+	private ProgressBar progressBar;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -71,29 +69,15 @@ public class MainActivity extends AppCompatActivity {
 		setSupportActionBar(toolbar);
 
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0) {
-			@Override
-			public void onDrawerSlide(View drawerView, float slideOffset) {
-				if (slideOffset != 0) {
-					showToolBarButton.setVisibility(View.GONE);
-					getSupportActionBar().show();
-				}
-				super.onDrawerSlide(drawerView, slideOffset);
-				drawerLayout.requestLayout();
-			}
-		};
+		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0);
 		drawerLayout.addDrawerListener(drawerToggle);
+
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		showToolBarButton = new Button(this);
-		showToolBarButton.setBackground(ContextCompat.getDrawable(this, R.drawable.show_button));
-		Display display = getWindowManager().getDefaultDisplay();
-		Point size = new Point();
-		display.getSize(size);
-		int width = size.x;
-		RelativeLayout.LayoutParams tmp = new RelativeLayout.LayoutParams(width / 15, width / 15);
-		showToolBarButton.setVisibility(View.GONE);
+		frameLayoutSurfaceView = (RelativeLayout) findViewById(R.id.layout_surface_view);
+
+		showToolBarButton = (Button) findViewById(R.id.show_toolbar_button);
 		showToolBarButton.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
@@ -101,15 +85,10 @@ public class MainActivity extends AppCompatActivity {
 				getSupportActionBar().show();
 			}
 		});
-		showToolBarButton.setLayoutParams(tmp);
 
-		RelativeLayout relativeLayout = new RelativeLayout(this);
-		relativeLayout.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
-		relativeLayout.addView(showToolBarButton);
-		relativeLayout.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+		progressBar = (ProgressBar) findViewById(R.id.progress_bar_visu);
 
-		/**FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/ace_futurism.ttf");**/
-		addContentView(relativeLayout, new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT));
+		//FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/ace_futurism.ttf");
 
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
 			/*if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
@@ -214,18 +193,22 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void setUpDrawer() {
-		final FrameLayout frameLayoutSurfaceView = (FrameLayout) findViewById(R.id.layout_surface_view);
 		Visualization startVisu = new Spectrum();
 
 		myGLSurfaceView = new MyGLSurfaceView(this, startVisu, currentListeningId, new MyGLSurfaceView.OnVisualizationInitFinish() {
 			@Override
 			public void onFinish() {
-
+				runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						progressBar.setVisibility(View.GONE);
+					}
+				});
 			}
 		});
 
 		getSupportActionBar().setTitle(startVisu.getName());
-		frameLayoutSurfaceView.removeAllViews();
+
 		frameLayoutSurfaceView.addView(myGLSurfaceView);
 
 		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_scroll_view_visualisations);
@@ -251,11 +234,9 @@ public class MainActivity extends AppCompatActivity {
 					idVusalisation = index;
 					myGLSurfaceView.onPause();
 
-					frameLayoutSurfaceView.removeAllViews();
+					frameLayoutSurfaceView.removeView(myGLSurfaceView);
 
-					final ProgressBar progressBar = new ProgressBar(MainActivity.this);
-					progressBar.setIndeterminate(true);
-					progressBar.setIndeterminateDrawable(ContextCompat.getDrawable(MainActivity.this, R.drawable.rotate_progress_bar));
+					progressBar.setVisibility(View.VISIBLE);
 
 					Visualization visualization = VisualizationHelper.getVisualization(index);
 
@@ -268,16 +249,12 @@ public class MainActivity extends AppCompatActivity {
 									runOnUiThread(new Runnable() {
 										@Override
 										public void run() {
-											frameLayoutSurfaceView.removeView(progressBar);
+											progressBar.setVisibility(View.GONE);
 										}
 									});
 								}
 							});
 					frameLayoutSurfaceView.addView(myGLSurfaceView);
-
-					FrameLayout.LayoutParams layoutParamsProgressBar = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-					layoutParamsProgressBar.gravity = Gravity.CENTER;
-					frameLayoutSurfaceView.addView(progressBar, layoutParamsProgressBar);
 
 					/*if (visualization.is3D()) {
 						menu.getItem(1).setVisible(true);
@@ -324,16 +301,4 @@ public class MainActivity extends AppCompatActivity {
 		currentListeningId = VisualizationThread.MIC_MUSIC;
 		myGLSurfaceView.setListening(VisualizationThread.MIC_MUSIC);
 	}
-
-	/*private class DoubleTapGesture extends GestureDetector.SimpleOnGestureListener {
-
-		@Override
-		public boolean onDoubleTap(MotionEvent e) {
-			if(showToolBarButton.getVisibility() == View.VISIBLE) {
-				showToolBarButton.setVisibility(View.GONE);
-				getSupportActionBar().show();
-			}
-			return true;
-		}
-	}*/
 }
