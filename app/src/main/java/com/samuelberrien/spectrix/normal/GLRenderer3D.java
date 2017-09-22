@@ -159,10 +159,10 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, tmp1, 0);
 
 				/*currCamYaw += dx * TOUCH_SCALE_FACTOR_MOVE;
-				//currCamRoll += rollDelta * TOUCH_SCALE_FACTOR_ROLL;
-				currCamPitch += dy * TOUCH_SCALE_FACTOR_MOVE;
+				currCamRoll += rollDelta * TOUCH_SCALE_FACTOR_ROLL;
+				currCamPitch += dy * TOUCH_SCALE_FACTOR_MOVE;*/
 
-				float[] yawM = new float[16];
+				/*float[] yawM = new float[16];
 				Matrix.setRotateM(yawM, 0, currCamYaw, 0, 1f, 0f);
 				float[] pitchM = new float[16];
 				Matrix.setRotateM(pitchM, 0, currCamPitch, 1f, 0f, 0f);
@@ -238,10 +238,14 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 
 		float[] camDir = new float[]{initCamLookDirVec[0], initCamLookDirVec[1], initCamLookDirVec[2], 0f};
 		float[] camUp = new float[]{0f, 1f, 0f, 0f};
+
 		Matrix.multiplyMV(camDir, 0, cameraRotation, 0, camDir.clone(), 0);
 		Matrix.multiplyMV(camUp, 0, cameraRotation, 0, camUp.clone(), 0);
 
 		float[] mCameraPosition = visualization.getCameraPosition();
+
+		Matrix.multiplyMV(camDir, 0, cameraRotation, 0, camDir.clone(), 0);
+
 		Matrix.setLookAtM(mViewMatrix, 0, mCameraPosition[0], mCameraPosition[1], mCameraPosition[2], camDir[0] + mCameraPosition[0], camDir[1] + mCameraPosition[1], camDir[2] + mCameraPosition[2], camUp[0], camUp[1], camUp[2]);
 		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, 50f);
 
