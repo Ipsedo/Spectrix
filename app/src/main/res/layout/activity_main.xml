@@ -151,12 +151,15 @@
 
                 <ScrollView
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:requiresFadingEdge="vertical"
+                    android:fadingEdgeLength="25dp">
 
                     <LinearLayout
                         android:id="@+id/layout_scroll_view_visualisations"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:paddingBottom="5dp"
                         android:orientation="vertical"/>
                 </ScrollView>
             </LinearLayout>
