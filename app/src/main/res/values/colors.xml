@@ -15,10 +15,11 @@
     <color name="grey">#909090</color>
     <color name="colorText">@color/black</color>
     <color name="white">#FFFFFF</color>
-    <color name="visualization_play_color">@color/salem</color>
+    <color name="visualization_play_color">@color/burnt_orange</color>
     <color name="salem">#1E824C</color>
     <color name="emerauld">#2ecc71</color>
     <color name="alizarion">#e74c3c</color>
+    <color name="burnt_orange">#D35400</color>
     <color name="jaune_logo">#f8b131</color>
     <color name="transparent">#00000000</color>
 </resources>

@@ -36,9 +36,11 @@ public abstract class VisualizationThread extends Thread {
 		}
 
 		while (!this.isCanceled) {
+			long t1 = System.currentTimeMillis();
 			work(visualization);
 			try {
-				Thread.sleep(getTimeToWait());
+				long toWait = getTimeToWait() - (System.currentTimeMillis() - t1);
+				Thread.sleep(toWait >= 0 ? toWait : 0);
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 			}
