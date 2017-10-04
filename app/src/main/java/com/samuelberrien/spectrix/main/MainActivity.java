@@ -28,6 +28,7 @@ import com.samuelberrien.spectrix.normal.MyGLSurfaceView;
 import com.samuelberrien.spectrix.threads.VisualizationThread;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 import com.samuelberrien.spectrix.utils.core.VisualizationHelper;
+import com.samuelberrien.spectrix.utils.ui.ViewHelper;
 import com.samuelberrien.spectrix.visualizations.spectrum.Spectrum;
 import com.samuelberrien.spectrix.vr.MyGvrActivity;
 
@@ -91,10 +92,10 @@ public class MainActivity extends AppCompatActivity {
 		//FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/ace_futurism.ttf");
 
 		if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-			/*if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
+			if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
 			} else {
 				ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
-			}*/
+			}
 			ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
 		}
 
@@ -231,6 +232,8 @@ public class MainActivity extends AppCompatActivity {
 			start.setOnClickListener(new View.OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					ViewHelper.makeViewTransition(MainActivity.this, start);
+
 					idVusalisation = index;
 					myGLSurfaceView.onPause();
 
@@ -263,7 +266,8 @@ public class MainActivity extends AppCompatActivity {
 					}*/
 
 					getSupportActionBar().setTitle(name);
-					drawerLayout.closeDrawers();
+
+					//drawerLayout.closeDrawers();
 				}
 			});
 

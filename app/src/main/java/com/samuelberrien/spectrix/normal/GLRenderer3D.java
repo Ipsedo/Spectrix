@@ -6,6 +6,7 @@ import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.view.View;
 
 import com.samuelberrien.spectrix.utils.core.Visualization;
 import com.samuelberrien.spectrix.utils.gesture.RotationGestureDetector;
@@ -17,7 +18,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by samuel on 23/08/17.
  */
 
-public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDetector.OnRotationGestureListener {
+public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDetector.OnRotationGestureListener, View.OnTouchListener {
 
 	private Visualization visualization;
 
@@ -101,113 +102,6 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 		initCamLookDirVec = visualization.getInitCamLookDirVec();
 	}
 
-	public void onTouchEvent(MotionEvent e) {
-		float invNbPointer = 1f / (float) e.getPointerCount();
-
-		float moyX;
-		float moyY;
-
-		if (otherPointerUp) {
-			moyX = 0;
-			moyY = 0;
-			for (int i = 0; i < e.getPointerCount(); i++) {
-				moyX += e.getX(i);
-				moyY += e.getY(i);
-			}
-			moyX *= invNbPointer;
-			moyY *= invNbPointer;
-			mPreviousX = moyX + 1f;
-			mPreviousY = moyY + 1f;
-			otherPointerUp = false;
-		}
-
-		switch (e.getActionMasked()) {
-			case MotionEvent.ACTION_DOWN:
-				mPreviousX = e.getX(0) + 1f;
-				mPreviousY = e.getY(0) + 1f;
-				break;
-			case MotionEvent.ACTION_UP:
-				otherPointerUp = true;
-				break;
-			case MotionEvent.ACTION_MOVE:
-				moyX = 0;
-				moyY = 0;
-				for (int i = 0; i < e.getPointerCount(); i++) {
-					moyX += e.getX(i);
-					moyY += e.getY(i);
-				}
-				moyX *= invNbPointer;
-				moyY *= invNbPointer;
-
-				float dx = moyX + 1f - mPreviousX;
-				float dy = moyY + 1f - mPreviousY;
-
-				dy = -dy;
-
-				float[] tmp1 = new float[16];
-				Matrix.setRotateM(tmp1, 0, dx * TOUCH_SCALE_FACTOR_MOVE, 0f, 1f, 0f);
-
-				float[] tmp2 = new float[16];
-				Matrix.setRotateM(tmp2, 0, dy * TOUCH_SCALE_FACTOR_MOVE, 1f, 0f, 0f);
-
-				Matrix.multiplyMM(tmp1, 0, tmp2, 0, tmp1.clone(), 0);
-
-				Matrix.setRotateM(tmp2, 0, rollDelta * TOUCH_SCALE_FACTOR_ROLL, 0f, 0f, 1f);
-
-				Matrix.multiplyMM(tmp1, 0, tmp1.clone(), 0, tmp2, 0);
-
-				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, tmp1, 0);
-
-				/*currCamYaw += dx * TOUCH_SCALE_FACTOR_MOVE;
-				currCamRoll += rollDelta * TOUCH_SCALE_FACTOR_ROLL;
-				currCamPitch += dy * TOUCH_SCALE_FACTOR_MOVE;*/
-
-				/*float[] yawM = new float[16];
-				Matrix.setRotateM(yawM, 0, currCamYaw, 0, 1f, 0f);
-				float[] pitchM = new float[16];
-				Matrix.setRotateM(pitchM, 0, currCamPitch, 1f, 0f, 0f);
-				float[] rollM = new float[16];
-				Matrix.setRotateM(rollM, 0, currCamRoll, 0f, 0f, 1f);
-
-				float[] acc = new float[16];
-				Matrix.multiplyMM(acc, 0, yawM, 0, pitchM, 0);
-				Matrix.multiplyMM(acc, 0, rollM, 0, acc.clone(), 0);
-
-				cameraRotation = acc.clone();*/
-
-				/*Matrix.setRotateEulerM(cameraRotation, 0, currCamPitch, currCamRoll, currCamYaw);*/
-				break;
-			case MotionEvent.ACTION_POINTER_UP:
-				otherPointerUp = true;
-				break;
-			case MotionEvent.ACTION_POINTER_DOWN:
-				moyX = 0;
-				moyY = 0;
-				for (int i = 0; i < e.getPointerCount(); i++) {
-					moyX += e.getX(i);
-					moyY += e.getY(i);
-				}
-				moyX *= invNbPointer;
-				moyY *= invNbPointer;
-				mPreviousX = moyX + 1f;
-				mPreviousY = moyY + 1f;
-
-		}
-		moyX = 0;
-		moyY = 0;
-		for (int i = 0; i < e.getPointerCount(); i++) {
-			moyX += e.getX(i);
-			moyY += e.getY(i);
-		}
-		moyX *= invNbPointer;
-		moyY *= invNbPointer;
-		mPreviousX = moyX + 1f;
-		mPreviousY = moyY + 1f;
-
-		myScaleGestureDetector.onTouchEvent(e);
-		rotationGestureDetector.onTouchEvent(e);
-	}
-
 	@Override
 	public void onSurfaceCreated(GL10 gl10, EGLConfig eglConfig) {
 		GLES20.glEnable(GLES20.GL_DEPTH_TEST);
@@ -274,6 +168,115 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 	public void onRotation(RotationGestureDetector rotationDetector) {
 		rollDelta = rollAngle + rotationDetector.getAngle();
 		rollAngle = -rotationDetector.getAngle();
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		float invNbPointer = 1f / (float) event.getPointerCount();
+
+		float moyX;
+		float moyY;
+
+		if (otherPointerUp) {
+			moyX = 0;
+			moyY = 0;
+			for (int i = 0; i < event.getPointerCount(); i++) {
+				moyX += event.getX(i);
+				moyY += event.getY(i);
+			}
+			moyX *= invNbPointer;
+			moyY *= invNbPointer;
+			mPreviousX = moyX + 1f;
+			mPreviousY = moyY + 1f;
+			otherPointerUp = false;
+		}
+
+		switch (event.getActionMasked()) {
+			case MotionEvent.ACTION_DOWN:
+				mPreviousX = event.getX(0) + 1f;
+				mPreviousY = event.getY(0) + 1f;
+				break;
+			case MotionEvent.ACTION_UP:
+				otherPointerUp = true;
+				break;
+			case MotionEvent.ACTION_MOVE:
+				moyX = 0;
+				moyY = 0;
+				for (int i = 0; i < event.getPointerCount(); i++) {
+					moyX += event.getX(i);
+					moyY += event.getY(i);
+				}
+				moyX *= invNbPointer;
+				moyY *= invNbPointer;
+
+				float dx = moyX + 1f - mPreviousX;
+				float dy = moyY + 1f - mPreviousY;
+
+				dy = -dy;
+
+				float[] tmp1 = new float[16];
+				Matrix.setRotateM(tmp1, 0, dx * TOUCH_SCALE_FACTOR_MOVE, 0f, 1f, 0f);
+
+				float[] tmp2 = new float[16];
+				Matrix.setRotateM(tmp2, 0, dy * TOUCH_SCALE_FACTOR_MOVE, 1f, 0f, 0f);
+
+				Matrix.multiplyMM(tmp1, 0, tmp2, 0, tmp1.clone(), 0);
+
+				Matrix.setRotateM(tmp2, 0, rollDelta * TOUCH_SCALE_FACTOR_ROLL, 0f, 0f, 1f);
+
+				Matrix.multiplyMM(tmp1, 0, tmp2, 0, tmp1.clone(), 0);
+
+				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, tmp1, 0);
+
+				/*currCamYaw += dx * TOUCH_SCALE_FACTOR_MOVE;
+				currCamRoll += rollDelta * TOUCH_SCALE_FACTOR_ROLL;
+				currCamPitch += dy * TOUCH_SCALE_FACTOR_MOVE;*/
+
+				/*float[] yawM = new float[16];
+				Matrix.setRotateM(yawM, 0, currCamYaw, 0, 1f, 0f);
+				float[] pitchM = new float[16];
+				Matrix.setRotateM(pitchM, 0, currCamPitch, 1f, 0f, 0f);
+				float[] rollM = new float[16];
+				Matrix.setRotateM(rollM, 0, currCamRoll, 0f, 0f, 1f);
+
+				float[] acc = new float[16];
+				Matrix.multiplyMM(acc, 0, yawM, 0, pitchM, 0);
+				Matrix.multiplyMM(acc, 0, rollM, 0, acc.clone(), 0);
+
+				cameraRotation = acc.clone();*/
+
+				/*Matrix.setRotateEulerM(cameraRotation, 0, currCamPitch, currCamRoll, currCamYaw);*/
+				break;
+			case MotionEvent.ACTION_POINTER_UP:
+				otherPointerUp = true;
+				break;
+			case MotionEvent.ACTION_POINTER_DOWN:
+				moyX = 0;
+				moyY = 0;
+				for (int i = 0; i < event.getPointerCount(); i++) {
+					moyX += event.getX(i);
+					moyY += event.getY(i);
+				}
+				moyX *= invNbPointer;
+				moyY *= invNbPointer;
+				mPreviousX = moyX + 1f;
+				mPreviousY = moyY + 1f;
+
+		}
+		moyX = 0;
+		moyY = 0;
+		for (int i = 0; i < event.getPointerCount(); i++) {
+			moyX += event.getX(i);
+			moyY += event.getY(i);
+		}
+		moyX *= invNbPointer;
+		moyY *= invNbPointer;
+		mPreviousX = moyX + 1f;
+		mPreviousY = moyY + 1f;
+
+		myScaleGestureDetector.onTouchEvent(event);
+		rotationGestureDetector.onTouchEvent(event);
+		return true;
 	}
 
 	private class MyScaleGestureDetector extends ScaleGestureDetector.SimpleOnScaleGestureListener {

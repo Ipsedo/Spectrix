@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_weight="0.75"
         android:background="@drawable/start_button"
-        android:textColor="@color/black"
         android:visibility="gone"
-        android:text="▶"/>
+        android:textColor="@color/visualization_play_color"
+        android:text="@string/play"/>
 </LinearLayout>

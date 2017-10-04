@@ -3,4 +3,5 @@
     <string name="about_spectrix">
         Spectrix is more than a simple music visualizer,\nit\'s a unique music experience !\n\nCredits :\n\n© Samuel Berrien
     </string>
+    <string name="play">▶</string>
 </resources>

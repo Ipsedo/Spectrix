@@ -31,6 +31,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		if (this.visualization.is3D()) {
 			glRenderer3D = new GLRenderer3D(getContext(), this.visualization, onVisualizationInitFinish);
 			setRenderer(glRenderer3D);
+			setOnTouchListener(glRenderer3D);
 		} else {
 			GLRenderer2D glRenderer2D = new GLRenderer2D(getContext(), this.visualization, onVisualizationInitFinish);
 			setRenderer(glRenderer2D);
@@ -78,13 +79,13 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		}
 	}
 
-	@Override
+	/*@Override
 	public boolean onTouchEvent(MotionEvent e) {
 		if (glRenderer3D != null)
 			glRenderer3D.onTouchEvent(e);
 
 		return true;
-	}
+	}*/
 
 	public void setListening(int listeningId) {
 		if (visualizationThread != null) {
