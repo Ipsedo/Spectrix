@@ -74,12 +74,17 @@
                 android:src="@drawable/logo_2"/>
         </LinearLayout>
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/colorButton"/>
+
         <LinearLayout
             android:id="@+id/layout_menu_drawer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
-            android:background="@color/colorButton"
+            android:background="@color/white"
             android:orientation="vertical">
 
             <LinearLayout
