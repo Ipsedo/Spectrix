@@ -138,8 +138,6 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 
 		float[] mCameraPosition = visualization.getCameraPosition();
 
-		Matrix.multiplyMV(camDir, 0, cameraRotation, 0, camDir.clone(), 0);
-
 		Matrix.setLookAtM(mViewMatrix, 0, mCameraPosition[0], mCameraPosition[1], mCameraPosition[2], camDir[0] + mCameraPosition[0], camDir[1] + mCameraPosition[1], camDir[2] + mCameraPosition[2], camUp[0], camUp[1], camUp[2]);
 		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, 50f);
 
@@ -214,38 +212,22 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 
 				dy = -dy;
 
-				float[] tmp1 = new float[16];
-				Matrix.setRotateM(tmp1, 0, dx * TOUCH_SCALE_FACTOR_MOVE, 0f, 1f, 0f);
+				float[] yaw = new float[16];
+				float[] pitch = new float[16];
+				float[] roll = new float[16];
+				Matrix.setRotateM(yaw, 0, dx * TOUCH_SCALE_FACTOR_MOVE, 0f, 1f, 0f);
+				Matrix.setRotateM(pitch, 0, dy * TOUCH_SCALE_FACTOR_MOVE, 1f, 0f, 0f);
+				Matrix.setRotateM(roll, 0, rollDelta * TOUCH_SCALE_FACTOR_ROLL, 0f, 0f, 1f);
 
-				float[] tmp2 = new float[16];
-				Matrix.setRotateM(tmp2, 0, dy * TOUCH_SCALE_FACTOR_MOVE, 1f, 0f, 0f);
+				Matrix.multiplyMM(pitch, 0, pitch.clone(), 0, roll, 0);
+				Matrix.multiplyMM(yaw, 0, yaw.clone(), 0, pitch, 0);
 
-				Matrix.multiplyMM(tmp1, 0, tmp2, 0, tmp1.clone(), 0);
+				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, yaw, 0);
 
-				Matrix.setRotateM(tmp2, 0, rollDelta * TOUCH_SCALE_FACTOR_ROLL, 0f, 0f, 1f);
+				/*float[] tmp = new float[16];
+				Matrix.setRotateEulerM(tmp, 0, dx * TOUCH_SCALE_FACTOR_MOVE, rollDelta * TOUCH_SCALE_FACTOR_ROLL, dy * TOUCH_SCALE_FACTOR_MOVE);
+				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, tmp, 0);*/
 
-				Matrix.multiplyMM(tmp1, 0, tmp2, 0, tmp1.clone(), 0);
-
-				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, tmp1, 0);
-
-				/*currCamYaw += dx * TOUCH_SCALE_FACTOR_MOVE;
-				currCamRoll += rollDelta * TOUCH_SCALE_FACTOR_ROLL;
-				currCamPitch += dy * TOUCH_SCALE_FACTOR_MOVE;*/
-
-				/*float[] yawM = new float[16];
-				Matrix.setRotateM(yawM, 0, currCamYaw, 0, 1f, 0f);
-				float[] pitchM = new float[16];
-				Matrix.setRotateM(pitchM, 0, currCamPitch, 1f, 0f, 0f);
-				float[] rollM = new float[16];
-				Matrix.setRotateM(rollM, 0, currCamRoll, 0f, 0f, 1f);
-
-				float[] acc = new float[16];
-				Matrix.multiplyMM(acc, 0, yawM, 0, pitchM, 0);
-				Matrix.multiplyMM(acc, 0, rollM, 0, acc.clone(), 0);
-
-				cameraRotation = acc.clone();*/
-
-				/*Matrix.setRotateEulerM(cameraRotation, 0, currCamPitch, currCamRoll, currCamYaw);*/
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
 				otherPointerUp = true;
