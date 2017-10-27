@@ -3,12 +3,9 @@ package com.samuelberrien.spectrix.visualizations.explosion;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.drawable.obj.ObjModel;
+import com.samuelberrien.spectrix.drawable.obj.ObjModelVBO;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -29,14 +26,13 @@ public class Explosion implements Visualization {
 	private int nbCenter;
 	private int nbSameCenter;
 	private float[][] mCenterPoint;
-	private FloatBuffer[] mCenterColorBuffer;
+	private float[][] mCenterColor;
 
 	private float maxOctagonSpeed;
 
 	private int nbMaxOctagonePerExplosion;
-	private float mFreqAugmentation = 0.3f;
 
-	private ObjModel octagone;
+	private ObjModelVBO octagone;
 	private List<Octagone> mOctagone;
 
 	private boolean isInit = false;
@@ -47,12 +43,12 @@ public class Explosion implements Visualization {
 		rand = new Random(System.currentTimeMillis());
 		minDist = 5f;
 		rangeDist = 2.5f;
-		nbCenter = 30;
+		nbCenter = 60;
 		nbSameCenter = 5;
-		mCenterColorBuffer = new FloatBuffer[nbSameCenter * nbCenter];
+		mCenterColor = new float[nbSameCenter * nbCenter][4];
 		nbMaxOctagonePerExplosion = !isVR ? 5 : 2;
 		mCenterPoint = new float[nbCenter * nbSameCenter][3];
-		octagone = new ObjModel(this.context, "obj/octagone.obj", 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
+		octagone = new ObjModelVBO(this.context, "obj/octagone.obj", 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
 		maxOctagonSpeed = 1f;
 		mOctagone = Collections.synchronizedList(new ArrayList<Octagone>());
 
@@ -98,7 +94,7 @@ public class Explosion implements Visualization {
 			Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, o.getmOctagoneModelMatrix(), 0);
 			Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
 
-			octagone.setColor(o.getmOctagoneColorBuffer());
+			octagone.setColor(o.getmOctagoneColor());
 			octagone.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 		}
 	}
@@ -117,22 +113,10 @@ public class Explosion implements Visualization {
 			mCenterPoint[i][1] = maxRange * (float) Math.sin(phi);
 			mCenterPoint[i][2] = maxRange * (float) (Math.cos(phi) * Math.cos(theta));
 
-			float[] color = new float[octagone.getVertexDrawListLength() * 4 / 3];
-			float red = rand.nextFloat();
-			float green = rand.nextFloat();
-			float blue = rand.nextFloat();
-			for (int j = 0; j < color.length; j += 4) {
-				color[j] = red;
-				color[j + 1] = green;
-				color[j + 2] = blue;
-				color[j + 3] = 1f;
-			}
-			FloatBuffer tmp = ByteBuffer.allocateDirect(color.length * 4)
-					.order(ByteOrder.nativeOrder())
-					.asFloatBuffer();
-			tmp.put(color)
-					.position(0);
-			mCenterColorBuffer[i] = tmp;
+			mCenterColor[i][0] = rand.nextFloat();
+			mCenterColor[i][1] = rand.nextFloat();
+			mCenterColor[i][2] = rand.nextFloat();
+			mCenterColor[i][3] = 1f;
 		}
 	}
 
@@ -148,7 +132,12 @@ public class Explosion implements Visualization {
 		float xSpeed = magn * maxOctagonSpeed * (float) (Math.cos(phi) * Math.sin(theta));
 		float ySpeed = magn * maxOctagonSpeed * (float) Math.sin(phi);
 		float zSpeed = magn * maxOctagonSpeed * (float) (Math.cos(phi) * Math.cos(theta));
-		mOctagone.add(new Octagone((nbCenter - indiceFreq) * 0.001f + 0.1f, rand.nextFloat() * 360f, new float[]{rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f, rand.nextFloat() * 2 - 1f}, center, new float[]{xSpeed, ySpeed, zSpeed}, mCenterColorBuffer[indCenter]));
+		mOctagone.add(new Octagone((nbCenter - indiceFreq) * 0.001f + 0.1f,
+				rand.nextFloat() * 360f,
+				new float[]{rand.nextFloat() * 2 - 1f,
+						rand.nextFloat() * 2 - 1f,
+						rand.nextFloat() * 2 - 1f},
+				center, new float[]{xSpeed, ySpeed, zSpeed}, mCenterColor[indCenter].clone()));
 	}
 
 	private void createNewOctagones(float[] freqArray) {

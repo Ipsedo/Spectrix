@@ -2,8 +2,6 @@ package com.samuelberrien.spectrix.visualizations.explosion;
 
 import android.opengl.Matrix;
 
-import java.nio.FloatBuffer;
-
 public class Octagone {
 
 	private float mOctagoneScale;
@@ -13,23 +11,24 @@ public class Octagone {
 	private float[] mOctagoneTranslateVector;
 	private float[] mOctagoneSpeedVector;
 	private float[] mOctagoneModelMatrix;
-	private FloatBuffer mOctagoneColorBuffer;
+	private float[] mOctagoneColor;
 
 	/**
+	 *
 	 * @param mOctagoneScale
 	 * @param mOctagoneAngle
 	 * @param mOctagoneRotationOrientation
 	 * @param mOctagoneTranslateVector
 	 * @param mOctagoneSpeedVector
-	 * @param mOctagoneColorBuffer
+	 * @param mOctagoneColor
 	 */
-	public Octagone(float mOctagoneScale, float mOctagoneAngle, float[] mOctagoneRotationOrientation, float[] mOctagoneTranslateVector, float[] mOctagoneSpeedVector, FloatBuffer mOctagoneColorBuffer) {
+	public Octagone(float mOctagoneScale, float mOctagoneAngle, float[] mOctagoneRotationOrientation, float[] mOctagoneTranslateVector, float[] mOctagoneSpeedVector, float[] mOctagoneColor) {
 		this.mOctagoneAngle = mOctagoneAngle;
 		this.mOctagoneScale = mOctagoneScale;
 		this.mOctagoneRotationOrientation = mOctagoneRotationOrientation;
 		this.mOctagoneTranslateVector = mOctagoneTranslateVector;
 		this.mOctagoneSpeedVector = mOctagoneSpeedVector;
-		this.mOctagoneColorBuffer = mOctagoneColorBuffer;
+		this.mOctagoneColor = mOctagoneColor;
 		this.mOctagoneRotationMatrix = new float[16];
 		this.mOctagoneModelMatrix = new float[16];
 	}
@@ -65,8 +64,8 @@ public class Octagone {
 	/**
 	 * @return
 	 */
-	public FloatBuffer getmOctagoneColorBuffer() {
-		return this.mOctagoneColorBuffer;
+	public float[] getmOctagoneColor() {
+		return this.mOctagoneColor;
 	}
 
 	/**

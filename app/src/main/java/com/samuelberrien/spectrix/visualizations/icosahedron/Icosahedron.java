@@ -3,11 +3,9 @@ package com.samuelberrien.spectrix.visualizations.icosahedron;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.drawable.obj.ObjModelMtl;
+import com.samuelberrien.spectrix.drawable.obj.ObjSpecVBO;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 
-import java.nio.FloatBuffer;
-import java.util.ArrayList;
 import java.util.Random;
 
 /**
@@ -28,10 +26,7 @@ public class Icosahedron implements Visualization {
 
 	private int nbIcosahedron;
 	private int nbSameIcosahedron;
-	private ObjModelMtl icosahedron;
-	private ArrayList<FloatBuffer>[] mAmbColorBuffer;
-	private ArrayList<FloatBuffer>[] mDiffColorBuffer;
-	private ArrayList<FloatBuffer>[] mSpecColorBuffer;
+	private ObjSpecVBO icosahedron;
 	private float[] mScale;
 	private float[] mAngle;
 	private float[] mAngleToAdd;
@@ -39,7 +34,7 @@ public class Icosahedron implements Visualization {
 	private float[][] mRotationOrientation;
 	private float[][] mRotationMatrix;
 	private float[][] mModelMatrix;
-	private float mFreqAugmentation = 0.3f;
+	private float[][] mIcoColors;
 
 	private boolean isInit;
 
@@ -51,25 +46,23 @@ public class Icosahedron implements Visualization {
 	public void init(Context context, boolean isVR) {
 		this.context = context;
 
-		this.minDist = 10f;
-		this.rangeDist = 20f;
+		minDist = 10f;
+		rangeDist = 20f;
 
-		this.rand = new Random(System.currentTimeMillis());
+		rand = new Random(System.currentTimeMillis());
 
-		this.nbIcosahedron = 30;
-		this.nbSameIcosahedron = !isVR ? 10 : 5;
-		this.mAmbColorBuffer = new ArrayList[this.nbSameIcosahedron * this.nbIcosahedron];
-		this.mDiffColorBuffer = new ArrayList[this.nbSameIcosahedron * this.nbIcosahedron];
-		this.mSpecColorBuffer = new ArrayList[this.nbSameIcosahedron * this.nbIcosahedron];
-		this.mScale = new float[this.nbIcosahedron * this.nbSameIcosahedron];
-		this.mAngle = new float[this.nbIcosahedron * this.nbSameIcosahedron];
-		this.mAngleToAdd = new float[this.nbIcosahedron * this.nbSameIcosahedron];
-		this.mTranslateVector = new float[this.nbIcosahedron * this.nbSameIcosahedron][3];
-		this.mRotationOrientation = new float[this.nbIcosahedron * this.nbSameIcosahedron][3];
-		this.mRotationMatrix = new float[this.nbIcosahedron * this.nbSameIcosahedron][16];
-		this.mModelMatrix = new float[this.nbIcosahedron * this.nbSameIcosahedron][16];
+		nbIcosahedron = 60;
+		nbSameIcosahedron = !isVR ? 10 : 5;
+		mScale = new float[nbIcosahedron * nbSameIcosahedron];
+		mAngle = new float[nbIcosahedron * nbSameIcosahedron];
+		mAngleToAdd = new float[nbIcosahedron * nbSameIcosahedron];
+		mTranslateVector = new float[nbIcosahedron * nbSameIcosahedron][3];
+		mRotationOrientation = new float[nbIcosahedron * nbSameIcosahedron][3];
+		mRotationMatrix = new float[nbIcosahedron * nbSameIcosahedron][16];
+		mModelMatrix = new float[nbIcosahedron * nbSameIcosahedron][16];
+		mIcoColors = new float[nbIcosahedron * nbSameIcosahedron][4];
 
-		this.setupIcosahedrons();
+		setupIcosahedrons();
 
 		isInit = true;
 	}
@@ -86,16 +79,16 @@ public class Icosahedron implements Visualization {
 
 	@Override
 	public void update(float[] freqArray) {
-		for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {
+		for (int i = 0; i < nbIcosahedron * nbSameIcosahedron; i++) {
 			float[] mModelMatrix = new float[16];
 			Matrix.setIdentityM(mModelMatrix, 0);
-			Matrix.translateM(mModelMatrix, 0, this.mTranslateVector[i][0], this.mTranslateVector[i][1], this.mTranslateVector[i][2]);
-			Matrix.setRotateM(mRotationMatrix[i], 0, mAngle[i] += mAngleToAdd[i], this.mRotationOrientation[i][0], this.mRotationOrientation[i][1], this.mRotationOrientation[i][2]);
+			Matrix.translateM(mModelMatrix, 0, mTranslateVector[i][0], mTranslateVector[i][1], mTranslateVector[i][2]);
+			Matrix.setRotateM(mRotationMatrix[i], 0, mAngle[i] += mAngleToAdd[i], mRotationOrientation[i][0], mRotationOrientation[i][1], mRotationOrientation[i][2]);
 			float[] tmpMat = mModelMatrix.clone();
 			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, mRotationMatrix[i], 0);
-			int tmpFreqIndex = i / this.nbSameIcosahedron;
-			float scale = this.mScale[i];
-			float tmp = freqArray[tmpFreqIndex];// + freqArray[tmpFreqIndex] * tmpFreqIndex * this.mFreqAugmentation;
+			int tmpFreqIndex = i / nbSameIcosahedron;
+			float scale = mScale[i];
+			float tmp = freqArray[tmpFreqIndex];// + freqArray[tmpFreqIndex] * tmpFreqIndex * mFreqAugmentation;
 			if (tmp > 0.7f) {
 				scale += 0.7f * mScale[i];
 			} else {
@@ -124,9 +117,8 @@ public class Icosahedron implements Visualization {
 		for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {
 			Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mModelMatrix[i], 0);
 			Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
-
-			this.icosahedron.setColors(this.mAmbColorBuffer[i], this.mDiffColorBuffer[i], this.mSpecColorBuffer[i]);
-			this.icosahedron.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+			icosahedron.setDiffColor(mIcoColors[i]);
+			icosahedron.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace, mCameraPosition);
 		}
 	}
 
@@ -136,13 +128,10 @@ public class Icosahedron implements Visualization {
 	}
 
 	private void setupIcosahedrons() {
-		this.icosahedron = new ObjModelMtl(this.context, "obj/icosahedron/icosahedron_obj.obj", "obj/icosahedron/icosahedron_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF);
-		for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {
-			this.mAmbColorBuffer[i] = this.icosahedron.makeColor(this.rand);
-			this.mDiffColorBuffer[i] = this.icosahedron.makeColor(this.rand);
-			this.mSpecColorBuffer[i] = this.icosahedron.makeColor(0.5f, 0.5f, 0.5f);
+		icosahedron = new ObjSpecVBO(context, "obj/icosahedron/icosahedron_obj.obj", LIGHTAUGMENTATION, DISTANCECOEFF);
+		for (int i = 0; i < nbIcosahedron * nbSameIcosahedron; i++) {
 
-			this.mScale[i] = (this.nbIcosahedron - i / this.nbSameIcosahedron) * 0.005f + 0.5f;
+			mScale[i] = (nbIcosahedron - i / nbSameIcosahedron) * 0.005f + 0.5f;
 
 			float maxRange = rand.nextFloat() * rangeDist + minDist;
 			double phi;
@@ -152,15 +141,20 @@ public class Icosahedron implements Visualization {
 			float x = maxRange * (float) (Math.cos(phi) * Math.sin(theta));
 			float y = maxRange * (float) Math.sin(phi);
 			float z = maxRange * (float) (Math.cos(phi) * Math.cos(theta));
-			this.mTranslateVector[i][0] = x;
-			this.mTranslateVector[i][1] = y;
-			this.mTranslateVector[i][2] = z;
+			mTranslateVector[i][0] = x;
+			mTranslateVector[i][1] = y;
+			mTranslateVector[i][2] = z;
 
-			this.mAngle[i] = rand.nextFloat() * 360f;
-			this.mAngleToAdd[i] = 1f + rand.nextFloat() * 3f;
-			this.mRotationOrientation[i][0] = rand.nextFloat() * 2f - 1f;
-			this.mRotationOrientation[i][1] = rand.nextFloat() * 2f - 1f;
-			this.mRotationOrientation[i][2] = rand.nextFloat() * 2f - 1f;
+			mIcoColors[i][0] = rand.nextFloat();
+			mIcoColors[i][1] = rand.nextFloat();
+			mIcoColors[i][2] = rand.nextFloat();
+			mIcoColors[i][3] = 1f;
+
+			mAngle[i] = rand.nextFloat() * 360f;
+			mAngleToAdd[i] = 1f + rand.nextFloat() * 3f;
+			mRotationOrientation[i][0] = rand.nextFloat() * 2f - 1f;
+			mRotationOrientation[i][1] = rand.nextFloat() * 2f - 1f;
+			mRotationOrientation[i][2] = rand.nextFloat() * 2f - 1f;
 		}
 	}
 }
