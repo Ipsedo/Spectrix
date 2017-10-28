@@ -10,19 +10,19 @@ import android.view.View;
 
 public final class ViewHelper {
 
-    public static void makeViewTransition(final Activity activity, final View view) {
-        final TransitionDrawable transition = (TransitionDrawable) view.getBackground();
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                transition.startTransition(200);
-            }
-        });
-        activity.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                transition.reverseTransition(200);
-            }
-        });
-    }
+	public static void makeViewTransition(final Activity activity, final View view) {
+		final TransitionDrawable transition = (TransitionDrawable) view.getBackground();
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				transition.startTransition(200);
+			}
+		});
+		activity.runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				transition.reverseTransition(200);
+			}
+		});
+	}
 }

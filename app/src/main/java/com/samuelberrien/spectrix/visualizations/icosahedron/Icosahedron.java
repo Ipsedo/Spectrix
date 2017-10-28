@@ -53,14 +53,15 @@ public class Icosahedron implements Visualization {
 
 		nbIcosahedron = 60;
 		nbSameIcosahedron = !isVR ? 10 : 5;
-		mScale = new float[nbIcosahedron * nbSameIcosahedron];
-		mAngle = new float[nbIcosahedron * nbSameIcosahedron];
-		mAngleToAdd = new float[nbIcosahedron * nbSameIcosahedron];
-		mTranslateVector = new float[nbIcosahedron * nbSameIcosahedron][3];
-		mRotationOrientation = new float[nbIcosahedron * nbSameIcosahedron][3];
-		mRotationMatrix = new float[nbIcosahedron * nbSameIcosahedron][16];
-		mModelMatrix = new float[nbIcosahedron * nbSameIcosahedron][16];
-		mIcoColors = new float[nbIcosahedron * nbSameIcosahedron][4];
+		int tmp = nbIcosahedron * nbSameIcosahedron;
+		mScale = new float[tmp];
+		mAngle = new float[tmp];
+		mAngleToAdd = new float[tmp];
+		mTranslateVector = new float[tmp][3];
+		mRotationOrientation = new float[tmp][3];
+		mRotationMatrix = new float[tmp][16];
+		mModelMatrix = new float[tmp][16];
+		mIcoColors = new float[tmp][4];
 
 		setupIcosahedrons();
 
@@ -88,7 +89,7 @@ public class Icosahedron implements Visualization {
 			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, mRotationMatrix[i], 0);
 			int tmpFreqIndex = i / nbSameIcosahedron;
 			float scale = mScale[i];
-			float tmp = freqArray[tmpFreqIndex];// + freqArray[tmpFreqIndex] * tmpFreqIndex * mFreqAugmentation;
+			float tmp = freqArray[tmpFreqIndex];
 			if (tmp > 0.7f) {
 				scale += 0.7f * mScale[i];
 			} else {

@@ -21,6 +21,7 @@ import java.util.Random;
  * Created by samuel on 17/01/17.
  */
 
+@Deprecated
 public class ObjModelMtl {
 
 	private HashMap<String, float[]> mtlAmbColor = new HashMap<>();

@@ -14,7 +14,6 @@ public class Octagone {
 	private float[] mOctagoneColor;
 
 	/**
-	 *
 	 * @param mOctagoneScale
 	 * @param mOctagoneAngle
 	 * @param mOctagoneRotationOrientation

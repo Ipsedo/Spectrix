@@ -19,6 +19,7 @@ import java.util.ArrayList;
  * Created by samuel on 05/01/17.
  */
 
+@Deprecated
 public class ObjModel {
 
 	private FloatBuffer vertexBuffer;

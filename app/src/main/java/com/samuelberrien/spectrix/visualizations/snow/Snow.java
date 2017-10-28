@@ -3,8 +3,8 @@ package com.samuelberrien.spectrix.visualizations.snow;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.drawable.obj.ObjModel;
 import com.samuelberrien.spectrix.drawable.obj.ObjModelMtlVBO;
+import com.samuelberrien.spectrix.drawable.obj.ObjModelVBO;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 
 import java.util.Random;
@@ -38,7 +38,7 @@ public class Snow implements Visualization {
 	private float mPingFreqAttenuation = 0.7f;
 
 	private int nbOctagone;
-	private ObjModel octagone;
+	private ObjModelVBO octagone;
 	private float[] mOctagoneAngle;
 	private float[][] mOctagoneRotationOrientation;
 	private float[] mOctagoneScale;
@@ -248,7 +248,7 @@ public class Snow implements Visualization {
 	 *
 	 */
 	private void setupOctagone() {
-		octagone = new ObjModel(context, "obj/octagone.obj", 1f, 0.8f, 0.8f, LIGHTAUGMENTATION, DISTANCECOEFF);
+		octagone = new ObjModelVBO(context, "obj/octagone.obj", 1f, 0.8f, 0.8f, LIGHTAUGMENTATION, DISTANCECOEFF);
 		for (int i = 0; i < nbOctagone; i++) {
 			double theta;
 			double phi;
@@ -285,8 +285,8 @@ public class Snow implements Visualization {
 		for (int i = 0; i < nbIgloo; i++) {
 			double r = 5d * rand.nextDouble();
 			double theta;
-            /*if (Math.sin(90) == 1) {
-                theta = rand.nextDouble() * 360d;
+			/*if (Math.sin(90) == 1) {
+				theta = rand.nextDouble() * 360d;
             } else {*/
 			theta = rand.nextDouble() * Math.PI * 2d;
 			//}

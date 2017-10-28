@@ -2,7 +2,6 @@ package com.samuelberrien.spectrix.normal;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
-import android.view.MotionEvent;
 
 import com.samuelberrien.spectrix.threads.MicThread;
 import com.samuelberrien.spectrix.threads.StreamThread;
