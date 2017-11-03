@@ -4,6 +4,7 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
+import android.provider.Settings;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
@@ -57,6 +58,8 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 	private float currCamRoll;
 	private float currCamYaw;
 
+	private long lastTime;
+
 	private RotationGestureDetector rotationGestureDetector;
 
 	private MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish;
@@ -100,6 +103,8 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 		this.onVisualizationInitFinish = onVisualizationInitFinish;
 
 		initCamLookDirVec = visualization.getInitCamLookDirVec();
+
+		lastTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -142,6 +147,9 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 		Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, 50f);
 
 		visualization.draw(mProjectionMatrix.clone(), mViewMatrix.clone(), mLightPosInEyeSpace.clone(), mCameraPosition.clone());
+
+		System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - lastTime));
+		lastTime = System.currentTimeMillis();
 	}
 
 	/**
