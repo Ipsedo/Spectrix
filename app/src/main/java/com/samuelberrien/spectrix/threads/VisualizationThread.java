@@ -8,6 +8,8 @@ import com.samuelberrien.spectrix.utils.core.Visualization;
 
 public abstract class VisualizationThread extends Thread {
 
+	private static long TIME_TO_WAIT = 30L;
+
 	public static final int STREAM_MUSIC = 0;
 	public static final int MIC_MUSIC = 1;
 
@@ -15,10 +17,13 @@ public abstract class VisualizationThread extends Thread {
 
 	private boolean isCanceled;
 
-	public VisualizationThread(String name, Visualization visualization) {
+	private long lastTime;
+
+	VisualizationThread(String name, Visualization visualization) {
 		super(name);
 		this.visualization = visualization;
 		isCanceled = false;
+		lastTime = System.currentTimeMillis();
 	}
 
 	public void cancel() {
@@ -29,7 +34,7 @@ public abstract class VisualizationThread extends Thread {
 	public void run() {
 		while (!isCanceled && !visualization.isInit()) {
 			try {
-				Thread.sleep(getTimeToWait());
+				Thread.sleep(TIME_TO_WAIT);
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 			}
@@ -39,11 +44,13 @@ public abstract class VisualizationThread extends Thread {
 			long t1 = System.currentTimeMillis();
 			work(visualization);
 			try {
-				long toWait = getTimeToWait() - (System.currentTimeMillis() - t1);
+				long toWait = TIME_TO_WAIT - (System.currentTimeMillis() - t1);
 				Thread.sleep(toWait >= 0 ? toWait : 0);
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 			}
+			System.out.println("Update/s : " + 1000L / (System.currentTimeMillis() - lastTime));
+			lastTime = System.currentTimeMillis();
 		}
 
 		onEnd();
@@ -55,5 +62,4 @@ public abstract class VisualizationThread extends Thread {
 
 	protected abstract float[] getFrequencyMagns();
 
-	protected abstract long getTimeToWait();
 }

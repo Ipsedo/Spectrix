@@ -1,11 +1,8 @@
 uniform mat4 u_MVPMatrix;
 uniform mat4 u_MVMatrix;
-uniform vec4 u_material_ambient_Color;
-uniform vec4 u_material_diffuse_Color;
-uniform vec4 u_material_specular_Color;
-uniform float u_material_shininess;
 attribute vec4 a_Position;
 attribute vec3 a_Normal;
+
 varying vec3 v_Position;
 varying vec3 v_Normal;
 void main(){

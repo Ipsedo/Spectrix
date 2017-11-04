@@ -52,7 +52,7 @@ public class Icosahedron implements Visualization {
 		rand = new Random(System.currentTimeMillis());
 
 		nbIcosahedron = 60;
-		nbSameIcosahedron = !isVR ? 10 : 5;
+		nbSameIcosahedron = !isVR ? 10 : 6;
 		int tmp = nbIcosahedron * nbSameIcosahedron;
 		mScale = new float[tmp];
 		mAngle = new float[tmp];
@@ -80,14 +80,27 @@ public class Icosahedron implements Visualization {
 
 	@Override
 	public void update(float[] freqArray) {
-		for (int i = 0; i < nbIcosahedron * nbSameIcosahedron; i++) {
-			float[] mModelMatrix = new float[16];
+		float invNbSameIco = 1 / nbSameIcosahedron;
+		float[] mModelMatrix = new float[16];
+		int totalNbIco = nbIcosahedron * nbSameIcosahedron;
+
+		for (int i = 0; i < totalNbIco; i++) {
 			Matrix.setIdentityM(mModelMatrix, 0);
-			Matrix.translateM(mModelMatrix, 0, mTranslateVector[i][0], mTranslateVector[i][1], mTranslateVector[i][2]);
-			Matrix.setRotateM(mRotationMatrix[i], 0, mAngle[i] += mAngleToAdd[i], mRotationOrientation[i][0], mRotationOrientation[i][1], mRotationOrientation[i][2]);
+
+			Matrix.translateM(mModelMatrix, 0,
+					mTranslateVector[i][0],
+					mTranslateVector[i][1],
+					mTranslateVector[i][2]);
+
+			Matrix.setRotateM(mRotationMatrix[i], 0, mAngle[i] += mAngleToAdd[i],
+					mRotationOrientation[i][0],
+					mRotationOrientation[i][1],
+					mRotationOrientation[i][2]);
+
 			float[] tmpMat = mModelMatrix.clone();
 			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, mRotationMatrix[i], 0);
-			int tmpFreqIndex = i / nbSameIcosahedron;
+
+			int tmpFreqIndex = (int) (i * invNbSameIco);
 			float scale = mScale[i];
 			float tmp = freqArray[tmpFreqIndex];
 			if (tmp > 0.7f) {
@@ -113,13 +126,14 @@ public class Icosahedron implements Visualization {
 
 	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-		float[] tmpModelViewMatrix = new float[16];
-		float[] tmpModelViewProjectionMatrix = new float[16];
-		for (int i = 0; i < this.nbIcosahedron * this.nbSameIcosahedron; i++) {
-			Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, this.mModelMatrix[i], 0);
-			Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
+		float[] tmpMVPMatrix = new float[16];
+		float[] tmpMVMatrix = new float[16];
+		int totalNbIco = nbIcosahedron * nbSameIcosahedron;
+		for (int i = 0; i < totalNbIco; i++) {
+			Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mModelMatrix[i], 0);
+			Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
 			icosahedron.setDiffColor(mIcoColors[i]);
-			icosahedron.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace, mCameraPosition);
+			icosahedron.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
 		}
 	}
 
@@ -129,7 +143,7 @@ public class Icosahedron implements Visualization {
 	}
 
 	private void setupIcosahedrons() {
-		icosahedron = new ObjSpecVBO(context, "obj/icosahedron/icosahedron_obj.obj", LIGHTAUGMENTATION, DISTANCECOEFF);
+		icosahedron = new ObjSpecVBO(context, "obj/icosahedron/icosahedron_obj.obj", DISTANCECOEFF);
 		for (int i = 0; i < nbIcosahedron * nbSameIcosahedron; i++) {
 
 			mScale[i] = (nbIcosahedron - i / nbSameIcosahedron) * 0.005f + 0.5f;
@@ -152,7 +166,7 @@ public class Icosahedron implements Visualization {
 			mIcoColors[i][3] = 1f;
 
 			mAngle[i] = rand.nextFloat() * 360f;
-			mAngleToAdd[i] = 1f + rand.nextFloat() * 3f;
+			mAngleToAdd[i] = 0.5f + rand.nextFloat();
 			mRotationOrientation[i][0] = rand.nextFloat() * 2f - 1f;
 			mRotationOrientation[i][1] = rand.nextFloat() * 2f - 1f;
 			mRotationOrientation[i][2] = rand.nextFloat() * 2f - 1f;

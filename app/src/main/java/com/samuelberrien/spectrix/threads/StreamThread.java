@@ -38,18 +38,13 @@ public class StreamThread extends VisualizationThread {
 		visualizer.getFft(bytes);
 		float[] fft = new float[bytes.length / 2];
 
+		float inv128f = 1f / 128f;
 		for (int i = 0; i < fft.length; i++) {
-			float real = (float) (bytes[(i * 2) + 0]) / 128.0f;
-			float imag = (float) (bytes[(i * 2) + 1]) / 128.0f;
+			float real = (float) (bytes[(i * 2) + 0]) * inv128f;
+			float imag = (float) (bytes[(i * 2) + 1]) * inv128f;
 			fft[i] = ((real * real) + (imag * imag));
 			fft[i] += fft[i] * i * freqAugmentation;
 		}
 		return fft;
 	}
-
-	@Override
-	protected long getTimeToWait() {
-		return 50L;
-	}
-
 }

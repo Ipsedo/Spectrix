@@ -31,10 +31,7 @@ public class ObjSpecVBO {
 
 	private FloatBuffer packedDataBuffer;
 
-	private float[] ambColor = new float[]{1f, 1f, 1f, 1f};
-	private float[] diffColor = new float[]{1f, 1f, 1f, 1f};
-	private float[] specColor = new float[]{1f, 1f, 1f, 1f};
-	private float shininess = 96f;
+	private float[] diffColor = new float[]{0.5f, 0.5f, 0.5f, 1f};
 
 	private int packedDataBufferId;
 
@@ -47,21 +44,14 @@ public class ObjSpecVBO {
 	private int mLightPosHandle;
 	private int mMVMatrixHandle;
 	private int mDistanceCoefHandle;
-	private int mLightCoefHandle;
 	private int mCameraPosHandle;
-	private int mAmbColorHandle;
 	private int mDiffColorHandle;
-	private int mSpecColorHandle;
-	private int mSpecShininessHandle;
 
-	private float lightCoef;
 	private float distanceCoef;
 
 	public ObjSpecVBO(Context context,
-					  int resId,
-					  float lightAugmentation, float distanceCoef) {
+					  int resId, float distanceCoef) {
 
-		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 
 
@@ -79,10 +69,8 @@ public class ObjSpecVBO {
 	}
 
 	public ObjSpecVBO(Context context,
-					  String fileName,
-					  float lightAugmentation, float distanceCoef) {
+					  String fileName, float distanceCoef) {
 
-		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
 
 
@@ -120,13 +108,9 @@ public class ObjSpecVBO {
 		mMVPMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVPMatrix");
 		mMVMatrixHandle = GLES20.glGetUniformLocation(mProgram, "u_MVMatrix");
 		mPositionHandle = GLES20.glGetAttribLocation(mProgram, "a_Position");
-		mAmbColorHandle = GLES20.glGetUniformLocation(mProgram, "u_material_ambient_Color");
 		mDiffColorHandle = GLES20.glGetUniformLocation(mProgram, "u_material_diffuse_Color");
-		mSpecColorHandle = GLES20.glGetUniformLocation(mProgram, "u_material_specular_Color");
-		mSpecShininessHandle = GLES20.glGetUniformLocation(mProgram, "u_material_shininess");
 		mLightPosHandle = GLES20.glGetUniformLocation(mProgram, "u_LightPos");
 		mDistanceCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_distance_coef");
-		mLightCoefHandle = GLES20.glGetUniformLocation(mProgram, "u_light_coef");
 		mNormalHandle = GLES20.glGetAttribLocation(mProgram, "a_Normal");
 		mCameraPosHandle = GLES20.glGetUniformLocation(mProgram, "u_CameraPosition");
 	}
@@ -230,10 +214,7 @@ public class ObjSpecVBO {
 		GLES20.glVertexAttribPointer(mNormalHandle, NORMAL_SIZE, GLES20.GL_FLOAT, false,
 				STRIDE, POSITION_SIZE * BYTES_PER_FLOAT);
 
-		GLES20.glUniform4fv(mAmbColorHandle, 1, ambColor, 0);
 		GLES20.glUniform4fv(mDiffColorHandle, 1, diffColor, 0);
-		GLES20.glUniform4fv(mSpecColorHandle, 1, specColor, 0);
-		GLES20.glUniform1f(mSpecShininessHandle, shininess);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
@@ -246,8 +227,6 @@ public class ObjSpecVBO {
 		GLES20.glUniform3fv(mCameraPosHandle, 1, mCameraPosition, 0);
 
 		GLES20.glUniform1f(mDistanceCoefHandle, distanceCoef);
-
-		GLES20.glUniform1f(mLightCoefHandle, lightCoef);
 
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, nbVertex);
 
