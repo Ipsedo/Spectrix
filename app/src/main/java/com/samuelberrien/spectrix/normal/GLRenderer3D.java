@@ -4,7 +4,6 @@ import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
-import android.provider.Settings;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;

@@ -8,19 +8,19 @@
         android:orderInCategory="3"
         android:icon="@drawable/hide"
         android:title=""
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/cardboard_toolbar"
         android:orderInCategory="2"
         android:icon="@drawable/cardboard_icon"
         android:title=""
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/play_pause_toolbar"
         android:orderInCategory="1"
         android:icon="@drawable/play_icon"
         android:title=""
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"/>
 </menu>

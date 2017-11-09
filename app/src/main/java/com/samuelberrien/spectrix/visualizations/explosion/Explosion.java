@@ -146,7 +146,7 @@ public class Explosion implements Visualization {
 		int nbSameFreq = 256 / nbCenter;
 		for (int i = 0; i < tmpFreqArray.length; i++) {
 			float sum = 0;
-			for (int j = i * nbSameFreq; j < (i+1)*nbSameFreq; j++) {
+			for (int j = i * nbSameFreq; j < (i + 1) * nbSameFreq; j++) {
 				sum += freqArray[j];
 			}
 			tmpFreqArray[i] = sum / nbSameFreq;

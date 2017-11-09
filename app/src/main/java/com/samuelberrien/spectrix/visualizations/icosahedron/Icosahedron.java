@@ -1,7 +1,6 @@
 package com.samuelberrien.spectrix.visualizations.icosahedron;
 
 import android.content.Context;
-import android.media.audiofx.Visualizer;
 import android.opengl.Matrix;
 
 import com.samuelberrien.spectrix.drawable.obj.ObjSpecVBO;
@@ -89,7 +88,7 @@ public class Icosahedron implements Visualization {
 		int nbSameFreq = 256 / nbIcosahedron;
 		for (int i = 0; i < tmpFreqArray.length; i++) {
 			float sum = 0;
-			for (int j = i * nbSameFreq; j < (i+1)*nbSameFreq; j++) {
+			for (int j = i * nbSameFreq; j < (i + 1) * nbSameFreq; j++) {
 				sum += freqArray[j];
 			}
 			tmpFreqArray[i] = sum / nbSameFreq;
@@ -109,7 +108,9 @@ public class Icosahedron implements Visualization {
 					mRotationOrientation[i][2]);
 
 			float[] tmpMat = mModelMatrix.clone();
-			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, mRotationMatrix[i], 0);
+			Matrix.multiplyMM(mModelMatrix, 0,
+					tmpMat, 0,
+					mRotationMatrix[i], 0);
 
 			int tmpFreqIndex = (int) (i * invNbSameIco);
 			float scale = mScale[i];
@@ -136,13 +137,18 @@ public class Icosahedron implements Visualization {
 	}
 
 	@Override
-	public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
+	public void draw(float[] mProjectionMatrix, float[] mViewMatrix,
+					 float[] mLightPosInEyeSpace, float[] mCameraPosition) {
 		float[] tmpMVPMatrix = new float[16];
 		float[] tmpMVMatrix = new float[16];
 		int totalNbIco = nbIcosahedron * nbSameIcosahedron;
 		for (int i = 0; i < totalNbIco; i++) {
-			Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mModelMatrix[i], 0);
-			Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
+			Matrix.multiplyMM(tmpMVMatrix, 0,
+					mViewMatrix, 0,
+					mModelMatrix[i], 0);
+			Matrix.multiplyMM(tmpMVPMatrix, 0,
+					mProjectionMatrix, 0,
+					tmpMVMatrix, 0);
 			icosahedron.setDiffColor(mIcoColors[i]);
 			icosahedron.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
 		}
