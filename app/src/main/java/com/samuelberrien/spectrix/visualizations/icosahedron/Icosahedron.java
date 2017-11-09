@@ -1,6 +1,7 @@
 package com.samuelberrien.spectrix.visualizations.icosahedron;
 
 import android.content.Context;
+import android.media.audiofx.Visualizer;
 import android.opengl.Matrix;
 
 import com.samuelberrien.spectrix.drawable.obj.ObjSpecVBO;
@@ -51,7 +52,7 @@ public class Icosahedron implements Visualization {
 
 		rand = new Random(System.currentTimeMillis());
 
-		nbIcosahedron = 60;
+		nbIcosahedron = 64;
 		nbSameIcosahedron = !isVR ? 10 : 6;
 		int tmp = nbIcosahedron * nbSameIcosahedron;
 		mScale = new float[tmp];
@@ -83,6 +84,16 @@ public class Icosahedron implements Visualization {
 		float invNbSameIco = 1f / nbSameIcosahedron;
 		float[] mModelMatrix = new float[16];
 		int totalNbIco = nbIcosahedron * nbSameIcosahedron;
+		float[] tmpFreqArray = new float[nbIcosahedron];
+
+		int nbSameFreq = 256 / nbIcosahedron;
+		for (int i = 0; i < tmpFreqArray.length; i++) {
+			float sum = 0;
+			for (int j = i * nbSameFreq; j < (i+1)*nbSameFreq; j++) {
+				sum += freqArray[j];
+			}
+			tmpFreqArray[i] = sum / nbSameFreq;
+		}
 
 		for (int i = 0; i < totalNbIco; i++) {
 			Matrix.setIdentityM(mModelMatrix, 0);
@@ -102,7 +113,7 @@ public class Icosahedron implements Visualization {
 
 			int tmpFreqIndex = (int) (i * invNbSameIco);
 			float scale = mScale[i];
-			float tmp = freqArray[tmpFreqIndex];
+			float tmp = tmpFreqArray[tmpFreqIndex];
 			if (tmp > 0.7f) {
 				scale += 0.7f * mScale[i];
 			} else {

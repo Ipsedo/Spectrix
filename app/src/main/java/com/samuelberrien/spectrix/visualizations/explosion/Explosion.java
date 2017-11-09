@@ -43,7 +43,7 @@ public class Explosion implements Visualization {
 		rand = new Random(System.currentTimeMillis());
 		minDist = 5f;
 		rangeDist = 2.5f;
-		nbCenter = 60;
+		nbCenter = 64;
 		nbSameCenter = 5;
 		mCenterColor = new float[nbSameCenter * nbCenter][4];
 		nbMaxOctagonePerExplosion = !isVR ? 5 : 2;
@@ -141,9 +141,22 @@ public class Explosion implements Visualization {
 	}
 
 	private void createNewOctagones(float[] freqArray) {
-		for (int i = 0; i < nbSameCenter * nbCenter; i++) {
-			int tmpFreqIndex = i / nbSameCenter;
-			float tmpMagn = freqArray[tmpFreqIndex];// + freqArray[tmpFreqIndex] * tmpFreqIndex * mFreqAugmentation;
+		float[] tmpFreqArray = new float[nbCenter];
+
+		int nbSameFreq = 256 / nbCenter;
+		for (int i = 0; i < tmpFreqArray.length; i++) {
+			float sum = 0;
+			for (int j = i * nbSameFreq; j < (i+1)*nbSameFreq; j++) {
+				sum += freqArray[j];
+			}
+			tmpFreqArray[i] = sum / nbSameFreq;
+		}
+
+		int totalOcta = nbSameCenter * nbCenter;
+		float invNbSameCenter = 1f / nbSameCenter;
+		for (int i = 0; i < totalOcta; i++) {
+			int tmpFreqIndex = (int) (i * invNbSameCenter);
+			float tmpMagn = tmpFreqArray[tmpFreqIndex];// + freqArray[tmpFreqIndex] * tmpFreqIndex * mFreqAugmentation;
 			int nbNewOct = Math.round(tmpMagn * (float) nbMaxOctagonePerExplosion);
 			for (int j = 0; j < nbNewOct; j++) {
 				addNewOctagone(mCenterPoint[i], tmpMagn, tmpFreqIndex, i);
