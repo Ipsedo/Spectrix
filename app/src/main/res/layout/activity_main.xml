@@ -155,12 +155,10 @@
                     android:fadingEdgeLength="25dp"
                     android:requiresFadingEdge="vertical">
 
-                    <LinearLayout
-                        android:id="@+id/layout_scroll_view_visualisations"
+                    <com.samuelberrien.spectrix.utils.ui.RadioExpand
+                        android:id="@+id/radio_expand_scroll_view_visualisations"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="vertical"
-                        android:paddingBottom="5dp"/>
+                        android:layout_height="wrap_content"/>
                 </ScrollView>
             </LinearLayout>
         </LinearLayout>

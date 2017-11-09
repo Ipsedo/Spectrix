@@ -13,7 +13,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,14 +20,14 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import com.samuelberrien.spectrix.R;
 import com.samuelberrien.spectrix.normal.MyGLSurfaceView;
 import com.samuelberrien.spectrix.threads.VisualizationThread;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 import com.samuelberrien.spectrix.utils.core.VisualizationHelper;
-import com.samuelberrien.spectrix.utils.ui.ViewHelper;
+import com.samuelberrien.spectrix.utils.ui.ExpandButton;
+import com.samuelberrien.spectrix.utils.ui.RadioExpand;
 import com.samuelberrien.spectrix.visualizations.spectrum.Spectrum;
 import com.samuelberrien.spectrix.vr.MyGvrActivity;
 
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		this.menu = menu;
 
-		//this.menu.getItem(1).setVisible(false);
+		this.menu.getItem(1).setVisible(false);
 
 		return true;
 	}
@@ -212,28 +211,14 @@ public class MainActivity extends AppCompatActivity {
 
 		frameLayoutSurfaceView.addView(myGLSurfaceView);
 
-		LinearLayout linearLayout = (LinearLayout) findViewById(R.id.layout_scroll_view_visualisations);
-
-		final LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-		int margin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 5, getResources().getDisplayMetrics());
-		layoutParams.setMargins(margin, margin, margin, 0);
-		layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 40, getResources().getDisplayMetrics());
+		RadioExpand radioExpand = (RadioExpand) findViewById(R.id.radio_expand_scroll_view_visualisations);
 
 		for (int i = 0; i < VisualizationHelper.NB_VISUALIZATIONS; i++) {
-			LinearLayout expandButton = (LinearLayout) getLayoutInflater().inflate(R.layout.expand_button, null);
-
-			TextView levelName = (TextView) expandButton.findViewById(R.id.expand_text);
-			final String name = VisualizationHelper.getVisualization(i).getName();
-			levelName.setText(name);
-
 			final int index = i;
-			final Button start = (Button) expandButton.findViewById(R.id.expand_button);
-			buttonsDrawer.add(start);
-			start.setOnClickListener(new View.OnClickListener() {
+			final String name = VisualizationHelper.getVisualization(i).getName();
+			Runnable onConfirm = new Runnable() {
 				@Override
-				public void onClick(View v) {
-					ViewHelper.makeViewTransition(MainActivity.this, start);
-
+				public void run() {
 					idVusalisation = index;
 					myGLSurfaceView.onPause();
 
@@ -259,28 +244,20 @@ public class MainActivity extends AppCompatActivity {
 							});
 					frameLayoutSurfaceView.addView(myGLSurfaceView);
 
-					/*if (visualization.is3D()) {
+					if (visualization.is3D()) {
 						menu.getItem(1).setVisible(true);
 					} else {
 						menu.getItem(1).setVisible(false);
-					}*/
+					}
 
 					getSupportActionBar().setTitle(name);
 
-					//drawerLayout.closeDrawers();
+					drawerLayout.closeDrawers();
 				}
-			});
-
-			levelName.setOnClickListener(new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					for (Button b : buttonsDrawer)
-						b.setVisibility(View.GONE);
-					start.setVisibility(View.VISIBLE);
-				}
-			});
-			expandButton.setLayoutParams(layoutParams);
-			linearLayout.addView(expandButton);
+			};
+			ExpandButton expandButton = new ExpandButton(this, onConfirm);
+			expandButton.setText(name);
+			radioExpand.addExpandButton(expandButton);
 		}
 	}
 
