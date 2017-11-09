@@ -80,7 +80,7 @@ public class Icosahedron implements Visualization {
 
 	@Override
 	public void update(float[] freqArray) {
-		float invNbSameIco = 1 / nbSameIcosahedron;
+		float invNbSameIco = 1f / nbSameIcosahedron;
 		float[] mModelMatrix = new float[16];
 		int totalNbIco = nbIcosahedron * nbSameIcosahedron;
 
