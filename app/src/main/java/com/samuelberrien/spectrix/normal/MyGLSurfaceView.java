@@ -27,12 +27,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		setPreserveEGLContextOnPause(true);
 
 		this.visualization = visualization;
-		if (this.visualization.is3D()) {
-			glRenderer3D = new GLRenderer3D(getContext(), this.visualization, onVisualizationInitFinish);
+		if (visualization.is3D()) {
+			glRenderer3D = new GLRenderer3D(getContext(), visualization, onVisualizationInitFinish);
 			setRenderer(glRenderer3D);
 			setOnTouchListener(glRenderer3D);
 		} else {
-			GLRenderer2D glRenderer2D = new GLRenderer2D(getContext(), this.visualization, onVisualizationInitFinish);
+			GLRenderer2D glRenderer2D = new GLRenderer2D(getContext(), visualization, onVisualizationInitFinish);
 			setRenderer(glRenderer2D);
 		}
 

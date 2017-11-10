@@ -21,6 +21,7 @@
             android:layout_height="wrap_content"
             android:background="@color/colorButton"
             android:minHeight="?attr/actionBarSize"/>
+            <!--android:minHeight="?attr/actionBarSize"-->
 
         <RelativeLayout
             android:id="@+id/layout_surface_view"
@@ -62,6 +63,7 @@
             android:orientation="vertical">
 
             <ImageView
+                android:contentDescription="@string/app_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
@@ -90,8 +92,8 @@
 
                 <RadioGroup
                     android:id="@+id/toggle"
+                    android:layout_height="48dp"
                     android:layout_width="match_parent"
-                    android:layout_height="40dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
@@ -143,11 +145,10 @@
                 <TextView
                     android:id="@+id/text_view_choose_visu"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="48dp"
                     android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="20dp"
-                    android:text="Choose your visualization :"/>
+                    android:layout_marginTop="10dp"
+                    android:text="@string/choose_visu_str"/>
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -155,10 +156,11 @@
                     android:fadingEdgeLength="25dp"
                     android:requiresFadingEdge="vertical">
 
-                    <com.samuelberrien.spectrix.utils.ui.RadioExpand
+                    <com.samuelberrien.spectrix.utils.ui.expand.RadioExpand
                         android:id="@+id/radio_expand_scroll_view_visualisations"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="5dp"/>
                 </ScrollView>
             </LinearLayout>
         </LinearLayout>

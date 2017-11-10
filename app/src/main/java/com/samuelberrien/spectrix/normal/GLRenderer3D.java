@@ -9,7 +9,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 
 import com.samuelberrien.spectrix.utils.core.Visualization;
-import com.samuelberrien.spectrix.utils.gesture.RotationGestureDetector;
+import com.samuelberrien.spectrix.utils.ui.gesture.RotationGestureDetector;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;

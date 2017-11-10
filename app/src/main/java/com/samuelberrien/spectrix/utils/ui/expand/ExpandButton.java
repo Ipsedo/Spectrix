@@ -1,4 +1,4 @@
-package com.samuelberrien.spectrix.utils.ui;
+package com.samuelberrien.spectrix.utils.ui.expand;
 
 import android.animation.LayoutTransition;
 import android.content.Context;

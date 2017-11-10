@@ -4,4 +4,5 @@
         Spectrix is more than a simple music visualizer,\nit\'s a unique music experience !\n\nCredits :\n\n© Samuel Berrien
     </string>
     <string name="play">▶</string>
+    <string name="choose_visu_str">Choose your visualization :</string>
 </resources>

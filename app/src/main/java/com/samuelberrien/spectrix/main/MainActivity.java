@@ -26,8 +26,8 @@ import com.samuelberrien.spectrix.normal.MyGLSurfaceView;
 import com.samuelberrien.spectrix.threads.VisualizationThread;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 import com.samuelberrien.spectrix.utils.core.VisualizationHelper;
-import com.samuelberrien.spectrix.utils.ui.ExpandButton;
-import com.samuelberrien.spectrix.utils.ui.RadioExpand;
+import com.samuelberrien.spectrix.utils.ui.expand.ExpandButton;
+import com.samuelberrien.spectrix.utils.ui.expand.RadioExpand;
 import com.samuelberrien.spectrix.visualizations.spectrum.Spectrum;
 import com.samuelberrien.spectrix.vr.MyGvrActivity;
 
@@ -137,6 +137,9 @@ public class MainActivity extends AppCompatActivity {
 
 		switchOrientation(newConfig.orientation);
 
+		//toolbar.dispatchConfigurationChanged(newConfig);
+		/*toolbar.dispatchConfigurationChanged(newConfig);
+		toolbar.requestLayout();*/
 	}
 
 	private void switchOrientation(int orientation) {

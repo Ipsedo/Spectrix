@@ -1,4 +1,4 @@
-package com.samuelberrien.spectrix.utils.gesture;
+package com.samuelberrien.spectrix.utils.ui.gesture;
 
 import android.view.MotionEvent;
 
