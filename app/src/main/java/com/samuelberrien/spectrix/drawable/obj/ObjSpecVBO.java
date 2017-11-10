@@ -198,10 +198,14 @@ public class ObjSpecVBO {
 		diffColor = color;
 	}
 
-	public void draw(float[] mvpMatrix,
+	public int getNbVertex() {
+		return nbVertex;
+	}
+
+	public void draw(/*float[] mvpMatrix,
 					 float[] mvMatrix,
 					 float[] mLightPosInEyeSpace,
-					 float[] mCameraPosition) {
+					 float[] mCameraPosition*/float[] packedMVPnMVnLightCamMatrix) {
 		GLES20.glUseProgram(mProgram);
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, packedDataBufferId);
@@ -218,18 +222,19 @@ public class ObjSpecVBO {
 
 		GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
 
-		GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, mvMatrix, 0);
+		GLES20.glUniformMatrix4fv(mMVMatrixHandle, 1, false, packedMVPnMVnLightCamMatrix, 16);
 
-		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, mvpMatrix, 0);
+		GLES20.glUniformMatrix4fv(mMVPMatrixHandle, 1, false, packedMVPnMVnLightCamMatrix, 0);
 
-		GLES20.glUniform3fv(mLightPosHandle, 1, mLightPosInEyeSpace, 0);
+		GLES20.glUniform3fv(mLightPosHandle, 1, packedMVPnMVnLightCamMatrix, 32);
 
-		GLES20.glUniform3fv(mCameraPosHandle, 1, mCameraPosition, 0);
+		GLES20.glUniform3fv(mCameraPosHandle, 1, packedMVPnMVnLightCamMatrix, 35);
 
 		GLES20.glUniform1f(mDistanceCoefHandle, distanceCoef);
 
 		GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, nbVertex);
 
 		GLES20.glDisableVertexAttribArray(mPositionHandle);
+		GLES20.glDisableVertexAttribArray(mNormalHandle);
 	}
 }

@@ -161,21 +161,32 @@ public class Snow implements Visualization {
 		float[] tmpMVMatrix = new float[16];
 		float[] tmpMVPMatrix = new float[16];
 
+		float[] packedMVPnMVnLightCamMatrix = new float[16 + 16 + 3 + 3];
+		packedMVPnMVnLightCamMatrix[32] = mLightPosInEyeSpace[0];
+		packedMVPnMVnLightCamMatrix[33] = mLightPosInEyeSpace[1];
+		packedMVPnMVnLightCamMatrix[34] = mLightPosInEyeSpace[2];
+
+		packedMVPnMVnLightCamMatrix[35] = mCameraPosition[0];
+		packedMVPnMVnLightCamMatrix[36] = mCameraPosition[1];
+		packedMVPnMVnLightCamMatrix[37] = mCameraPosition[2];
+
 		for (int i = 0; i < nbPing; i++) {
-			Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mPingModelMatrix[i], 0);
-			Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-			ping.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
+			Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 16, mViewMatrix, 0, mPingModelMatrix[i], 0);
+			Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 0, mProjectionMatrix, 0, packedMVPnMVnLightCamMatrix, 16);
+			ping.draw(packedMVPnMVnLightCamMatrix);
 		}
 
 		for (int i = 0; i < nbIgloo; i++) {
-			Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mIglooModelMatrix[i], 0);
-			Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-			igloo.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
+			/*Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mIglooModelMatrix[i], 0);
+			Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);*/
+			Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 16, mViewMatrix, 0, mIglooModelMatrix[i], 0);
+			Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 0, mProjectionMatrix, 0, packedMVPnMVnLightCamMatrix, 16);
+			igloo.draw(packedMVPnMVnLightCamMatrix);
 		}
 
-		Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mWhaleModelMatrix, 0);
-		Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-		whale.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
+		Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 16, mViewMatrix, 0, mWhaleModelMatrix, 0);
+		Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 0, mProjectionMatrix, 0, packedMVPnMVnLightCamMatrix, 16);
+		whale.draw(packedMVPnMVnLightCamMatrix);
 
 		for (int i = 0; i < nbOctagone; i++) {
 			Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mOctagoneModelMatrix[i], 0);
@@ -184,14 +195,14 @@ public class Snow implements Visualization {
 		}
 
 		for (int i = 0; i < nbTree; i++) {
-			Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mTreeModelMatrix[i], 0);
-			Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-			tree.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
+			Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 16, mViewMatrix, 0, mTreeModelMatrix[i], 0);
+			Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 0, mProjectionMatrix, 0, packedMVPnMVnLightCamMatrix, 16);
+			tree.draw(packedMVPnMVnLightCamMatrix);
 		}
 
-		Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mMountainsModelMatrix, 0);
-		Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
-		mountains.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
+		Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 16, mViewMatrix, 0, mMountainsModelMatrix, 0);
+		Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 0, mProjectionMatrix, 0, packedMVPnMVnLightCamMatrix, 16);
+		mountains.draw(packedMVPnMVnLightCamMatrix);
 	}
 
 	@Override

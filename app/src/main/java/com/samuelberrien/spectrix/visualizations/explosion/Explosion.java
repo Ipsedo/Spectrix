@@ -145,11 +145,11 @@ public class Explosion implements Visualization {
 
 		int nbSameFreq = 256 / nbCenter;
 		for (int i = 0; i < tmpFreqArray.length; i++) {
-			float sum = 0;
+			float max = 0;
 			for (int j = i * nbSameFreq; j < (i + 1) * nbSameFreq; j++) {
-				sum += freqArray[j];
+				max = max < freqArray[j] ? freqArray[j] : max;
 			}
-			tmpFreqArray[i] = sum / nbSameFreq;
+			tmpFreqArray[i] = max;
 		}
 
 		int totalOcta = nbSameCenter * nbCenter;
