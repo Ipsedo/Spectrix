@@ -105,7 +105,7 @@ public class Spectrum implements Visualization {
 						mSquaresLandPosition[i + nbSquare][1] * scale,
 						mSquaresLandPosition[i + nbSquare][2] + (isVR ? 10f : 0f));
 				Matrix.scaleM(mModelMatrix, 0,
-						mSquaresLandWidth * scale,
+						mSquaresLandWidth * scale * 2f,
 						freqArray[i] * scale,
 						scale);
 				mSquaresLandModelMatrix[i + nbSquare] = mModelMatrix.clone();
@@ -115,7 +115,7 @@ public class Spectrum implements Visualization {
 						mSquaresLandPosition[nbSquare - 1 - i][1] * scale,
 						mSquaresLandPosition[nbSquare - 1 - i][2] + (isVR ? 10f : 0f));
 				Matrix.scaleM(mModelMatrix, 0,
-						mSquaresLandWidth * scale,
+						mSquaresLandWidth * scale * 2f,
 						freqArray[i] * scale,
 						scale);
 				mSquaresLandModelMatrix[nbSquare - 1 - i] = mModelMatrix.clone();
