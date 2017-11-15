@@ -29,6 +29,8 @@ public class Spectrum implements Visualization {
 
 	private Context context;
 
+	private boolean isVR;
+
 	public Spectrum() {
 		isInit = false;
 	}
@@ -36,6 +38,8 @@ public class Spectrum implements Visualization {
 	@Override
 	public void init(Context context, boolean isVR) {
 		square = new Square();
+
+		this.isVR = isVR;
 
 		mSquaresPortraitModelMatrix = new float[nbSquare][16];
 		mSquaresPortraitPosition = new float[nbSquare][3];
@@ -79,22 +83,41 @@ public class Spectrum implements Visualization {
 	@Override
 	public void update(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
-		if (context.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
+		if (!isVR && context.getResources().getConfiguration().orientation == ORIENTATION_PORTRAIT) {
 			for (int i = 0; i < nbSquare; i++) {
 				Matrix.setIdentityM(mModelMatrix, 0);
-				Matrix.translateM(mModelMatrix, 0, mSquaresPortraitPosition[i][0], mSquaresPortraitPosition[i][1], mSquaresPortraitPosition[i][2]); //0f, (float) i / (float) (nbSquare / 2) - 1f, 0f);
-				Matrix.scaleM(mModelMatrix, 0, freqArray[i] /*+ freqArray[i] * (float) i / this.hightFreqsAugmentation*/, mSquaresPortraitHeight, 1f);
+				Matrix.translateM(mModelMatrix, 0,
+						mSquaresPortraitPosition[i][0],
+						mSquaresPortraitPosition[i][1],
+						mSquaresPortraitPosition[i][2]);
+				Matrix.scaleM(mModelMatrix, 0,
+						freqArray[i],
+						mSquaresPortraitHeight,
+						1f);
 				mSquaresPortraitModelMatrix[i] = mModelMatrix.clone();
 			}
 		} else {
+			float scale = isVR ? 15f : 1f;
 			for (int i = 0; i < nbSquare; i++) {
 				Matrix.setIdentityM(mModelMatrix, 0);
-				Matrix.translateM(mModelMatrix, 0, mSquaresLandPosition[i + nbSquare][0], mSquaresLandPosition[i + nbSquare][1], mSquaresLandPosition[i + nbSquare][2]);
-				Matrix.scaleM(mModelMatrix, 0, mSquaresLandWidth, freqArray[i] /*+ freqArray[i] * (float) i / this.hightFreqsAugmentation*/, 1f);
+				Matrix.translateM(mModelMatrix, 0,
+						mSquaresLandPosition[i + nbSquare][0] * scale,
+						mSquaresLandPosition[i + nbSquare][1] * scale,
+						mSquaresLandPosition[i + nbSquare][2] + (isVR ? 10f : 0f));
+				Matrix.scaleM(mModelMatrix, 0,
+						mSquaresLandWidth * scale,
+						freqArray[i] * scale,
+						scale);
 				mSquaresLandModelMatrix[i + nbSquare] = mModelMatrix.clone();
 				Matrix.setIdentityM(mModelMatrix, 0);
-				Matrix.translateM(mModelMatrix, 0, mSquaresLandPosition[nbSquare - 1 - i][0], mSquaresLandPosition[nbSquare - 1 - i][1], mSquaresLandPosition[nbSquare - 1 - i][2]);
-				Matrix.scaleM(mModelMatrix, 0, mSquaresLandWidth, freqArray[i] /*+ freqArray[i] * (float) i / this.hightFreqsAugmentation*/, 1f);
+				Matrix.translateM(mModelMatrix, 0,
+						mSquaresLandPosition[nbSquare - 1 - i][0] * scale,
+						mSquaresLandPosition[nbSquare - 1 - i][1] * scale,
+						mSquaresLandPosition[nbSquare - 1 - i][2] + (isVR ? 10f : 0f));
+				Matrix.scaleM(mModelMatrix, 0,
+						mSquaresLandWidth * scale,
+						freqArray[i] * scale,
+						scale);
 				mSquaresLandModelMatrix[nbSquare - 1 - i] = mModelMatrix.clone();
 			}
 		}

@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		this.menu = menu;
 
-		this.menu.getItem(1).setVisible(false);
+		//this.menu.getItem(1).setVisible(false);
 
 		return true;
 	}
@@ -247,11 +247,11 @@ public class MainActivity extends AppCompatActivity {
 							});
 					frameLayoutSurfaceView.addView(myGLSurfaceView);
 
-					if (visualization.is3D()) {
+					/*if (visualization.is3D()) {
 						menu.getItem(1).setVisible(true);
 					} else {
 						menu.getItem(1).setVisible(false);
-					}
+					}*/
 
 					getSupportActionBar().setTitle(name);
 
