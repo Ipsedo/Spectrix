@@ -16,7 +16,6 @@ public class Icosahedron implements Visualization {
 
 	private Context context;
 
-	private final float LIGHTAUGMENTATION = 1f;
 	private final float DISTANCECOEFF = 0.001f;
 
 	private Random rand;
@@ -38,8 +37,13 @@ public class Icosahedron implements Visualization {
 
 	private boolean isInit;
 
+	private long lastDraw;
+	private static int limitFPS;
+	private int fps = 60;
+
 	public Icosahedron() {
 		isInit = false;
+		limitFPS = 24;
 	}
 
 	@Override
@@ -65,6 +69,8 @@ public class Icosahedron implements Visualization {
 
 		setupIcosahedrons();
 
+		lastDraw = System.currentTimeMillis();
+
 		isInit = true;
 	}
 
@@ -80,6 +86,10 @@ public class Icosahedron implements Visualization {
 
 	@Override
 	public void update(float[] freqArray) {
+		if (fps < limitFPS) {
+			nbIcosahedron--;
+		}
+
 		float invNbSameIco = 1f / nbSameIcosahedron;
 		float[] mModelMatrix = new float[16];
 		int totalNbIco = nbIcosahedron * nbSameIcosahedron;
@@ -139,29 +149,23 @@ public class Icosahedron implements Visualization {
 	@Override
 	public void draw(float[] mProjectionMatrix, float[] mViewMatrix,
 					 float[] mLightPosInEyeSpace, float[] mCameraPosition) {
-		/*float[] tmpMVPMatrix = new float[16];
-		float[] tmpMVMatrix = new float[16];*/
-
-		float[] packedMVPnMVnLightCamMatrix = new float[16 + 16 + 3 + 3];
-		packedMVPnMVnLightCamMatrix[32] = mLightPosInEyeSpace[0];
-		packedMVPnMVnLightCamMatrix[33] = mLightPosInEyeSpace[1];
-		packedMVPnMVnLightCamMatrix[34] = mLightPosInEyeSpace[2];
-
-		packedMVPnMVnLightCamMatrix[35] = mCameraPosition[0];
-		packedMVPnMVnLightCamMatrix[36] = mCameraPosition[1];
-		packedMVPnMVnLightCamMatrix[37] = mCameraPosition[2];
+		float[] tmpMVPMatrix = new float[16];
+		float[] tmpMVMatrix = new float[16];
 
 		int totalNbIco = nbIcosahedron * nbSameIcosahedron;
 		for (int i = 0; i < totalNbIco; i++) {
-			Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 16,
+			Matrix.multiplyMM(tmpMVMatrix, 0,
 					mViewMatrix, 0,
 					mModelMatrix[i], 0);
-			Matrix.multiplyMM(packedMVPnMVnLightCamMatrix, 0,
+			Matrix.multiplyMM(tmpMVPMatrix, 0,
 					mProjectionMatrix, 0,
-					packedMVPnMVnLightCamMatrix, 16);
+					tmpMVMatrix, 16);
 			icosahedron.setDiffColor(mIcoColors[i]);
-			icosahedron.draw(packedMVPnMVnLightCamMatrix);
+			icosahedron.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
 		}
+
+		fps = (int) (1000L / (System.currentTimeMillis() - lastDraw));
+		lastDraw = System.currentTimeMillis();
 	}
 
 	@Override
