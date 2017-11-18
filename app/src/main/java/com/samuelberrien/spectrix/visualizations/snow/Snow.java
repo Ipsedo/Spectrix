@@ -162,8 +162,8 @@ public class Snow implements Visualization {
 		float[] tmpMVPMatrix = new float[16];
 
 		for (int i = 0; i < nbPing; i++) {
-			Matrix.multiplyMM(tmpMVMatrix, 16, mViewMatrix, 0, mPingModelMatrix[i], 0);
-			Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 16);
+			Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mPingModelMatrix[i], 0);
+			Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
 			ping.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
 		}
 

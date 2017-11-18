@@ -35,7 +35,16 @@ public class Explosion implements Visualization {
 	private ObjModelVBO octagone;
 	private List<Octagone> mOctagone;
 
-	private boolean isInit = false;
+	private boolean isInit;
+
+	private long lastDraw;
+	private final int limitFPS;
+	private int fps = 60;
+
+	public Explosion() {
+		isInit = false;
+		limitFPS = 24;
+	}
 
 	@Override
 	public void init(Context context, boolean isVR) {
@@ -43,8 +52,8 @@ public class Explosion implements Visualization {
 		rand = new Random(System.currentTimeMillis());
 		minDist = 5f;
 		rangeDist = 2.5f;
-		nbCenter = 64;
-		nbSameCenter = 5;
+		nbCenter = 128;
+		nbSameCenter = !isVR ? 12 : 6;
 		mCenterColor = new float[nbSameCenter * nbCenter][4];
 		nbMaxOctagonePerExplosion = !isVR ? 5 : 2;
 		mCenterPoint = new float[nbCenter * nbSameCenter][3];
@@ -69,6 +78,10 @@ public class Explosion implements Visualization {
 
 	@Override
 	public void update(float[] freqArray) {
+		if (fps < limitFPS) {
+			nbCenter--;
+		}
+
 		deleteOldOctagone();
 		createNewOctagones(freqArray);
 		moveOctagone();
@@ -97,6 +110,9 @@ public class Explosion implements Visualization {
 			octagone.setColor(o.getmOctagoneColor());
 			octagone.draw(tmpModelViewProjectionMatrix, tmpModelViewMatrix, mLightPosInEyeSpace);
 		}
+
+		fps = (int) (1000L / (System.currentTimeMillis() - lastDraw));
+		lastDraw = System.currentTimeMillis();
 	}
 
 	@Override

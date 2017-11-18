@@ -38,7 +38,7 @@ public class Icosahedron implements Visualization {
 	private boolean isInit;
 
 	private long lastDraw;
-	private static int limitFPS;
+	private final int limitFPS;
 	private int fps = 60;
 
 	public Icosahedron() {
@@ -56,7 +56,7 @@ public class Icosahedron implements Visualization {
 		rand = new Random(System.currentTimeMillis());
 
 		nbIcosahedron = 128;
-		nbSameIcosahedron = !isVR ? 10 : 6;
+		nbSameIcosahedron = !isVR ? 12 : 6;
 		int tmp = nbIcosahedron * nbSameIcosahedron;
 		mScale = new float[tmp];
 		mAngle = new float[tmp];
@@ -159,7 +159,7 @@ public class Icosahedron implements Visualization {
 					mModelMatrix[i], 0);
 			Matrix.multiplyMM(tmpMVPMatrix, 0,
 					mProjectionMatrix, 0,
-					tmpMVMatrix, 16);
+					tmpMVMatrix, 0);
 			icosahedron.setDiffColor(mIcoColors[i]);
 			icosahedron.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace, mCameraPosition);
 		}
