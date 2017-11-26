@@ -54,7 +54,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_gravity="left"
+        android:layout_gravity="start"
         android:orientation="vertical">
 
         <LinearLayout
@@ -128,7 +128,7 @@
                 </RadioGroup>
 
                 <TextView
-                    android:id="@+id/about_disco_text_view"
+                    android:id="@+id/about_spectrix_text_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginEnd="15dp"

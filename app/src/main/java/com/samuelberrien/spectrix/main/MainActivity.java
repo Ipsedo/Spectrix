@@ -134,7 +134,6 @@ public class MainActivity extends AppCompatActivity {
 
 		switchOrientation(newConfig.orientation);
 
-		//toolbar.dispatchConfigurationChanged(newConfig);
 		/*toolbar.dispatchConfigurationChanged(newConfig);
 		toolbar.requestLayout();*/
 	}
@@ -152,13 +151,13 @@ public class MainActivity extends AppCompatActivity {
 				menuDrawer.setOrientation(LinearLayout.HORIZONTAL);
 				layoutScroll.setLayoutParams(layoutLandParams);
 				layoutToggle.setLayoutParams(layoutLandParams);
-				findViewById(R.id.about_disco_text_view).setVisibility(View.VISIBLE);
+				findViewById(R.id.about_spectrix_text_view).setVisibility(View.VISIBLE);
 				break;
 			case Configuration.ORIENTATION_PORTRAIT:
 				menuDrawer.setOrientation(LinearLayout.VERTICAL);
 				layoutToggle.setLayoutParams(layoutPortraitParams);
 				layoutScroll.setLayoutParams(layoutPortraitParams);
-				findViewById(R.id.about_disco_text_view).setVisibility(View.GONE);
+				findViewById(R.id.about_spectrix_text_view).setVisibility(View.GONE);
 				break;
 		}
 	}
