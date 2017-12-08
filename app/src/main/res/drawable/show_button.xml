@@ -11,6 +11,6 @@
         </shape>
     </item>
     <item
-        android:drawable="@drawable/show"
+        android:drawable="@drawable/show_icon"
         android:gravity="fill"/>
 </layer-list>
