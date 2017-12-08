@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.media.MediaPlayer;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -33,8 +34,6 @@ import com.samuelberrien.spectrix.utils.ui.expand.RadioExpand;
 import com.samuelberrien.spectrix.visualizations.spectrum.Spectrum;
 import com.samuelberrien.spectrix.vr.MyGvrActivity;
 
-import java.util.ArrayList;
-
 public class MainActivity extends AppCompatActivity {
 
 	public static final String IS_STREAM = "IS_STREAM";
@@ -52,9 +51,7 @@ public class MainActivity extends AppCompatActivity {
 
 	private MediaPlayer mPlayer;
 
-	private int idVusalisation = 0;
-
-	ArrayList<Button> buttonsDrawer;
+	private int idVisualisation = 0;
 
 	private int currentListeningId;
 
@@ -65,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		buttonsDrawer = new ArrayList<>();
 		setContentView(R.layout.activity_main);
 		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
@@ -105,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 
-		switchOrientation(this.getResources().getConfiguration().orientation);
+		switchOrientation(getResources().getConfiguration().orientation);
 	}
 
 	private void requestRecordPermission() {
@@ -117,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	@Override
-	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+	public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
 		switch (requestCode) {
 			case MY_PERMISSIONS_REQUEST_RECORD_AUDIO: {
 				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -236,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
 				return true;
 			case R.id.cardboard_toolbar:
 				Intent intent = new Intent(this, MyGvrActivity.class);
-				intent.putExtra(MainActivity.ID_RENDERER, idVusalisation);
+				intent.putExtra(MainActivity.ID_RENDERER, idVisualisation);
 				intent.putExtra(MainActivity.IS_STREAM, currentListeningId == VisualizationThread.STREAM_MUSIC);
 				startActivity(intent);
 				return true;
@@ -245,9 +241,9 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void setUpDrawer() {
-		Visualization startVisu = new Spectrum();
+		Visualization startVisualization = new Spectrum();
 
-		myGLSurfaceView = new MyGLSurfaceView(this, startVisu, currentListeningId, new MyGLSurfaceView.OnVisualizationInitFinish() {
+		myGLSurfaceView = new MyGLSurfaceView(this, startVisualization, currentListeningId, new MyGLSurfaceView.OnVisualizationInitFinish() {
 			@Override
 			public void onFinish() {
 				runOnUiThread(new Runnable() {
@@ -259,7 +255,7 @@ public class MainActivity extends AppCompatActivity {
 			}
 		});
 
-		getSupportActionBar().setTitle(startVisu.getName());
+		getSupportActionBar().setTitle(startVisualization.getName());
 
 		frameLayoutSurfaceView.addView(myGLSurfaceView);
 
@@ -271,7 +267,7 @@ public class MainActivity extends AppCompatActivity {
 			Runnable onConfirm = new Runnable() {
 				@Override
 				public void run() {
-					idVusalisation = index;
+					idVisualisation = index;
 					myGLSurfaceView.onPause();
 
 					frameLayoutSurfaceView.removeView(myGLSurfaceView);
