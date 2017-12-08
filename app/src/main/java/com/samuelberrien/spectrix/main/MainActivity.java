@@ -1,6 +1,7 @@
 package com.samuelberrien.spectrix.main;
 
 import android.Manifest;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -11,6 +12,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -40,7 +42,6 @@ public class MainActivity extends AppCompatActivity {
 
 	private final int MY_PERMISSIONS_REQUEST_RECORD_AUDIO = 0;
 
-	private Toolbar toolbar;
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
 	private Button showToolBarButton;
@@ -63,9 +64,10 @@ public class MainActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
 		buttonsDrawer = new ArrayList<>();
 		setContentView(R.layout.activity_main);
-		toolbar = (Toolbar) findViewById(R.id.toolbar);
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -90,15 +92,7 @@ public class MainActivity extends AppCompatActivity {
 
 		//FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/ace_futurism.ttf");
 
-		if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
-			if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
-			} else {
-				ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
-			}
-			ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
-		}
-
-		setUpDrawer();
+		requestRecordPermission();
 
 		currentListeningId = VisualizationThread.STREAM_MUSIC;
 
@@ -112,6 +106,69 @@ public class MainActivity extends AppCompatActivity {
 		});
 
 		switchOrientation(this.getResources().getConfiguration().orientation);
+	}
+
+	private void requestRecordPermission() {
+		if (ContextCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+			ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO}, MY_PERMISSIONS_REQUEST_RECORD_AUDIO);
+		} else {
+			setUpDrawer();
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+		switch (requestCode) {
+			case MY_PERMISSIONS_REQUEST_RECORD_AUDIO: {
+				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+					setUpDrawer();
+				} else {
+					if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
+						showEndDialog();
+					} else {
+						showSorryDialog();
+					}
+				}
+				break;
+			}
+		}
+	}
+
+	private void showEndDialog() {
+		AlertDialog endDialog = new AlertDialog.Builder(this)
+				.setMessage("Spectrix can't work without audio record, Sorry...")
+				.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						finish();
+					}
+				})
+				.create();
+		endDialog.setCancelable(false);
+		endDialog.setCanceledOnTouchOutside(false);
+		endDialog.show();
+	}
+
+	private void showSorryDialog() {
+		AlertDialog sorryDialog = new AlertDialog.Builder(this)
+				.setMessage("Spectrix needs to record audio,\n" +
+						"Please accept the permission !")
+				.setNegativeButton("No, Exit", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						finish();
+					}
+				})
+				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialogInterface, int i) {
+						requestRecordPermission();
+					}
+				})
+				.create();
+		sorryDialog.setCancelable(false);
+		sorryDialog.setCanceledOnTouchOutside(false);
+		sorryDialog.show();
 	}
 
 	@Override
@@ -131,11 +188,7 @@ public class MainActivity extends AppCompatActivity {
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
 		drawerToggle.onConfigurationChanged(newConfig);
-
 		switchOrientation(newConfig.orientation);
-
-		/*toolbar.dispatchConfigurationChanged(newConfig);
-		toolbar.requestLayout();*/
 	}
 
 	private void switchOrientation(int orientation) {
@@ -256,14 +309,16 @@ public class MainActivity extends AppCompatActivity {
 
 	@Override
 	protected void onPause() {
-		myGLSurfaceView.onPause();
+		if (myGLSurfaceView != null)
+			myGLSurfaceView.onPause();
 		super.onPause();
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		myGLSurfaceView.onResume();
+		if (myGLSurfaceView != null)
+			myGLSurfaceView.onResume();
 	}
 
 	public void stream(View v) {
