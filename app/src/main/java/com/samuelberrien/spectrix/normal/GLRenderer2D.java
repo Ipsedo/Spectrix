@@ -24,7 +24,7 @@ public class GLRenderer2D implements GLSurfaceView.Renderer {
 
 	private MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish;
 
-	public GLRenderer2D(Context context, Visualization visualization, MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish) {
+	GLRenderer2D(Context context, Visualization visualization, MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish) {
 		this.context = context;
 		this.visualization = visualization;
 		mProjectionMatrix = new float[16];

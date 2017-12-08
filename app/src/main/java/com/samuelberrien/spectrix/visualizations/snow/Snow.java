@@ -152,6 +152,11 @@ public class Snow implements Visualization {
 	}
 
 	@Override
+	public float[] getLightPosition() {
+		return new float[]{0f, 9f, 0f};
+	}
+
+	@Override
 	public float[] getInitCamLookDirVec() {
 		return new float[]{0f, 0f, 1f};
 	}

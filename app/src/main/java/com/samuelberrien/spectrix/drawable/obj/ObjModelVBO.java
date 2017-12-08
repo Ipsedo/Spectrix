@@ -72,7 +72,7 @@ public class ObjModelVBO {
 
 		InputStream inputStream = context.getResources().openRawResource(resId);
 		InputStreamReader inputreader = new InputStreamReader(inputStream);
-		parseObj(inputreader, red, green, blue);
+		parseObj(inputreader);
 		try {
 			inputreader.close();
 			inputStream.close();
@@ -98,7 +98,7 @@ public class ObjModelVBO {
 		try {
 			InputStream inputStream = context.getAssets().open(fileName);
 			InputStreamReader inputreader = new InputStreamReader(inputStream);
-			parseObj(inputreader, red, green, blue);
+			parseObj(inputreader);
 			inputreader.close();
 			inputStream.close();
 		} catch (IOException ioe) {
@@ -152,7 +152,7 @@ public class ObjModelVBO {
 		packedDataBuffer = null;
 	}
 
-	private void parseObj(InputStreamReader inputreader, float red, float green, float blue) {
+	private void parseObj(InputStreamReader inputreader) {
 		nbVertex = 0;
 		BufferedReader buffreader1 = new BufferedReader(inputreader);
 		String line;

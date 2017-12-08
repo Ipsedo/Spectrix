@@ -16,12 +16,10 @@ public class Room implements Visualization {
 
 	private boolean isInit;
 
-	private Context context;
-
 	private float scale;
 
-	private final float LIGHTAUGMENTATION = 1f;
-	private final float DISTANCECOEFF = 0.01f;
+	private final float LIGHTAUGMENTATION;
+	private final float DISTANCECOEFF;
 
 	private Random rand;
 
@@ -102,12 +100,13 @@ public class Room implements Visualization {
 
 	public Room() {
 		isInit = false;
+		LIGHTAUGMENTATION = 1f;
+		DISTANCECOEFF = 0.01f;
 	}
 
 	@Override
 	public void init(Context context, boolean isVR) {
 		rand = new Random(System.currentTimeMillis());
-		this.context = context;
 		scale = 1f;
 		cadreD = new ObjModelVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
 		cadreG = new ObjModelVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
@@ -141,7 +140,7 @@ public class Room implements Visualization {
 
 	@Override
 	public void update(float[] freqArray) {
-		updateMurs(freqArray);
+		updateMurs();
 
 		updateCadreD(freqArray);
 		updateCadreG(freqArray);
@@ -173,6 +172,11 @@ public class Room implements Visualization {
 	@Override
 	public float[] getCameraPosition() {
 		return new float[]{0f * scale, 7f * scale, 0f * scale};
+	}
+
+	@Override
+	public float[] getLightPosition() {
+		return new float[]{0f, 9f, 0f};
 	}
 
 	@Override
@@ -259,9 +263,6 @@ public class Room implements Visualization {
 		return "Room";
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateCadreD(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -281,9 +282,6 @@ public class Room implements Visualization {
 		mCadreDModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateCadreG(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -303,9 +301,6 @@ public class Room implements Visualization {
 		mCadreGModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateCadreM(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -325,9 +320,6 @@ public class Room implements Visualization {
 		mCadreMModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateCadreAD(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -353,9 +345,6 @@ public class Room implements Visualization {
 		mCadreADModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateCadreAG(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -381,9 +370,6 @@ public class Room implements Visualization {
 		mCadreAGModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateCadreAM(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -409,9 +395,6 @@ public class Room implements Visualization {
 		mCadreAMModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateLampeChevetD(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -438,9 +421,6 @@ public class Room implements Visualization {
 		mLampeChevetDModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateLampeChevetG(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -467,9 +447,6 @@ public class Room implements Visualization {
 		mLampeChevetGModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateLampePlafond(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -489,9 +466,6 @@ public class Room implements Visualization {
 		mLampePlafondModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateLit2Places(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -509,10 +483,7 @@ public class Room implements Visualization {
 		mLit2PlacesModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
-	private void updateMurs(float[] freqArray) {
+	private void updateMurs() {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
 		Matrix.translateM(mModelMatrix, 0, mMursTranslateVector[0] * scale, mMursTranslateVector[1] * scale, mMursTranslateVector[2] * scale * -1f);
@@ -520,9 +491,6 @@ public class Room implements Visualization {
 		mMursModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateOreillerD(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -542,9 +510,6 @@ public class Room implements Visualization {
 		mOreillerDModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateOreillerG(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -564,9 +529,6 @@ public class Room implements Visualization {
 		mOreillerGModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updatePorte(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -584,9 +546,6 @@ public class Room implements Visualization {
 		mPorteModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateStores(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -604,9 +563,6 @@ public class Room implements Visualization {
 		mStoresModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateTableChevetD(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -626,9 +582,6 @@ public class Room implements Visualization {
 		mTableChevetDModel = mModelMatrix.clone();
 	}
 
-	/**
-	 * @param freqArray
-	 */
 	private void updateTableChevetG(float[] freqArray) {
 		float[] mModelMatrix = new float[16];
 		Matrix.setIdentityM(mModelMatrix, 0);
@@ -648,9 +601,6 @@ public class Room implements Visualization {
 		mTableChevetGModel = mModelMatrix.clone();
 	}
 
-	/**
-	 *
-	 */
 	private void count() {
 		mCounter--;
 		if (mCounter <= 0) {

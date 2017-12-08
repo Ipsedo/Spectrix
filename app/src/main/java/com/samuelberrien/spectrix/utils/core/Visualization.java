@@ -17,6 +17,8 @@ public interface Visualization {
 
 	float[] getCameraPosition();
 
+	float[] getLightPosition();
+
 	float[] getInitCamLookDirVec();
 
 	void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition);

@@ -24,8 +24,8 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 
 	protected Context context;
 
-	protected final float[] mProjectionMatrix;
-	protected final float[] mViewMatrix;
+	private final float[] mProjectionMatrix;
+	private final float[] mViewMatrix;
 
 	private final float[] initCamLookDirVec;
 
@@ -38,9 +38,9 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 
 	private float ratio;
 
-	private final float TOUCH_SCALE_FACTOR_MOVE = 0.05f;
-	private final float TOUCH_SCALE_FACTOR_ZOOM = 1f;
-	private final float TOUCH_SCALE_FACTOR_ROLL = 1f;
+	private final float TOUCH_SCALE_FACTOR_MOVE;
+	private final float TOUCH_SCALE_FACTOR_ZOOM;
+	private final float TOUCH_SCALE_FACTOR_ROLL;
 	private float mPreviousX;
 	private float mPreviousY;
 
@@ -53,20 +53,20 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 	private float rollAngle;
 	private float rollDelta;
 
-	private float currCamPitch;
-	private float currCamRoll;
-	private float currCamYaw;
-
 	private long lastTime;
 
 	private RotationGestureDetector rotationGestureDetector;
 
 	private MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish;
 
-	public GLRenderer3D(Context context, Visualization visualization, MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish) {
+	GLRenderer3D(Context context, Visualization visualization, MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish) {
 		this.context = context;
 
 		this.visualization = visualization;
+
+		TOUCH_SCALE_FACTOR_MOVE = 0.05f;
+		TOUCH_SCALE_FACTOR_ZOOM = 1f;
+		TOUCH_SCALE_FACTOR_ROLL = 1f;
 
 		projectionAngle = 40f;
 
@@ -82,14 +82,10 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 		rollAngle = 0f;
 		rollDelta = 0f;
 
-		currCamPitch = 0f;
-		currCamRoll = 0f;
-		currCamYaw = 0f;
-
 		mProjectionMatrix = new float[16];
 		mViewMatrix = new float[16];
 
-		updateLight(0f, 0f, 0f);
+		updateLight(visualization.getLightPosition());
 
 		cameraRotation = new float[16];
 		Matrix.setIdentityM(cameraRotation, 0);
@@ -151,15 +147,9 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 		lastTime = System.currentTimeMillis();
 	}
 
-	/**
-	 * @param x
-	 * @param y
-	 * @param z
-	 */
-	protected void updateLight(float x, float y, float z) {
-		//TODO light pos
+	private void updateLight(float[] xyz) {
 		Matrix.setIdentityM(mLightModelMatrix, 0);
-		Matrix.translateM(mLightModelMatrix, 0, x, y, z);
+		Matrix.translateM(mLightModelMatrix, 0, xyz[0], xyz[1], xyz[2]);
 		Matrix.multiplyMV(mLightPosInWorldSpace, 0, mLightModelMatrix, 0, mLightPosInModelSpace, 0);
 		Matrix.multiplyMV(mLightPosInEyeSpace, 0, mViewMatrix, 0, mLightPosInWorldSpace, 0);
 	}
@@ -230,11 +220,6 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 				Matrix.multiplyMM(yaw, 0, yaw.clone(), 0, pitch, 0);
 
 				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, yaw, 0);
-
-				/*float[] tmp = new float[16];
-				Matrix.setRotateEulerM(tmp, 0, dx * TOUCH_SCALE_FACTOR_MOVE, rollDelta * TOUCH_SCALE_FACTOR_ROLL, dy * TOUCH_SCALE_FACTOR_MOVE);
-				Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, tmp, 0);*/
-
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
 				otherPointerUp = true;
@@ -250,7 +235,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 				moyY *= invNbPointer;
 				mPreviousX = moyX + 1f;
 				mPreviousY = moyY + 1f;
-
+				break;
 		}
 		moyX = 0;
 		moyY = 0;
@@ -265,7 +250,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 
 		myScaleGestureDetector.onTouchEvent(event);
 		rotationGestureDetector.onTouchEvent(event);
-		return true;
+		return v.performClick();
 	}
 
 	private class MyScaleGestureDetector extends ScaleGestureDetector.SimpleOnScaleGestureListener {

@@ -198,10 +198,6 @@ public class ObjSpecVBO {
 		diffColor = color;
 	}
 
-	public int getNbVertex() {
-		return nbVertex;
-	}
-
 	public void draw(float[] mvpMatrix,
 					 float[] mvMatrix,
 					 float[] mLightPosInEyeSpace,

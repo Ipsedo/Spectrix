@@ -129,6 +129,11 @@ public class Spectrum implements Visualization {
 	}
 
 	@Override
+	public float[] getLightPosition() {
+		return new float[3];
+	}
+
+	@Override
 	public float[] getInitCamLookDirVec() {
 		return new float[]{0f, 0f, 3f};
 	}

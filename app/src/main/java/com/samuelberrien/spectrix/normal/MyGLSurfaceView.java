@@ -86,6 +86,11 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		return true;
 	}*/
 
+	@Override
+	public boolean performClick() {
+		return true;
+	}
+
 	public void setListening(int listeningId) {
 		if (visualizationThread != null) {
 			visualizationThread.cancel();
