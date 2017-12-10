@@ -37,7 +37,8 @@ import com.samuelberrien.spectrix.utils.ui.expand.RadioExpand;
 import com.samuelberrien.spectrix.visualizations.spectrum.Spectrum;
 import com.samuelberrien.spectrix.vr.MyGvrActivity;
 
-public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.OnVisualizationInitFinish, View.OnTouchListener {
+public class MainActivity extends AppCompatActivity
+		implements MyGLSurfaceView.OnVisualizationInitFinish, View.OnTouchListener {
 
 	public static final String IS_STREAM = "IS_STREAM";
 	public static final String ID_RENDERER = "ID_RENDERER";
@@ -50,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 
 	private MyGLSurfaceView myGLSurfaceView;
 
-	private Menu menu;
+	//private Menu menu;
 	private SubMenu subMenu;
 
 	private MediaPlayer mPlayer;
@@ -188,8 +189,8 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
-		this.menu = menu;
-		subMenu = this.menu.getItem(0).getSubMenu();
+		//this.menu = menu;
+		subMenu = menu.getItem(0).getSubMenu();
 		return true;
 	}
 
