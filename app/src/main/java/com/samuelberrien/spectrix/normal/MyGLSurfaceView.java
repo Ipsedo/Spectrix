@@ -41,7 +41,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		if (this.currentListening == VisualizationThread.STREAM_MUSIC) {
 			visualizationThread = new StreamThread(visualization);
 			visualizationThread.start();
-		} else {
+		} else if (this.currentListening == VisualizationThread.MIC_MUSIC) {
 			visualizationThread = new MicThread(visualization);
 			visualizationThread.start();
 		}
@@ -49,11 +49,13 @@ public class MyGLSurfaceView extends GLSurfaceView {
 
 	@Override
 	public void onPause() {
-		visualizationThread.cancel();
-		try {
-			visualizationThread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
+		if (visualizationThread != null) {
+			visualizationThread.cancel();
+			try {
+				visualizationThread.join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 		}
 		super.onPause();
 	}
@@ -72,7 +74,7 @@ public class MyGLSurfaceView extends GLSurfaceView {
 		if (currentListening == VisualizationThread.STREAM_MUSIC) {
 			visualizationThread = new StreamThread(visualization);
 			visualizationThread.start();
-		} else {
+		} else if (this.currentListening == VisualizationThread.MIC_MUSIC) {
 			visualizationThread = new MicThread(visualization);
 			visualizationThread.start();
 		}

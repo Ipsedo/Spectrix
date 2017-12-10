@@ -3,24 +3,48 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".main.MainActivity">
-    <item
+    <!--<item
         android:id="@+id/hide_toolbar"
         android:orderInCategory="3"
         android:icon="@drawable/hide_icon"
         android:title=""
-        app:showAsAction="ifRoom"/>
+        app:showAsAction="ifRoom"/>-->
+    <item
+        android:icon="@drawable/menu_dot"
+        android:orderInCategory="3"
+        android:title="option"
+        app:showAsAction="always">
 
+        <menu>
+
+            <item
+                android:id="@+id/hide_toolbar"
+                android:icon="@drawable/hide_icon"
+                android:title="Hide toolbar"
+                app:showAsAction="ifRoom"/>
+
+            <item
+                android:icon="@drawable/icon_cast"
+                android:title="Cast"
+                app:showAsAction="ifRoom"/>
+
+            <item
+                android:icon="@drawable/ic_copyright"
+                android:title="About Spectrix"
+                app:showAsAction="ifRoom"/>
+        </menu>
+    </item>
     <item
         android:id="@+id/cardboard_toolbar"
-        android:orderInCategory="2"
         android:icon="@drawable/cardboard_icon"
-        android:title=""
+        android:orderInCategory="2"
+        android:title="cardboard"
         app:showAsAction="ifRoom"/>
 
     <item
         android:id="@+id/play_pause_toolbar"
-        android:orderInCategory="1"
         android:icon="@drawable/play_icon"
-        android:title=""
+        android:orderInCategory="1"
+        android:title="play sample"
         app:showAsAction="ifRoom"/>
 </menu>

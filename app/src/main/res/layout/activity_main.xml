@@ -16,16 +16,15 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <android.support.v7.widget.Toolbar
+        <com.samuelberrien.spectrix.utils.ui.SpectrixToolBar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/colorButton"
+            android:background="@color/main_color"
             android:minHeight="56dp"
             app:collapseIcon="@drawable/logo_2"
             app:titleTextAppearance="@style/titleStyle"/>
         <!--android:minHeight="?attr/actionBarSize"-->
-
 
         <RelativeLayout
             android:id="@+id/layout_surface_view"
@@ -50,42 +49,34 @@
                 android:indeterminate="true"
                 android:indeterminateDrawable="@drawable/rotate_progress_bar"/>
         </RelativeLayout>
-        <!--</FrameLayout>-->
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:background="@android:color/white">
 
-        <LinearLayout
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.7"
-            android:background="@color/white"
-            android:orientation="vertical">
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:contentDescription="@string/app_name"
-                android:scaleType="fitCenter"
-                android:src="@drawable/logo_2"/>
-        </LinearLayout>
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/app_name"
+            android:scaleType="fitCenter"
+            android:src="@drawable/logo_2"/>
 
         <View
             android:layout_width="match_parent"
             android:layout_height="3dp"
-            android:background="@color/colorButton"/>
+            android:background="@color/main_color"/>
 
         <LinearLayout
             android:id="@+id/layout_menu_drawer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="0.3"
-            android:background="@color/white"
             android:orientation="vertical">
 
             <LinearLayout
@@ -95,30 +86,26 @@
                 android:orientation="vertical">
 
                 <RadioGroup
-                    android:id="@+id/toggle"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginEnd="5dp"
                     android:layout_marginStart="5dp"
                     android:layout_marginTop="10dp"
                     android:background="@drawable/out_line"
-                    android:checkedButton="@+id/offer"
                     android:orientation="horizontal">
 
                     <RadioButton
-                        android:id="@+id/stream_toggle"
+                        android:id="@+id/stream_radio_button"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.5"
                         android:background="@drawable/toggle_widget_background"
                         android:button="@null"
-                        android:checked="true"
                         android:gravity="center"
                         android:onClick="stream"
                         android:text="Stream"/>
 
                     <RadioButton
-                        android:id="@+id/mic_toggle"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_weight="0.5"

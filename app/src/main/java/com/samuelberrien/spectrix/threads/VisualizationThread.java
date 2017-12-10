@@ -12,6 +12,7 @@ public abstract class VisualizationThread extends Thread {
 
 	public static final int STREAM_MUSIC = 0;
 	public static final int MIC_MUSIC = 1;
+	public static final int NONE = 3;
 
 	private Visualization visualization;
 

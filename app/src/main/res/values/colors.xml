@@ -2,26 +2,14 @@
 <resources>
     <color name="colorPrimary">#1919C0</color>
     <color name="colorPrimaryTransparent">#991919C0</color>
-    <color name="colorTest1">#3F91E5</color>
     <color name="colorTest2">#29BAEF</color>
-    <color name="colorTMP">#3F51B5</color>
+    <color name="colorTest2Transparent">#7729BAEF</color>
     <color name="colorPrimaryDark">@color/colorNight</color>
     <color name="colorAccent">#003366</color>
-    <color name="black">#000000</color>
-    <color name="colorButton">@color/colorTest2</color>
+    <color name="main_color">@color/colorTest2</color>
     <color name="colorNight">#191970</color>
-    <color name="colorDrawer">#66FFCC</color>
-    <color name="synthBlue2">#33B5E5</color>
-    <color name="colorAnneSo">#061820</color>
-    <color name="grey">#909090</color>
-    <color name="colorText">@color/black</color>
-    <color name="white">#FFFFFF</color>
-    <color name="visualization_play_color">@color/colorPrimary</color>
-    <color name="visualization_play_color_transparent">@color/colorPrimaryTransparent</color>
-    <color name="salem">#1E824C</color>
-    <color name="emerauld">#2ecc71</color>
-    <color name="alizarion">#e74c3c</color>
-    <color name="burnt_orange">#D35400</color>
+    <color name="visualization_play_color">@color/jaune_logo</color>
+    <color name="visualization_play_color_transparent">@color/jaule_logo_transparent</color>
     <color name="jaune_logo">#f8b131</color>
-    <color name="transparent">#00000000</color>
+    <color name="jaule_logo_transparent">#99f8b131</color>
 </resources>

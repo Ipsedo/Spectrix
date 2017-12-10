@@ -15,9 +15,11 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
@@ -29,12 +31,13 @@ import com.samuelberrien.spectrix.normal.MyGLSurfaceView;
 import com.samuelberrien.spectrix.threads.VisualizationThread;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 import com.samuelberrien.spectrix.utils.core.VisualizationHelper;
+import com.samuelberrien.spectrix.utils.ui.SpectrixToolBar;
 import com.samuelberrien.spectrix.utils.ui.expand.ExpandButton;
 import com.samuelberrien.spectrix.utils.ui.expand.RadioExpand;
 import com.samuelberrien.spectrix.visualizations.spectrum.Spectrum;
 import com.samuelberrien.spectrix.vr.MyGvrActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.OnVisualizationInitFinish, View.OnTouchListener {
 
 	public static final String IS_STREAM = "IS_STREAM";
 	public static final String ID_RENDERER = "ID_RENDERER";
@@ -48,6 +51,7 @@ public class MainActivity extends AppCompatActivity {
 	private MyGLSurfaceView myGLSurfaceView;
 
 	private Menu menu;
+	private SubMenu subMenu;
 
 	private MediaPlayer mPlayer;
 
@@ -58,12 +62,14 @@ public class MainActivity extends AppCompatActivity {
 	private RelativeLayout frameLayoutSurfaceView;
 	private ProgressBar progressBar;
 
+	private GestureDetector gestureDetector;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		SpectrixToolBar toolbar = (SpectrixToolBar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -76,21 +82,13 @@ public class MainActivity extends AppCompatActivity {
 		frameLayoutSurfaceView = (RelativeLayout) findViewById(R.id.layout_surface_view);
 
 		showToolBarButton = (Button) findViewById(R.id.show_toolbar_button);
-		showToolBarButton.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View view) {
-				showToolBarButton.setVisibility(View.GONE);
-				getSupportActionBar().show();
-			}
-		});
 
 		progressBar = (ProgressBar) findViewById(R.id.progress_bar_visu);
 
 		//FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/ace_futurism.ttf");
 
+		currentListeningId = VisualizationThread.NONE;
 		requestRecordPermission();
-
-		currentListeningId = VisualizationThread.STREAM_MUSIC;
 
 		mPlayer = MediaPlayer.create(this, R.raw.crea_session_8);
 		mPlayer.setLooping(false);
@@ -102,6 +100,26 @@ public class MainActivity extends AppCompatActivity {
 		});
 
 		switchOrientation(getResources().getConfiguration().orientation);
+
+		gestureDetector = new GestureDetector(this, new OnSwipeListener());
+
+		toolbar.setOnTouchListener(this);
+		showToolBarButton.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View view) {
+				showToolBar();
+			}
+		});
+	}
+
+	private void hideToolBar() {
+		getSupportActionBar().hide();
+		showToolBarButton.setVisibility(View.VISIBLE);
+	}
+
+	private void showToolBar() {
+		showToolBarButton.setVisibility(View.GONE);
+		getSupportActionBar().show();
 	}
 
 	private void requestRecordPermission() {
@@ -131,7 +149,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void showEndDialog() {
-		AlertDialog endDialog = new AlertDialog.Builder(this)
+		AlertDialog endDialog = new AlertDialog.Builder(this, R.style.SpectrixDialogTheme)
 				.setMessage("Spectrix can't work without audio record, Sorry...")
 				.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
 					@Override
@@ -146,7 +164,7 @@ public class MainActivity extends AppCompatActivity {
 	}
 
 	private void showSorryDialog() {
-		AlertDialog sorryDialog = new AlertDialog.Builder(this)
+		AlertDialog sorryDialog = new AlertDialog.Builder(this, R.style.SpectrixDialogTheme)
 				.setMessage("Spectrix needs to record audio,\n" +
 						"Please accept the permission !")
 				.setNegativeButton("No, Exit", new DialogInterface.OnClickListener() {
@@ -171,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		this.menu = menu;
+		subMenu = this.menu.getItem(2).getSubMenu();
 		return true;
 	}
 
@@ -218,8 +237,7 @@ public class MainActivity extends AppCompatActivity {
 				drawerLayout.openDrawer(GravityCompat.START);
 				return true;
 			case R.id.hide_toolbar:
-				getSupportActionBar().hide();
-				showToolBarButton.setVisibility(View.VISIBLE);
+				hideToolBar();
 				return true;
 			case R.id.play_pause_toolbar:
 				if (mPlayer.isPlaying()) {
@@ -243,17 +261,9 @@ public class MainActivity extends AppCompatActivity {
 	private void setUpDrawer() {
 		Visualization startVisualization = new Spectrum();
 
-		myGLSurfaceView = new MyGLSurfaceView(this, startVisualization, currentListeningId, new MyGLSurfaceView.OnVisualizationInitFinish() {
-			@Override
-			public void onFinish() {
-				runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						progressBar.setVisibility(View.GONE);
-					}
-				});
-			}
-		});
+		myGLSurfaceView = new MyGLSurfaceView(this, startVisualization, currentListeningId, this);
+
+		findViewById(R.id.stream_radio_button).performClick();
 
 		getSupportActionBar().setTitle(startVisualization.getName());
 
@@ -276,20 +286,9 @@ public class MainActivity extends AppCompatActivity {
 
 					Visualization visualization = VisualizationHelper.getVisualization(index);
 
-					myGLSurfaceView = new MyGLSurfaceView(getApplicationContext(),
-							visualization,
-							currentListeningId,
-							new MyGLSurfaceView.OnVisualizationInitFinish() {
-								@Override
-								public void onFinish() {
-									runOnUiThread(new Runnable() {
-										@Override
-										public void run() {
-											progressBar.setVisibility(View.GONE);
-										}
-									});
-								}
-							});
+					myGLSurfaceView = new MyGLSurfaceView(
+							getApplicationContext(), visualization,
+							currentListeningId, MainActivity.this);
 					frameLayoutSurfaceView.addView(myGLSurfaceView);
 
 					getSupportActionBar().setTitle(name);
@@ -325,5 +324,49 @@ public class MainActivity extends AppCompatActivity {
 	public void mic(View view) {
 		currentListeningId = VisualizationThread.MIC_MUSIC;
 		myGLSurfaceView.setListening(VisualizationThread.MIC_MUSIC);
+	}
+
+	@Override
+	public void onFinish() {
+		runOnUiThread(new Runnable() {
+			@Override
+			public void run() {
+				progressBar.setVisibility(View.GONE);
+			}
+		});
+	}
+
+	@Override
+	public boolean onTouch(View view, MotionEvent motionEvent) {
+		view.performClick();
+		return gestureDetector.onTouchEvent(motionEvent);
+	}
+
+	private class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
+
+		private int LimitSwipeSpeed;
+
+		OnSwipeListener() {
+			LimitSwipeSpeed = 1;
+		}
+
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			float yDelta = e2.getY() - e1.getY();
+			if (yDelta > 0 && Math.abs(velocityY) > LimitSwipeSpeed) {
+				showToolBar();
+			} else if (Math.abs(velocityY) > LimitSwipeSpeed) {
+				hideToolBar();
+			} else {
+				return false;
+			}
+			return true;
+		}
+
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return true;
+		}
 	}
 }

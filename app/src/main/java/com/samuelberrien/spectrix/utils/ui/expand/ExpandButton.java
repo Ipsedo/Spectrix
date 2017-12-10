@@ -47,7 +47,6 @@ public class ExpandButton extends LinearLayout {
 		confirmButton.setGravity(Gravity.CENTER);
 		confirmButton.setBackground(ContextCompat.getDrawable(context, R.drawable.start_button));
 		confirmButton.setText("GO");
-		confirmButton.setTextColor(ContextCompat.getColor(getContext(), R.color.visualization_play_color));
 
 		confirmButton.setOnClickListener(new OnClickListener() {
 			@Override

@@ -38,8 +38,8 @@ public class ObjModelMtlVBO {
 
 	private static final int STRIDE =
 			(POSITION_DATA_SIZE
-			+ NORMAL_DATA_SIZE
-			+ COLOR_DATA_SIZE * 3
+					+ NORMAL_DATA_SIZE
+					+ COLOR_DATA_SIZE * 3
 					+ SHININESS_DATA_SIZE) * BYTES_PER_FLOAT;
 
 	private HashMap<String, float[]> mtlAmbColor = new HashMap<>();
