@@ -52,7 +52,6 @@ public class MainActivity extends AppCompatActivity
 
 	private MyGLSurfaceView myGLSurfaceView;
 
-	private Menu menu;
 	private SubMenu subMenu;
 
 	private MediaPlayer mPlayer;
@@ -201,8 +200,7 @@ public class MainActivity extends AppCompatActivity
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
-		this.menu = menu;
-		subMenu = this.menu.getItem(0).getSubMenu();
+		subMenu = menu.getItem(0).getSubMenu();
 		return true;
 	}
 
