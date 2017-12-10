@@ -1,4 +1,4 @@
-package com.samuelberrien.spectrix.utils.ui;
+package com.samuelberrien.spectrix.utils.ui.main;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

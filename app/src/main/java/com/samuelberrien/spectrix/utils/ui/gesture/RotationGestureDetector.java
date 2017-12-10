@@ -6,11 +6,13 @@ import android.view.MotionEvent;
  * Created by samuel on 30/08/17.
  */
 
+/**
+ * faire mon propre bail -> plein de cas où ça marche pas
+ */
 public class RotationGestureDetector {
-	private static final int INVALID_POINTER_ID = -1;
 	private float fX, fY, sX, sY;
-	private int ptrID1, ptrID2;
 	private float mAngle;
+	private boolean reinitPositions;
 
 	private OnRotationGestureListener mListener;
 
@@ -20,32 +22,34 @@ public class RotationGestureDetector {
 
 	public RotationGestureDetector(OnRotationGestureListener listener) {
 		mListener = listener;
-		ptrID1 = INVALID_POINTER_ID;
-		ptrID2 = INVALID_POINTER_ID;
+		reinitPositions = true;
 	}
 
 	public boolean onTouchEvent(MotionEvent event) {
+		if (reinitPositions && event.getPointerCount() > 1) {
+			sX = event.getX(0);
+			sY = event.getY(0);
+			fX = event.getX(1);
+			fY = event.getY(1);
+			reinitPositions = false;
+		}
 		switch (event.getActionMasked()) {
-			case MotionEvent.ACTION_DOWN:
-				ptrID1 = event.getPointerId(event.getActionIndex());
-				break;
 			case MotionEvent.ACTION_POINTER_DOWN:
-				ptrID2 = event.getPointerId(event.getActionIndex());
-				sX = event.getX(event.findPointerIndex(ptrID1));
-				sY = event.getY(event.findPointerIndex(ptrID1));
-				fX = event.getX(event.findPointerIndex(ptrID2));
-				fY = event.getY(event.findPointerIndex(ptrID2));
+				sX = event.getX(0);
+				sY = event.getY(0);
+				fX = event.getX(1);
+				fY = event.getY(1);
 				if (mListener != null) {
 					mListener.onRotationBegin();
 				}
 				break;
 			case MotionEvent.ACTION_MOVE:
-				if (ptrID1 != INVALID_POINTER_ID && ptrID2 != INVALID_POINTER_ID) {
+				if (event.getPointerCount() > 1) {
 					float nfX, nfY, nsX, nsY;
-					nsX = event.getX(event.findPointerIndex(ptrID1));
-					nsY = event.getY(event.findPointerIndex(ptrID1));
-					nfX = event.getX(event.findPointerIndex(ptrID2));
-					nfY = event.getY(event.findPointerIndex(ptrID2));
+					nsX = event.getX(0);
+					nsY = event.getY(0);
+					nfX = event.getX(1);
+					nfY = event.getY(1);
 
 					mAngle = angleBetweenLines(fX, fY, sX, sY, nfX, nfY, nsX, nsY);
 
@@ -55,14 +59,10 @@ public class RotationGestureDetector {
 				}
 				break;
 			case MotionEvent.ACTION_UP:
-				ptrID1 = INVALID_POINTER_ID;
+				reinitPositions = true;
 				break;
 			case MotionEvent.ACTION_POINTER_UP:
-				ptrID2 = INVALID_POINTER_ID;
-				break;
-			case MotionEvent.ACTION_CANCEL:
-				ptrID1 = INVALID_POINTER_ID;
-				ptrID2 = INVALID_POINTER_ID;
+				reinitPositions = true;
 				break;
 		}
 		return true;

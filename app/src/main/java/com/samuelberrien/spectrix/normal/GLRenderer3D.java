@@ -263,7 +263,9 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 			} else {
 				toAdd = -TOUCH_SCALE_FACTOR_ZOOM * detector.getScaleFactor();
 			}
-			projectionAngle = toAdd + projectionAngle > 120f ? 120f : toAdd + projectionAngle < 10f ? 10f : toAdd + projectionAngle;
+			projectionAngle = toAdd + projectionAngle > 120f ?
+					120f : toAdd + projectionAngle < 10f ?
+					10f : toAdd + projectionAngle;
 
 			return true;
 		}

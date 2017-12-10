@@ -21,7 +21,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
-import android.widget.Button;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -31,13 +31,15 @@ import com.samuelberrien.spectrix.normal.MyGLSurfaceView;
 import com.samuelberrien.spectrix.threads.VisualizationThread;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 import com.samuelberrien.spectrix.utils.core.VisualizationHelper;
-import com.samuelberrien.spectrix.utils.ui.SpectrixToolBar;
 import com.samuelberrien.spectrix.utils.ui.expand.ExpandButton;
 import com.samuelberrien.spectrix.utils.ui.expand.RadioExpand;
+import com.samuelberrien.spectrix.utils.ui.main.ShowToolBarButton;
+import com.samuelberrien.spectrix.utils.ui.main.SpectrixToolBar;
 import com.samuelberrien.spectrix.visualizations.spectrum.Spectrum;
 import com.samuelberrien.spectrix.vr.MyGvrActivity;
 
-public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.OnVisualizationInitFinish, View.OnTouchListener {
+public class MainActivity extends AppCompatActivity
+		implements MyGLSurfaceView.OnVisualizationInitFinish {
 
 	public static final String IS_STREAM = "IS_STREAM";
 	public static final String ID_RENDERER = "ID_RENDERER";
@@ -46,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 
 	private DrawerLayout drawerLayout;
 	private ActionBarDrawerToggle drawerToggle;
-	private Button showToolBarButton;
+	private ShowToolBarButton showToolBarButton;
 
 	private MyGLSurfaceView myGLSurfaceView;
 
@@ -62,14 +64,17 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 	private RelativeLayout frameLayoutSurfaceView;
 	private ProgressBar progressBar;
 
-	private GestureDetector gestureDetector;
+	private GestureDetector toolBarGestureDetector;
+	private GestureDetector showToolBarGestureDetector;
+
+	private SpectrixToolBar toolbar;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-		SpectrixToolBar toolbar = (SpectrixToolBar) findViewById(R.id.toolbar);
+		toolbar = (SpectrixToolBar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -81,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 
 		frameLayoutSurfaceView = (RelativeLayout) findViewById(R.id.layout_surface_view);
 
-		showToolBarButton = (Button) findViewById(R.id.show_toolbar_button);
+		showToolBarButton = (ShowToolBarButton) findViewById(R.id.show_toolbar_button);
 
 		progressBar = (ProgressBar) findViewById(R.id.progress_bar_visu);
 
@@ -101,25 +106,33 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 
 		switchOrientation(getResources().getConfiguration().orientation);
 
-		gestureDetector = new GestureDetector(this, new OnSwipeListener());
+		toolBarGestureDetector = new GestureDetector(this, new ToolBarGestureListener());
+		showToolBarGestureDetector = new GestureDetector(this, new ButtonGestureListener());
 
-		toolbar.setOnTouchListener(this);
-		showToolBarButton.setOnClickListener(new View.OnClickListener() {
+		toolbar.setOnTouchListener(new View.OnTouchListener() {
 			@Override
-			public void onClick(View view) {
-				showToolBar();
+			public boolean onTouch(View view, MotionEvent motionEvent) {
+				view.performClick();
+				return toolBarGestureDetector.onTouchEvent(motionEvent);
+			}
+		});
+		showToolBarButton.setOnTouchListener(new View.OnTouchListener() {
+			@Override
+			public boolean onTouch(View view, MotionEvent motionEvent) {
+				view.performClick();
+				return showToolBarGestureDetector.onTouchEvent(motionEvent);
 			}
 		});
 	}
 
 	private void hideToolBar() {
-		getSupportActionBar().hide();
+		toolbar.setVisibility(View.GONE);
 		showToolBarButton.setVisibility(View.VISIBLE);
 	}
 
 	private void showToolBar() {
 		showToolBarButton.setVisibility(View.GONE);
-		getSupportActionBar().show();
+		toolbar.setVisibility(View.VISIBLE);
 	}
 
 	private void requestRecordPermission() {
@@ -137,10 +150,10 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 				if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 					setUpDrawer();
 				} else {
-					if (!ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
-						showEndDialog();
-					} else {
+					if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
 						showSorryDialog();
+					} else {
+						showEndDialog();
 					}
 				}
 				break;
@@ -281,11 +294,15 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 
 		myGLSurfaceView = new MyGLSurfaceView(this, startVisualization, currentListeningId, this);
 
+		final RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+		layoutParams.addRule(RelativeLayout.BELOW, R.id.toolbar);
+
 		findViewById(R.id.stream_radio_button).performClick();
 
 		getSupportActionBar().setTitle(startVisualization.getName());
 
-		frameLayoutSurfaceView.addView(myGLSurfaceView);
+		frameLayoutSurfaceView.addView(myGLSurfaceView, layoutParams);
 
 		RadioExpand radioExpand = (RadioExpand) findViewById(R.id.radio_expand_scroll_view_visualisations);
 
@@ -307,7 +324,7 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 					myGLSurfaceView = new MyGLSurfaceView(
 							getApplicationContext(), visualization,
 							currentListeningId, MainActivity.this);
-					frameLayoutSurfaceView.addView(myGLSurfaceView);
+					frameLayoutSurfaceView.addView(myGLSurfaceView, layoutParams);
 
 					getSupportActionBar().setTitle(name);
 
@@ -354,18 +371,12 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 		});
 	}
 
-	@Override
-	public boolean onTouch(View view, MotionEvent motionEvent) {
-		view.performClick();
-		return gestureDetector.onTouchEvent(motionEvent);
-	}
-
-	private class OnSwipeListener extends GestureDetector.SimpleOnGestureListener {
+	private class ToolBarGestureListener extends GestureDetector.SimpleOnGestureListener {
 
 		private int LimitSwipeSpeed;
 
-		OnSwipeListener() {
-			LimitSwipeSpeed = 1;
+		ToolBarGestureListener() {
+			LimitSwipeSpeed = 10;
 		}
 
 		@Override
@@ -373,10 +384,10 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 			float yDelta = e2.getY() - e1.getY();
 			if (yDelta < 0 && Math.abs(velocityY) > LimitSwipeSpeed) {
 				hideToolBar();
+				return true;
 			} else {
 				return false;
 			}
-			return true;
 		}
 
 		@Override
@@ -387,6 +398,44 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 		@Override
 		public boolean onDoubleTap(MotionEvent e) {
 			hideToolBar();
+			return true;
+		}
+	}
+
+	private class ButtonGestureListener extends GestureDetector.SimpleOnGestureListener {
+
+
+		private int LimitSwipeSpeed;
+
+		ButtonGestureListener() {
+			LimitSwipeSpeed = 10;
+		}
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return true;
+		}
+
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			float yDelta = e2.getY() - e1.getY();
+			if (yDelta > 0 && Math.abs(velocityY) > LimitSwipeSpeed) {
+				showToolBar();
+				return true;
+			} else {
+				return false;
+			}
+		}
+
+		@Override
+		public boolean onDoubleTap(MotionEvent e) {
+			showToolBar();
+			return true;
+		}
+
+		@Override
+		public boolean onSingleTapConfirmed(MotionEvent e) {
+			showToolBar();
 			return true;
 		}
 	}
