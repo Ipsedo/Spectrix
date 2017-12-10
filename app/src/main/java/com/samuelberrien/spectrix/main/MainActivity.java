@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 		mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
 			@Override
 			public void onCompletion(MediaPlayer mediaPlayer) {
-				menu.getItem(0).setIcon(ContextCompat.getDrawable(MainActivity.this, R.drawable.play_icon));
+				subMenu.getItem(2).setIcon(ContextCompat.getDrawable(MainActivity.this, R.drawable.play_icon));
 			}
 		});
 
@@ -189,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.menu_main, menu);
 		this.menu = menu;
-		subMenu = this.menu.getItem(2).getSubMenu();
+		subMenu = this.menu.getItem(0).getSubMenu();
 		return true;
 	}
 
@@ -213,7 +213,8 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 
 		LinearLayout.LayoutParams layoutPortraitParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		LinearLayout.LayoutParams layoutLandParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f);
-
+		if (subMenu != null)
+			subMenu.close();
 		switch (orientation) {
 			case Configuration.ORIENTATION_LANDSCAPE:
 				menuDrawer.setOrientation(LinearLayout.HORIZONTAL);
@@ -236,26 +237,41 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 			case android.R.id.home:
 				drawerLayout.openDrawer(GravityCompat.START);
 				return true;
-			case R.id.hide_toolbar:
-				hideToolBar();
-				return true;
-			case R.id.play_pause_toolbar:
-				if (mPlayer.isPlaying()) {
-					menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.play_icon));
-					mPlayer.pause();
-				} else {
-					menu.getItem(0).setIcon(ContextCompat.getDrawable(this, R.drawable.pause_icon));
-					mPlayer.start();
-				}
-				return true;
-			case R.id.cardboard_toolbar:
-				Intent intent = new Intent(this, MyGvrActivity.class);
-				intent.putExtra(MainActivity.ID_RENDERER, idVisualisation);
-				intent.putExtra(MainActivity.IS_STREAM, currentListeningId == VisualizationThread.STREAM_MUSIC);
-				startActivity(intent);
-				return true;
 		}
 		return super.onOptionsItemSelected(item);
+	}
+
+	public void vr(MenuItem menuItem) {
+		Intent intent = new Intent(this, MyGvrActivity.class);
+		intent.putExtra(MainActivity.ID_RENDERER, idVisualisation);
+		intent.putExtra(MainActivity.IS_STREAM, currentListeningId == VisualizationThread.STREAM_MUSIC);
+		startActivity(intent);
+	}
+
+	public void playSample(MenuItem menuItem) {
+		if (mPlayer.isPlaying()) {
+			subMenu.getItem(2).setIcon(ContextCompat.getDrawable(this, R.drawable.play_icon));
+			mPlayer.pause();
+		} else {
+			subMenu.getItem(2).setIcon(ContextCompat.getDrawable(this, R.drawable.pause_icon));
+			mPlayer.start();
+		}
+	}
+
+	public void hideToolbar(MenuItem menuItem) {
+		hideToolBar();
+	}
+
+	public void aboutSpectrix(MenuItem menuItem) {
+		final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.SpectrixDialogTheme)
+				.setMessage(R.string.about_spectrix)
+				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+					}
+				})
+				.create();
+		alertDialog.show();
 	}
 
 	private void setUpDrawer() {
@@ -353,9 +369,7 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			float yDelta = e2.getY() - e1.getY();
-			if (yDelta > 0 && Math.abs(velocityY) > LimitSwipeSpeed) {
-				showToolBar();
-			} else if (Math.abs(velocityY) > LimitSwipeSpeed) {
+			if (yDelta < 0 && Math.abs(velocityY) > LimitSwipeSpeed) {
 				hideToolBar();
 			} else {
 				return false;
@@ -363,9 +377,14 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 			return true;
 		}
 
-
 		@Override
 		public boolean onDown(MotionEvent e) {
+			return true;
+		}
+
+		@Override
+		public boolean onDoubleTap(MotionEvent e) {
+			hideToolBar();
 			return true;
 		}
 	}

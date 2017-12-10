@@ -3,48 +3,40 @@
       xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools"
       tools:context=".main.MainActivity">
-    <!--<item
-        android:id="@+id/hide_toolbar"
-        android:orderInCategory="3"
-        android:icon="@drawable/hide_icon"
-        android:title=""
-        app:showAsAction="ifRoom"/>-->
+
     <item
         android:icon="@drawable/menu_dot"
-        android:orderInCategory="3"
-        android:title="option"
+        android:title="Options"
         app:showAsAction="always">
 
         <menu>
-
             <item
-                android:id="@+id/hide_toolbar"
                 android:icon="@drawable/hide_icon"
                 android:title="Hide toolbar"
+                android:onClick="hideToolbar"
                 app:showAsAction="ifRoom"/>
 
-            <item
+            <!--<item
                 android:icon="@drawable/icon_cast"
                 android:title="Cast"
+                app:showAsAction="ifRoom"/>-->
+
+            <item
+                android:icon="@drawable/cardboard_icon"
+                android:title="VR"
+                android:onClick="vr"
+                app:showAsAction="ifRoom"/>
+            <item
+                android:icon="@drawable/play_icon"
+                android:title="Play sample"
+                android:onClick="playSample"
                 app:showAsAction="ifRoom"/>
 
             <item
                 android:icon="@drawable/ic_copyright"
                 android:title="About Spectrix"
+                android:onClick="aboutSpectrix"
                 app:showAsAction="ifRoom"/>
         </menu>
     </item>
-    <item
-        android:id="@+id/cardboard_toolbar"
-        android:icon="@drawable/cardboard_icon"
-        android:orderInCategory="2"
-        android:title="cardboard"
-        app:showAsAction="ifRoom"/>
-
-    <item
-        android:id="@+id/play_pause_toolbar"
-        android:icon="@drawable/play_icon"
-        android:orderInCategory="1"
-        android:title="play sample"
-        app:showAsAction="ifRoom"/>
 </menu>
