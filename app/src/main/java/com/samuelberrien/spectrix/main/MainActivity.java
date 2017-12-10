@@ -213,8 +213,10 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 
 		LinearLayout.LayoutParams layoutPortraitParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		LinearLayout.LayoutParams layoutLandParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f);
+
 		if (subMenu != null)
 			subMenu.close();
+
 		switch (orientation) {
 			case Configuration.ORIENTATION_LANDSCAPE:
 				menuDrawer.setOrientation(LinearLayout.HORIZONTAL);
@@ -250,10 +252,10 @@ public class MainActivity extends AppCompatActivity implements MyGLSurfaceView.O
 
 	public void playSample(MenuItem menuItem) {
 		if (mPlayer.isPlaying()) {
-			subMenu.getItem(2).setIcon(ContextCompat.getDrawable(this, R.drawable.play_icon));
+			menuItem.setIcon(ContextCompat.getDrawable(this, R.drawable.play_icon));
 			mPlayer.pause();
 		} else {
-			subMenu.getItem(2).setIcon(ContextCompat.getDrawable(this, R.drawable.pause_icon));
+			menuItem.setIcon(ContextCompat.getDrawable(this, R.drawable.pause_icon));
 			mPlayer.start();
 		}
 	}
