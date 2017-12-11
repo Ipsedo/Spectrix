@@ -133,24 +133,12 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	private void hideToolBar() {
-		//toolbar.setVisibility(View.GONE);
-		/*toolbar.animate()
-				.translationY(-toolbar.getHeight())
-				.setDuration(200L)
-				.setInterpolator(new DecelerateInterpolator())
-				.setUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-					@Override
-					public void onAnimationUpdate(ValueAnimator animation) {
-						showToolBarButton.setVisibility(View.VISIBLE);
-					}
-				});*/
 		TranslateAnimation translateAnimation = new TranslateAnimation(0f, 0f, 0f, -toolbar.getHeight());
 		translateAnimation.setDuration(200L);
 		translateAnimation.setFillAfter(true);
 		translateAnimation.setAnimationListener(new Animation.AnimationListener() {
 			@Override
 			public void onAnimationStart(Animation animation) {
-
 			}
 
 			@Override
@@ -168,18 +156,6 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	private void showToolBar() {
-		/*showToolBarButton.setVisibility(View.GONE);
-		toolbar.setVisibility(View.VISIBLE);*/
-		/*toolbar.animate()
-				.translationY(0)
-				.setDuration(200L)
-				.setInterpolator(new DecelerateInterpolator())
-				.setUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-					@Override
-					public void onAnimationUpdate(ValueAnimator animation) {
-						showToolBarButton.setVisibility(View.GONE);
-					}
-				});*/
 		TranslateAnimation translateAnimation = new TranslateAnimation(0f, 0f, -toolbar.getHeight(), 0);
 		translateAnimation.setDuration(200L);
 		translateAnimation.setFillAfter(true);
