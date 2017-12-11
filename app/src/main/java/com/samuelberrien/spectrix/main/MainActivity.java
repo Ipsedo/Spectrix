@@ -22,8 +22,6 @@ import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -35,6 +33,7 @@ import com.samuelberrien.spectrix.utils.core.Visualization;
 import com.samuelberrien.spectrix.utils.core.VisualizationHelper;
 import com.samuelberrien.spectrix.utils.ui.expand.ExpandButton;
 import com.samuelberrien.spectrix.utils.ui.expand.RadioExpand;
+import com.samuelberrien.spectrix.utils.ui.main.ExpandCollapseView;
 import com.samuelberrien.spectrix.utils.ui.main.ShowToolBarButton;
 import com.samuelberrien.spectrix.utils.ui.main.SpectrixToolBar;
 import com.samuelberrien.spectrix.visualizations.spectrum.Spectrum;
@@ -70,7 +69,7 @@ public class MainActivity extends AppCompatActivity
 
 	private SpectrixToolBar toolbar;
 
-	private RelativeLayout.LayoutParams layoutParams;
+	private ExpandCollapseView expandCollapseView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -80,9 +79,32 @@ public class MainActivity extends AppCompatActivity
 		toolbar = (SpectrixToolBar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-		layoutParams = new RelativeLayout.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		layoutParams.addRule(RelativeLayout.BELOW, R.id.toolbar);
+
+		ExpandCollapseView.AnimationListener animationListener =
+				new ExpandCollapseView.AnimationListener() {
+					@Override
+					public void onCollapseEnd(View v) {
+						showToolBarButton.setVisibility(View.VISIBLE);
+					}
+
+					@Override
+					public void onExpandEnd(View v) {
+
+					}
+
+					@Override
+					public void onCollapseStart(View v) {
+
+					}
+
+					@Override
+					public void onExpandStart(View v) {
+						showToolBarButton.setVisibility(View.GONE);
+					}
+				};
+		expandCollapseView = new ExpandCollapseView(toolbar, 200,
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
+				animationListener);
 
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0);
@@ -133,50 +155,11 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	private void hideToolBar() {
-		TranslateAnimation translateAnimation = new TranslateAnimation(0f, 0f, 0f, -toolbar.getHeight());
-		translateAnimation.setDuration(200L);
-		translateAnimation.setFillAfter(true);
-		translateAnimation.setAnimationListener(new Animation.AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) {
-			}
-
-			@Override
-			public void onAnimationEnd(Animation animation) {
-				toolbar.setVisibility(View.GONE);
-				showToolBarButton.setVisibility(View.VISIBLE);
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-		});
-		toolbar.clearAnimation();
-		toolbar.startAnimation(translateAnimation);
+		expandCollapseView.collapse();
 	}
 
 	private void showToolBar() {
-		TranslateAnimation translateAnimation = new TranslateAnimation(0f, 0f, -toolbar.getHeight(), 0);
-		translateAnimation.setDuration(200L);
-		translateAnimation.setFillAfter(true);
-		translateAnimation.setAnimationListener(new Animation.AnimationListener() {
-			@Override
-			public void onAnimationStart(Animation animation) {
-				showToolBarButton.setVisibility(View.GONE);
-				toolbar.setVisibility(View.VISIBLE);
-			}
-
-			@Override
-			public void onAnimationEnd(Animation animation) {
-
-			}
-
-			@Override
-			public void onAnimationRepeat(Animation animation) {
-			}
-		});
-		toolbar.clearAnimation();
-		toolbar.startAnimation(translateAnimation);
+		expandCollapseView.expand();
 	}
 
 	private void requestRecordPermission() {
@@ -340,6 +323,10 @@ public class MainActivity extends AppCompatActivity
 		findViewById(R.id.stream_radio_button).performClick();
 
 		toolbar.setTitle(startVisualization.getName());
+
+		final RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+		layoutParams.addRule(RelativeLayout.BELOW, R.id.toolbar);
 
 		mainRelativeLayout.addView(myGLSurfaceView, layoutParams);
 
