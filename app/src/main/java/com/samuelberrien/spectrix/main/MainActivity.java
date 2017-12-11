@@ -1,6 +1,7 @@
 package com.samuelberrien.spectrix.main;
 
 import android.Manifest;
+import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -22,6 +23,9 @@ import android.view.MotionEvent;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -33,6 +37,7 @@ import com.samuelberrien.spectrix.utils.core.Visualization;
 import com.samuelberrien.spectrix.utils.core.VisualizationHelper;
 import com.samuelberrien.spectrix.utils.ui.expand.ExpandButton;
 import com.samuelberrien.spectrix.utils.ui.expand.RadioExpand;
+import com.samuelberrien.spectrix.utils.ui.main.MyTranslationAnimation;
 import com.samuelberrien.spectrix.utils.ui.main.ShowToolBarButton;
 import com.samuelberrien.spectrix.utils.ui.main.SpectrixToolBar;
 import com.samuelberrien.spectrix.visualizations.spectrum.Spectrum;
@@ -60,13 +65,15 @@ public class MainActivity extends AppCompatActivity
 
 	private int currentListeningId;
 
-	private RelativeLayout frameLayoutSurfaceView;
+	private RelativeLayout mainRelativeLayout;
 	private ProgressBar progressBar;
 
 	private GestureDetector toolBarGestureDetector;
 	private GestureDetector showToolBarGestureDetector;
 
 	private SpectrixToolBar toolbar;
+
+	private RelativeLayout.LayoutParams layoutParams;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +83,10 @@ public class MainActivity extends AppCompatActivity
 		toolbar = (SpectrixToolBar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
+		layoutParams = new RelativeLayout.LayoutParams(
+				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+		layoutParams.addRule(RelativeLayout.BELOW, R.id.toolbar);
+
 		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0);
 		drawerLayout.addDrawerListener(drawerToggle);
@@ -83,7 +94,7 @@ public class MainActivity extends AppCompatActivity
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		frameLayoutSurfaceView = (RelativeLayout) findViewById(R.id.layout_surface_view);
+		mainRelativeLayout = (RelativeLayout) findViewById(R.id.layout_surface_view);
 
 		showToolBarButton = (ShowToolBarButton) findViewById(R.id.show_toolbar_button);
 
@@ -125,13 +136,73 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	private void hideToolBar() {
-		toolbar.setVisibility(View.GONE);
-		showToolBarButton.setVisibility(View.VISIBLE);
+		//toolbar.setVisibility(View.GONE);
+		/*toolbar.animate()
+				.translationY(-toolbar.getHeight())
+				.setDuration(200L)
+				.setInterpolator(new DecelerateInterpolator())
+				.setUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+					@Override
+					public void onAnimationUpdate(ValueAnimator animation) {
+						showToolBarButton.setVisibility(View.VISIBLE);
+					}
+				});*/
+		TranslateAnimation translateAnimation = new TranslateAnimation(0f, 0f, 0f, -toolbar.getHeight());
+		translateAnimation.setDuration(200L);
+		translateAnimation.setFillAfter(true);
+		translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+				toolbar.setVisibility(View.GONE);
+				showToolBarButton.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+		});
+		toolbar.clearAnimation();
+		toolbar.startAnimation(translateAnimation);
 	}
 
 	private void showToolBar() {
-		showToolBarButton.setVisibility(View.GONE);
-		toolbar.setVisibility(View.VISIBLE);
+		/*showToolBarButton.setVisibility(View.GONE);
+		toolbar.setVisibility(View.VISIBLE);*/
+		/*toolbar.animate()
+				.translationY(0)
+				.setDuration(200L)
+				.setInterpolator(new DecelerateInterpolator())
+				.setUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+					@Override
+					public void onAnimationUpdate(ValueAnimator animation) {
+						showToolBarButton.setVisibility(View.GONE);
+					}
+				});*/
+		TranslateAnimation translateAnimation = new TranslateAnimation(0f, 0f, -toolbar.getHeight(), 0);
+		translateAnimation.setDuration(200L);
+		translateAnimation.setFillAfter(true);
+		translateAnimation.setAnimationListener(new Animation.AnimationListener() {
+			@Override
+			public void onAnimationStart(Animation animation) {
+				showToolBarButton.setVisibility(View.GONE);
+				toolbar.setVisibility(View.VISIBLE);
+			}
+
+			@Override
+			public void onAnimationEnd(Animation animation) {
+			}
+
+			@Override
+			public void onAnimationRepeat(Animation animation) {
+			}
+		});
+		toolbar.clearAnimation();
+		toolbar.startAnimation(translateAnimation);
 	}
 
 	private void requestRecordPermission() {
@@ -292,15 +363,11 @@ public class MainActivity extends AppCompatActivity
 
 		myGLSurfaceView = new MyGLSurfaceView(this, startVisualization, currentListeningId, this);
 
-		final RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
-				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		layoutParams.addRule(RelativeLayout.BELOW, R.id.toolbar);
-
 		findViewById(R.id.stream_radio_button).performClick();
 
 		getSupportActionBar().setTitle(startVisualization.getName());
 
-		frameLayoutSurfaceView.addView(myGLSurfaceView, layoutParams);
+		mainRelativeLayout.addView(myGLSurfaceView, layoutParams);
 
 		RadioExpand radioExpand = (RadioExpand) findViewById(R.id.radio_expand_scroll_view_visualisations);
 
@@ -313,7 +380,7 @@ public class MainActivity extends AppCompatActivity
 					idVisualisation = index;
 					myGLSurfaceView.onPause();
 
-					frameLayoutSurfaceView.removeView(myGLSurfaceView);
+					mainRelativeLayout.removeView(myGLSurfaceView);
 
 					progressBar.setVisibility(View.VISIBLE);
 
@@ -322,7 +389,7 @@ public class MainActivity extends AppCompatActivity
 					myGLSurfaceView = new MyGLSurfaceView(
 							getApplicationContext(), visualization,
 							currentListeningId, MainActivity.this);
-					frameLayoutSurfaceView.addView(myGLSurfaceView, layoutParams);
+					mainRelativeLayout.addView(myGLSurfaceView, layoutParams);
 
 					getSupportActionBar().setTitle(name);
 
