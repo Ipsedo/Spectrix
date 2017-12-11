@@ -79,7 +79,6 @@ public class MainActivity extends AppCompatActivity
 		toolbar = (SpectrixToolBar) findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
-
 		ExpandCollapseView.AnimationListener animationListener =
 				new ExpandCollapseView.AnimationListener() {
 					@Override
