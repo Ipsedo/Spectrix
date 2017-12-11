@@ -1,7 +1,6 @@
 package com.samuelberrien.spectrix.main;
 
 import android.Manifest;
-import android.animation.ValueAnimator;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -24,7 +23,6 @@ import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.DecelerateInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -37,7 +35,6 @@ import com.samuelberrien.spectrix.utils.core.Visualization;
 import com.samuelberrien.spectrix.utils.core.VisualizationHelper;
 import com.samuelberrien.spectrix.utils.ui.expand.ExpandButton;
 import com.samuelberrien.spectrix.utils.ui.expand.RadioExpand;
-import com.samuelberrien.spectrix.utils.ui.main.MyTranslationAnimation;
 import com.samuelberrien.spectrix.utils.ui.main.ShowToolBarButton;
 import com.samuelberrien.spectrix.utils.ui.main.SpectrixToolBar;
 import com.samuelberrien.spectrix.visualizations.spectrum.Spectrum;
@@ -365,7 +362,7 @@ public class MainActivity extends AppCompatActivity
 
 		findViewById(R.id.stream_radio_button).performClick();
 
-		getSupportActionBar().setTitle(startVisualization.getName());
+		toolbar.setTitle(startVisualization.getName());
 
 		mainRelativeLayout.addView(myGLSurfaceView, layoutParams);
 
@@ -391,7 +388,7 @@ public class MainActivity extends AppCompatActivity
 							currentListeningId, MainActivity.this);
 					mainRelativeLayout.addView(myGLSurfaceView, layoutParams);
 
-					getSupportActionBar().setTitle(name);
+					toolbar.setTitle(name);
 
 					drawerLayout.closeDrawers();
 				}
