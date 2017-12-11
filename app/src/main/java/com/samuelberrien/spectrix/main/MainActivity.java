@@ -168,6 +168,7 @@ public class MainActivity extends AppCompatActivity
 
 			@Override
 			public void onAnimationEnd(Animation animation) {
+
 			}
 
 			@Override
