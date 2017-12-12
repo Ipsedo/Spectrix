@@ -16,20 +16,22 @@
                 android:onClick="hideToolbar"
                 app:showAsAction="ifRoom"/>
 
-            <!--<item
-                android:icon="@drawable/icon_cast"
-                android:title="Cast"
-                app:showAsAction="ifRoom"/>-->
-
             <item
                 android:icon="@drawable/cardboard_icon"
                 android:title="VR"
                 android:onClick="vr"
                 app:showAsAction="ifRoom"/>
+
             <item
                 android:icon="@drawable/play_icon"
                 android:title="Play sample"
                 android:onClick="playSample"
+                app:showAsAction="ifRoom"/>
+
+            <item
+                android:icon="@drawable/share_icon"
+                android:title="Share"
+                android:onClick="share"
                 app:showAsAction="ifRoom"/>
 
             <item

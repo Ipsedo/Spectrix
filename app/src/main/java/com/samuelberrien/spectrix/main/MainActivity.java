@@ -15,6 +15,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.ShareActionProvider;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -70,6 +71,8 @@ public class MainActivity extends AppCompatActivity
 	private SpectrixToolBar toolbar;
 
 	private ExpandCollapseView expandCollapseView;
+
+	private ShareActionProvider mShareActionProvider;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -300,6 +303,15 @@ public class MainActivity extends AppCompatActivity
 
 	public void hideToolbar(MenuItem menuItem) {
 		hideToolBar();
+	}
+
+	public void share(MenuItem menuItem) {
+		Intent i = new Intent(Intent.ACTION_SEND);
+		i.setType("text/plain");
+		i.putExtra(Intent.EXTRA_SUBJECT, "Spectrix");
+		String sAux = "https://play.google.com/store/apps/details?id=com.activedesign.clashofgitans";
+		i.putExtra(Intent.EXTRA_TEXT, sAux);
+		startActivity(Intent.createChooser(i, "Choose one"));
 	}
 
 	public void aboutSpectrix(MenuItem menuItem) {
