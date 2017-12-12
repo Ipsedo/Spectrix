@@ -72,8 +72,6 @@ public class MainActivity extends AppCompatActivity
 
 	private ExpandCollapseView expandCollapseView;
 
-	private ShareActionProvider mShareActionProvider;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
