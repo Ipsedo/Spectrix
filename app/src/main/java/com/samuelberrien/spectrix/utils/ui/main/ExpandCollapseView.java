@@ -26,7 +26,7 @@ public final class ExpandCollapseView {
 
 	public void expand() {
 		int prevHeight = 0;
-		v.setVisibility(View.VISIBLE);
+		//v.setVisibility(View.VISIBLE);
 		ValueAnimator valueAnimator = ValueAnimator.ofInt(prevHeight, height);
 		valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 			@Override
