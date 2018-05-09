@@ -41,7 +41,7 @@ public abstract class VisualizationThread extends Thread {
 			}
 		}
 
-		while (!this.isCanceled) {
+		while (!isCanceled) {
 			long t1 = System.currentTimeMillis();
 			work(visualization);
 			try {
