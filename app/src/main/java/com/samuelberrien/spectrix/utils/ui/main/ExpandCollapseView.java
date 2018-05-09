@@ -52,8 +52,7 @@ public final class ExpandCollapseView {
 	}
 
 	public void collapse() {
-		int prevHeight = height;
-		ValueAnimator valueAnimator = ValueAnimator.ofInt(prevHeight, 0);
+		ValueAnimator valueAnimator = ValueAnimator.ofInt(height, 0);
 		valueAnimator.setInterpolator(new DecelerateInterpolator());
 		valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 			@Override
