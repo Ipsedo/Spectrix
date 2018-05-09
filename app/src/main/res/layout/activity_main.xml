@@ -24,6 +24,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:background="@color/main_color"
+            android:elevation="20dp"
             android:minHeight="56dp"
             app:titleTextAppearance="@style/titleStyle"/>
 

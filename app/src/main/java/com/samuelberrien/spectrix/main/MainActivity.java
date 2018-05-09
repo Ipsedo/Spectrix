@@ -335,7 +335,7 @@ public class MainActivity extends AppCompatActivity
 
 		final RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		layoutParams.addRule(RelativeLayout.BELOW, R.id.toolbar);
+		//layoutParams.addRule(RelativeLayout.BELOW, R.id.toolbar);
 
 		mainRelativeLayout.addView(myGLSurfaceView, layoutParams);
 
