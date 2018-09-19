@@ -29,6 +29,6 @@ dependencies {
     })
     implementation 'com.android.support:appcompat-v7:27.1.1'
     implementation 'com.android.support:design:27.1.1'
-    implementation 'com.google.vr:sdk-base:1.10.0'
+    implementation 'com.google.vr:sdk-base:1.80.0'
     testImplementation 'junit:junit:4.12'
 }
