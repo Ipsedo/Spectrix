@@ -105,20 +105,18 @@ public class MainActivity extends AppCompatActivity
 				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT,
 				animationListener);
 
-		drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+		drawerLayout = findViewById(R.id.drawer_layout);
 		drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, 0, 0);
 		drawerLayout.addDrawerListener(drawerToggle);
 
 		getSupportActionBar().setHomeButtonEnabled(true);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		mainRelativeLayout = (RelativeLayout) findViewById(R.id.layout_surface_view);
+		mainRelativeLayout = findViewById(R.id.layout_surface_view);
 
-		showToolBarButton = (ShowToolBarButton) findViewById(R.id.show_toolbar_button);
+		showToolBarButton = findViewById(R.id.show_toolbar_button);
 
-		progressBar = (ProgressBar) findViewById(R.id.progress_bar_visu);
-
-		//FontsOverride.setDefaultFont(this, "MONOSPACE", "fonts/ace_futurism.ttf");
+		progressBar = findViewById(R.id.progress_bar_visu);
 
 		currentListeningId = VisualizationThread.NONE;
 		requestRecordPermission();
@@ -306,7 +304,7 @@ public class MainActivity extends AppCompatActivity
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("text/plain");
 		i.putExtra(Intent.EXTRA_SUBJECT, "Spectrix");
-		String sAux = "https://play.google.com/store/apps/details?id=com.activedesign.clashofgitans";
+		String sAux = "https://play.google.com/store/apps/details?id=com.samuelberrien.spectrix";
 		i.putExtra(Intent.EXTRA_TEXT, sAux);
 		startActivity(Intent.createChooser(i, "Choose one"));
 	}
