@@ -7,8 +7,8 @@ android {
         applicationId "com.samuelberrien.spectrix"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 4
-        versionName "1.2a"
+        versionCode 5
+        versionName "1.2b"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
