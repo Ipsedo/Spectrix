@@ -2,11 +2,11 @@ package com.samuelberrien.spectrix.utils.audio;
 
 public class FFT {
 
-	int n, m;
+	private int n, m;
 
 	// Lookup tables. Only need to recompute when size of FFT changes.
-	double[] cos;
-	double[] sin;
+	private double[] cos;
+	private double[] sin;
 
 	public FFT(int n) {
 		this.n = n;
