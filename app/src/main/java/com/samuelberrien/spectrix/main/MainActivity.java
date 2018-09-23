@@ -76,7 +76,7 @@ public class MainActivity extends AppCompatActivity
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.activity_main);
-		toolbar = (SpectrixToolBar) findViewById(R.id.toolbar);
+		toolbar = findViewById(R.id.toolbar);
 		setSupportActionBar(toolbar);
 
 		ExpandCollapseView.AnimationListener animationListener =
@@ -243,9 +243,9 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	private void switchOrientation(int orientation) {
-		LinearLayout menuDrawer = (LinearLayout) findViewById(R.id.layout_menu_drawer);
-		LinearLayout layoutToggle = (LinearLayout) findViewById(R.id.layout_toggle);
-		LinearLayout layoutScroll = (LinearLayout) findViewById(R.id.layout_scroll);
+		LinearLayout menuDrawer = findViewById(R.id.layout_menu_drawer);
+		LinearLayout layoutToggle = findViewById(R.id.layout_toggle);
+		LinearLayout layoutScroll = findViewById(R.id.layout_scroll);
 
 		LinearLayout.LayoutParams layoutPortraitParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
 		LinearLayout.LayoutParams layoutLandParams = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 0.5f);
@@ -334,9 +334,9 @@ public class MainActivity extends AppCompatActivity
 				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
 		//layoutParams.addRule(RelativeLayout.BELOW, R.id.toolbar);
 
-		mainRelativeLayout.addView(myGLSurfaceView, layoutParams);
+		mainRelativeLayout.addView(myGLSurfaceView, 0);
 
-		RadioExpand radioExpand = (RadioExpand) findViewById(R.id.radio_expand_scroll_view_visualisations);
+		RadioExpand radioExpand = findViewById(R.id.radio_expand_scroll_view_visualisations);
 
 		for (int i = 0; i < VisualizationHelper.NB_VISUALIZATIONS; i++) {
 			final int index = i;
@@ -356,7 +356,7 @@ public class MainActivity extends AppCompatActivity
 					myGLSurfaceView = new MyGLSurfaceView(
 							getApplicationContext(), visualization,
 							currentListeningId, MainActivity.this);
-					mainRelativeLayout.addView(myGLSurfaceView, layoutParams);
+					mainRelativeLayout.addView(myGLSurfaceView, 0);
 
 					toolbar.setTitle(name);
 
@@ -381,6 +381,12 @@ public class MainActivity extends AppCompatActivity
 		super.onResume();
 		if (myGLSurfaceView != null)
 			myGLSurfaceView.onResume();
+	}
+
+	@Override
+	protected void onDestroy() {
+		mPlayer.stop();
+		super.onDestroy();
 	}
 
 	public void stream(View v) {
