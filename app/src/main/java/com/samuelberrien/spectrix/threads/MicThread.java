@@ -59,7 +59,7 @@ public class MicThread extends VisualizationThread {
 		for (int i = 0; i < fft.length; i++) {
 			float x = (float) real[i];
 			float y = (float) img[i];
-			fft[i] = ((x * x) + (y * y));
+			fft[i] = x * x + y * y;
 			fft[i] = fft[i] <= 1f ? fft[i] : 1f;
 		}
 
@@ -76,5 +76,10 @@ public class MicThread extends VisualizationThread {
 			}
 		}
 		return res;
+	}
+
+	@Override
+	protected Long getTimeToWait() {
+		return 10L;
 	}
 }

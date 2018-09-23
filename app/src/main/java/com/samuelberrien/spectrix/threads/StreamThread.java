@@ -47,4 +47,9 @@ public class StreamThread extends VisualizationThread {
 		}
 		return fft;
 	}
+
+	@Override
+	protected Long getTimeToWait() {
+		return 30L;
+	}
 }

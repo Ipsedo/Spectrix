@@ -8,7 +8,7 @@ import com.samuelberrien.spectrix.utils.core.Visualization;
 
 public abstract class VisualizationThread extends Thread {
 
-	private static long TIME_TO_WAIT = 30L;
+	//private static long TIME_TO_WAIT = 30L;
 
 	public static final int STREAM_MUSIC = 0;
 	public static final int MIC_MUSIC = 1;
@@ -35,7 +35,7 @@ public abstract class VisualizationThread extends Thread {
 	public void run() {
 		while (!isCanceled && !visualization.isInit()) {
 			try {
-				Thread.sleep(TIME_TO_WAIT);
+				Thread.sleep(getTimeToWait());
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 			}
@@ -45,7 +45,7 @@ public abstract class VisualizationThread extends Thread {
 			long t1 = System.currentTimeMillis();
 			work(visualization);
 			try {
-				long toWait = TIME_TO_WAIT - (System.currentTimeMillis() - t1);
+				long toWait = getTimeToWait() - (System.currentTimeMillis() - t1);
 				Thread.sleep(toWait >= 0 ? toWait : 0);
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
@@ -62,5 +62,7 @@ public abstract class VisualizationThread extends Thread {
 	protected abstract void onEnd();
 
 	protected abstract float[] getFrequencyMagns();
+
+	protected abstract Long getTimeToWait();
 
 }
