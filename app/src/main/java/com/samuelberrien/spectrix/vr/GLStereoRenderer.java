@@ -64,6 +64,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 	public void onNewFrame(HeadTransform headTransform) {
 		float[] camPos = visualization.getCameraPosition();
 		float[] camDir = visualization.getInitCamLookDirVec();
+		Matrix.setIdentityM(mCamera, 0);
 		Matrix.setLookAtM(mCamera, 0, camPos[0], camPos[1], camPos[2], camDir[0] + camPos[0], camDir[1] + camPos[1], camDir[2] + camPos[2], 0.0f, 1.0f, 0.0f);
 		headTransform.getHeadView(mHeadView, 0);
 		visualization.update(freqArray);
