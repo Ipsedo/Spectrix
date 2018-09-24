@@ -3,9 +3,7 @@ package com.samuelberrien.spectrix.visualizations.spectrum;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.drawable.obj.ObjModelMtlVBO;
 import com.samuelberrien.spectrix.drawable.obj.ObjModelVBO;
-import com.samuelberrien.spectrix.drawable.obj.ObjSpecVBO;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 
 import java.util.Random;

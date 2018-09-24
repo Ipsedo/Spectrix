@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-      xmlns:app="http://schemas.android.com/apk/res-auto"
-      xmlns:tools="http://schemas.android.com/tools"
-      tools:context=".main.MainActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".main.MainActivity">
 
     <item
         android:icon="@drawable/menu_dot"
@@ -14,31 +14,31 @@
                 android:icon="@drawable/hide_icon"
                 android:title="Hide toolbar"
                 android:onClick="hideToolbar"
-                app:showAsAction="ifRoom"/>
+                app:showAsAction="ifRoom" />
 
             <item
                 android:icon="@drawable/cardboard_icon"
                 android:title="VR"
                 android:onClick="vr"
-                app:showAsAction="ifRoom"/>
+                app:showAsAction="ifRoom" />
 
             <item
                 android:icon="@drawable/play_icon"
                 android:title="Play sample"
                 android:onClick="playSample"
-                app:showAsAction="ifRoom"/>
+                app:showAsAction="ifRoom" />
 
             <item
                 android:icon="@drawable/share_icon"
                 android:title="Share"
                 android:onClick="share"
-                app:showAsAction="ifRoom"/>
+                app:showAsAction="ifRoom" />
 
             <item
                 android:icon="@drawable/ic_copyright"
                 android:title="About Spectrix"
                 android:onClick="aboutSpectrix"
-                app:showAsAction="ifRoom"/>
+                app:showAsAction="ifRoom" />
         </menu>
     </item>
 </menu>

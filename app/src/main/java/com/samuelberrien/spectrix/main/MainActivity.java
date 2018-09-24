@@ -133,12 +133,12 @@ public class MainActivity extends AppCompatActivity
 		showToolBarGestureDetector = new GestureDetector(this, new ButtonGestureListener());
 
 		toolbar.setOnTouchListener((View view, MotionEvent motionEvent) -> {
-				view.performClick();
-				return toolBarGestureDetector.onTouchEvent(motionEvent);
+			view.performClick();
+			return toolBarGestureDetector.onTouchEvent(motionEvent);
 		});
 		showToolBarButton.setOnTouchListener((View view, MotionEvent motionEvent) -> {
-				view.performClick();
-				return showToolBarGestureDetector.onTouchEvent(motionEvent);
+			view.performClick();
+			return showToolBarGestureDetector.onTouchEvent(motionEvent);
 		});
 	}
 
@@ -288,7 +288,8 @@ public class MainActivity extends AppCompatActivity
 	public void aboutSpectrix(MenuItem menuItem) {
 		final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.SpectrixDialogTheme)
 				.setMessage(R.string.about_spectrix)
-				.setPositiveButton("Ok", (DialogInterface dialog, int which) -> {})
+				.setPositiveButton("Ok", (DialogInterface dialog, int which) -> {
+				})
 				.create();
 		alertDialog.show();
 	}
@@ -313,23 +314,23 @@ public class MainActivity extends AppCompatActivity
 			final int index = i;
 			final String name = VisualizationHelper.getVisualization(i).getName();
 			Runnable onConfirm = () -> {
-					idVisualisation = index;
-					myGLSurfaceView.onPause();
+				idVisualisation = index;
+				myGLSurfaceView.onPause();
 
-					mainRelativeLayout.removeView(myGLSurfaceView);
+				mainRelativeLayout.removeView(myGLSurfaceView);
 
-					progressBar.setVisibility(View.VISIBLE);
+				progressBar.setVisibility(View.VISIBLE);
 
-					Visualization visualization = VisualizationHelper.getVisualization(index);
+				Visualization visualization = VisualizationHelper.getVisualization(index);
 
-					myGLSurfaceView = new MyGLSurfaceView(
-							getApplicationContext(), visualization,
-							currentListeningId, MainActivity.this);
-					mainRelativeLayout.addView(myGLSurfaceView, 0, layoutParams);
+				myGLSurfaceView = new MyGLSurfaceView(
+						getApplicationContext(), visualization,
+						currentListeningId, MainActivity.this);
+				mainRelativeLayout.addView(myGLSurfaceView, 0, layoutParams);
 
-					toolbar.setTitle(name);
+				toolbar.setTitle(name);
 
-					drawerLayout.closeDrawers();
+				drawerLayout.closeDrawers();
 
 			};
 			ExpandButton expandButton = new ExpandButton(this, onConfirm);
