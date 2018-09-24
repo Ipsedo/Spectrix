@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.text.SpannableString;
+import android.text.method.LinkMovementMethod;
+import android.text.util.Linkify;
+import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +30,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.samuelberrien.spectrix.R;
 import com.samuelberrien.spectrix.normal.MyGLSurfaceView;
@@ -286,10 +292,24 @@ public class MainActivity extends AppCompatActivity
 	}
 
 	public void aboutSpectrix(MenuItem menuItem) {
+		TextView message = new TextView(this);
+
+		final SpannableString s =
+				new SpannableString(getText(R.string.about_spectrix));
+		Linkify.addLinks(s, Linkify.WEB_URLS);
+
+		message.setText(s);
+		message.setMovementMethod(LinkMovementMethod.getInstance());
+
+		float dip = 20f;
+		Resources r = getResources();
+		int px = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dip, r.getDisplayMetrics());
+		message.setPadding(px, px, px, px);
+		message.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f);
+
 		final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.SpectrixDialogTheme)
-				.setMessage(R.string.about_spectrix)
-				.setPositiveButton("Ok", (DialogInterface dialog, int which) -> {
-				})
+				.setView(message)
+				.setPositiveButton("Ok", (DialogInterface dialog, int which) -> {})
 				.create();
 		alertDialog.show();
 	}
