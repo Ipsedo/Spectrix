@@ -123,31 +123,22 @@ public class MainActivity extends AppCompatActivity
 
 		mPlayer = MediaPlayer.create(this, R.raw.crea_session_8);
 		mPlayer.setLooping(false);
-		mPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
-			@Override
-			public void onCompletion(MediaPlayer mediaPlayer) {
-				subMenu.getItem(2).setIcon(ContextCompat.getDrawable(MainActivity.this, R.drawable.play_icon));
-			}
-		});
+		mPlayer.setOnCompletionListener((MediaPlayer mediaPlayer) ->
+				subMenu.getItem(2).setIcon(ContextCompat.getDrawable(MainActivity.this, R.drawable.play_icon))
+		);
 
 		switchOrientation(getResources().getConfiguration().orientation);
 
 		toolBarGestureDetector = new GestureDetector(this, new ToolBarGestureListener());
 		showToolBarGestureDetector = new GestureDetector(this, new ButtonGestureListener());
 
-		toolbar.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View view, MotionEvent motionEvent) {
+		toolbar.setOnTouchListener((View view, MotionEvent motionEvent) -> {
 				view.performClick();
 				return toolBarGestureDetector.onTouchEvent(motionEvent);
-			}
 		});
-		showToolBarButton.setOnTouchListener(new View.OnTouchListener() {
-			@Override
-			public boolean onTouch(View view, MotionEvent motionEvent) {
+		showToolBarButton.setOnTouchListener((View view, MotionEvent motionEvent) -> {
 				view.performClick();
 				return showToolBarGestureDetector.onTouchEvent(motionEvent);
-			}
 		});
 	}
 
@@ -188,12 +179,7 @@ public class MainActivity extends AppCompatActivity
 	private void showEndDialog() {
 		AlertDialog endDialog = new AlertDialog.Builder(this, R.style.SpectrixDialogTheme)
 				.setMessage("Spectrix can't work without audio record, Sorry...")
-				.setPositiveButton("Exit", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-						finish();
-					}
-				})
+				.setPositiveButton("Exit", (DialogInterface dialogInterface, int i) -> finish())
 				.create();
 		endDialog.setCancelable(false);
 		endDialog.setCanceledOnTouchOutside(false);
@@ -204,18 +190,8 @@ public class MainActivity extends AppCompatActivity
 		AlertDialog sorryDialog = new AlertDialog.Builder(this, R.style.SpectrixDialogTheme)
 				.setMessage("Spectrix needs to record audio,\n" +
 						"Please accept the permission !")
-				.setNegativeButton("No, Exit", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-						finish();
-					}
-				})
-				.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialogInterface, int i) {
-						requestRecordPermission();
-					}
-				})
+				.setNegativeButton("No, Exit", (DialogInterface dialogInterface, int i) -> finish())
+				.setPositiveButton("Yes", (DialogInterface dialogInterface, int i) -> requestRecordPermission())
 				.create();
 		sorryDialog.setCancelable(false);
 		sorryDialog.setCanceledOnTouchOutside(false);
@@ -312,11 +288,7 @@ public class MainActivity extends AppCompatActivity
 	public void aboutSpectrix(MenuItem menuItem) {
 		final AlertDialog alertDialog = new AlertDialog.Builder(this, R.style.SpectrixDialogTheme)
 				.setMessage(R.string.about_spectrix)
-				.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-					}
-				})
+				.setPositiveButton("Ok", (DialogInterface dialog, int which) -> {})
 				.create();
 		alertDialog.show();
 	}
@@ -332,18 +304,15 @@ public class MainActivity extends AppCompatActivity
 
 		final RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
 				ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-		//layoutParams.addRule(RelativeLayout.BELOW, R.id.toolbar);
 
-		mainRelativeLayout.addView(myGLSurfaceView, 0);
+		mainRelativeLayout.addView(myGLSurfaceView, 0, layoutParams);
 
 		RadioExpand radioExpand = findViewById(R.id.radio_expand_scroll_view_visualisations);
 
 		for (int i = 0; i < VisualizationHelper.NB_VISUALIZATIONS; i++) {
 			final int index = i;
 			final String name = VisualizationHelper.getVisualization(i).getName();
-			Runnable onConfirm = new Runnable() {
-				@Override
-				public void run() {
+			Runnable onConfirm = () -> {
 					idVisualisation = index;
 					myGLSurfaceView.onPause();
 
@@ -356,12 +325,12 @@ public class MainActivity extends AppCompatActivity
 					myGLSurfaceView = new MyGLSurfaceView(
 							getApplicationContext(), visualization,
 							currentListeningId, MainActivity.this);
-					mainRelativeLayout.addView(myGLSurfaceView, 0);
+					mainRelativeLayout.addView(myGLSurfaceView, 0, layoutParams);
 
 					toolbar.setTitle(name);
 
 					drawerLayout.closeDrawers();
-				}
+
 			};
 			ExpandButton expandButton = new ExpandButton(this, onConfirm);
 			expandButton.setText(name);
@@ -401,12 +370,7 @@ public class MainActivity extends AppCompatActivity
 
 	@Override
 	public void onFinish() {
-		runOnUiThread(new Runnable() {
-			@Override
-			public void run() {
-				progressBar.setVisibility(View.GONE);
-			}
-		});
+		runOnUiThread(() -> progressBar.setVisibility(View.GONE));
 	}
 
 	private class ToolBarGestureListener extends GestureDetector.SimpleOnGestureListener {
