@@ -2,12 +2,10 @@
 <resources>
     <color name="colorPrimary">#1919C0</color>
     <color name="colorPrimaryTransparent">#991919C0</color>
-    <color name="colorTest2">#29BAEF</color>
-    <color name="colorTest3">#298aef</color>
     <color name="colorPrimaryDark">@color/colorTest3</color>
+    <color name="colorTest3">#298aef</color>
     <color name="colorAccent">#003366</color>
     <color name="main_color">@color/colorTest3</color>
-    <color name="colorNight">#191970</color>
     <color name="visualization_play_color">@color/jaune_logo</color>
     <color name="visualization_play_color_transparent">@color/jaule_logo_transparent</color>
     <color name="jaune_logo">#f8b131</color>
