@@ -1,31 +1,11 @@
-## Synopsis
+#Spectrix
 
-At the top of the file there should be a short introduction and/ or overview that explains **what** the project is. This description should match descriptions added for package managers (Gemspec, package.json, etc.)
+_Samuel Berrien_
 
-## Code Example
+![Image](https://lh3.googleusercontent.com/Z-3euWRHWYPu0Vfa_iRVeZfVQ4kPuotd0tEOy3Pa8ocEVb8RALxtrOfqLRcmB9ZNfQ=s180)
 
-Show what the library does as concisely as possible, developers should be able to figure out **how** your project solves their problem by looking at the code example. Make sure the API you are showing off is obvious, and that your code is short and concise.
+[Google Play link](https://play.google.com/store/apps/details?id=com.samuelberrien.spectrix)
 
-## Motivation
+Play your favorite music and visualize it on __Specrix__ !
 
-A short description of the motivation behind the creation and maintenance of the project. This should explain **why** the project exists.
-
-## Installation
-
-Provide code examples and explanations of how to get the project.
-
-## API Reference
-
-Depending on the size of the project, if it is small and simple enough the reference docs can be added to the README. For medium size to larger projects it is important to at least provide a link to where the API reference docs live.
-
-## Tests
-
-Describe and show how to run the tests with code examples.
-
-## Contributors
-
-Let people know how they can dive into the project, include important links to things like issue trackers, irc, twitter accounts if applicable.
-
-## License
-
-A short snippet describing the license (MIT, Apache, etc.)
+![Image](https://lh3.googleusercontent.com/v_rAM2E4GDLAoP7PhrPcUP2AW2J7hMd-bq_gRndMM2GEXdKkuWenmB5rdJmDDMmuVA=w1855-h982)
