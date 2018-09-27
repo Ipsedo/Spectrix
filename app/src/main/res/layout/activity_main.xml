@@ -8,8 +8,6 @@
     android:keepScreenOn="true"
     tools:context=".main.MainActivity">
 
-    <!--android:minHeight="?attr/actionBarSize"-->
-
     <RelativeLayout
         android:id="@+id/layout_surface_view"
         android:layout_width="match_parent"
@@ -23,7 +21,6 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:background="@color/main_color"
-            android:elevation="20dp"
             android:minHeight="56dp"
             app:titleTextAppearance="@style/titleStyle" />
 
@@ -41,7 +38,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:elevation="20dp"
             android:indeterminate="true"
             android:indeterminateDrawable="@drawable/rotate_progress_bar" />
 
@@ -71,7 +67,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="3dp"
+            android:layout_height="@dimen/stroke_dp"
             android:background="@color/main_color" />
 
         <LinearLayout
@@ -137,7 +133,6 @@
                 android:orientation="vertical">
 
                 <TextView
-                    android:id="@+id/text_view_choose_visu"
                     android:layout_width="match_parent"
                     android:layout_height="48dp"
                     android:layout_marginTop="10dp"
