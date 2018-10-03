@@ -3,8 +3,8 @@ package com.samuelberrien.spectrix.visualizations.snow;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.drawable.obj.ObjModelMtlVBO;
-import com.samuelberrien.spectrix.drawable.obj.ObjModelVBO;
+import com.samuelberrien.spectrix.drawable.obj.ObjMtlVBO;
+import com.samuelberrien.spectrix.drawable.obj.ObjVBO;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 
 import java.util.Random;
@@ -17,9 +17,11 @@ public class Snow implements Visualization {
 
 	private boolean isInit;
 
-	Context context;
+	private Context context;
 
-	Random rand;
+	private Random rand;
+
+	private final int maxFreq = 256;
 
 	private final int MAXCPT = 16;
 	private int cpt = MAXCPT;
@@ -30,7 +32,7 @@ public class Snow implements Visualization {
 	private final float SCALE = 0.2f;
 
 	private int nbPing;
-	private ObjModelMtlVBO ping;
+	private ObjMtlVBO ping;
 	private float[] mPingAngle;
 	private float[][] mPingTranslateVector;
 	private float[][] mPingRotationMatrix;
@@ -38,7 +40,8 @@ public class Snow implements Visualization {
 	private float mPingFreqAttenuation = 0.7f;
 
 	private int nbOctagone;
-	private ObjModelVBO octagone;
+	private ObjVBO octagone;
+	private float[][] mOctagoneColors;
 	private float[] mOctagoneAngle;
 	private float[][] mOctagoneRotationOrientation;
 	private float[] mOctagoneScale;
@@ -48,7 +51,7 @@ public class Snow implements Visualization {
 	private float mOctagoneFreqAttenuation = 0.001f;
 
 	private int nbIgloo;
-	private ObjModelMtlVBO igloo;
+	private ObjMtlVBO igloo;
 	private float[] mIglooAngle;
 	private float[][] mIglooTranslateVector;
 	private float[][] mIglooRotationMatrix;
@@ -56,20 +59,20 @@ public class Snow implements Visualization {
 	private float mIglooFreqAttenuation = 0.03f;
 
 	private int nbTree;
-	private ObjModelMtlVBO tree;
+	private ObjMtlVBO tree;
 	private float[][] mTreeTranslateVector;
 	private float[] mTreeScale;
 	private float[][] mTreeModelMatrix;
 	private float mTreeFreqAttenuation = 0.3f;
 
-	private ObjModelMtlVBO whale;
+	private ObjMtlVBO whale;
 	private float mWhaleAngle;
 	private float[] mWhaleTranslateVector;
 	private float[] mWhaleRotationMatrix;
 	private float[] mWhaleModelMatrix;
 	private float mWhaleFreqAttenuation = 0.07f;
 
-	private ObjModelMtlVBO mountains;
+	private ObjMtlVBO mountains;
 	private float[] mMountainsTranslateVector = new float[3];
 	private float[] mMountainsModelMatrix = new float[16];
 
@@ -83,14 +86,15 @@ public class Snow implements Visualization {
 
 		rand = new Random(System.currentTimeMillis());
 
-		nbPing = !isVR ? 30 : 15;
+		nbPing = 100;
 		mPingAngle = new float[nbPing];
 		mPingTranslateVector = new float[nbPing][3];
 		mPingRotationMatrix = new float[nbPing][16];
 		mPingModelMatrix = new float[nbPing][16];
 		setupPinguin();
 
-		nbOctagone = !isVR ? 40 : 20;
+		nbOctagone = 100;
+		mOctagoneColors = new float[nbOctagone][4];
 		mOctagoneAngle = new float[nbOctagone];
 		mOctagoneRotationOrientation = new float[nbOctagone][3];
 		mOctagoneScale = new float[nbOctagone];
@@ -106,7 +110,7 @@ public class Snow implements Visualization {
 		mIglooModelMatrix = new float[nbIgloo][16];
 		setupIgloo();
 
-		nbTree = !isVR ? 10 : 5;
+		nbTree = 30;
 		mTreeTranslateVector = new float[nbTree][3];
 		mTreeScale = new float[nbTree];
 		mTreeModelMatrix = new float[nbTree][16];
@@ -185,6 +189,7 @@ public class Snow implements Visualization {
 		for (int i = 0; i < nbOctagone; i++) {
 			Matrix.multiplyMM(tmpMVMatrix, 0, mViewMatrix, 0, mOctagoneModelMatrix[i], 0);
 			Matrix.multiplyMM(tmpMVPMatrix, 0, mProjectionMatrix, 0, tmpMVMatrix, 0);
+			octagone.setColor(mOctagoneColors[i]);
 			octagone.draw(tmpMVPMatrix, tmpMVMatrix, mLightPosInEyeSpace);
 		}
 
@@ -208,16 +213,9 @@ public class Snow implements Visualization {
 	 *
 	 */
 	private void setupTree() {
-		tree = new ObjModelMtlVBO(context, "obj/snow/snow_tree_obj.obj", "obj/snow/snow_tree_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF, false);
+		tree = new ObjMtlVBO(context, "obj/snow/snow_tree_obj.obj", "obj/snow/snow_tree_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF, false);
 		for (int i = 0; i < nbTree; i++) {
-			double r = 5d * rand.nextDouble();
-			double theta;
-			/*if(Math.sin(90) == 1){
-				theta = rand.nextDouble() * 360d;
-            }else{*/
-			theta = rand.nextDouble() * Math.PI * 2d;
-			//}
-
+			double r = 5d * rand.nextDouble(), theta = rand.nextDouble() * Math.PI * 2d;
 			float up = rand.nextFloat() * 0.5f;
 
 			mTreeTranslateVector[i][0] = (float) ((15d + r) * Math.cos(theta));
@@ -232,15 +230,9 @@ public class Snow implements Visualization {
 	 *
 	 */
 	private void setupPinguin() {
-		ping = new ObjModelMtlVBO(context, "obj/snow/snow_pingouin_obj.obj", "obj/snow/snow_pingouin_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF, false);
+		ping = new ObjMtlVBO(context, "obj/snow/snow_pingouin_obj.obj", "obj/snow/snow_pingouin_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF, false);
 		for (int i = 0; i < nbPing; i++) {
-			double r = 5d * rand.nextDouble();
-			double theta;
-			/*if(Math.sin(90) == 1){
-				theta = rand.nextDouble() * 360d;
-            }else{*/
-			theta = rand.nextDouble() * Math.PI * 2d;
-			//}
+			double r = 5d * rand.nextDouble(), theta = rand.nextDouble() * Math.PI * 2d;
 
 			mPingTranslateVector[i][0] = (float) ((5d + r) * Math.cos(theta));
 			mPingTranslateVector[i][1] = 0f;
@@ -253,22 +245,18 @@ public class Snow implements Visualization {
 	 *
 	 */
 	private void setupOctagone() {
-		octagone = new ObjModelVBO(context, "obj/octagone.obj", 1f, 0.8f, 0.8f, LIGHTAUGMENTATION, DISTANCECOEFF);
+		octagone = new ObjVBO(context, "obj/octagone.obj", 1f, 0.8f, 0.8f, LIGHTAUGMENTATION, DISTANCECOEFF);
 		for (int i = 0; i < nbOctagone; i++) {
-			double theta;
-			double phi;
-			double r1 = 20d;
-			double r2 = rand.nextDouble() * 5d;
+			double theta, phi, r1 = 20d, r2 = rand.nextDouble() * 5d;
 
-            /*if(Math.cos(90) == 0){
-				theta = rand.nextDouble() * 360f;
-                phi = rand.nextDouble() * 135f + 22.5f;
-                mOctagoneAngle[i] = rand.nextFloat() * 360f;
-            }else{*/
+			mOctagoneColors[i][0] = rand.nextFloat();
+			mOctagoneColors[i][1] = rand.nextFloat();
+			mOctagoneColors[i][2] = rand.nextFloat();
+			mOctagoneColors[i][3] = 1f;
+
 			theta = rand.nextDouble() * Math.PI * 2d;
 			phi = rand.nextDouble() * Math.PI * 6 / 8 + Math.PI / 8;
 			mOctagoneAngle[i] = (float) (rand.nextDouble() * 360f);
-			//}
 
 			mOctagoneRotationOrientation[i][0] = rand.nextFloat() * 2f - 1f;
 			mOctagoneRotationOrientation[i][1] = rand.nextFloat() * 2f - 1f;
@@ -286,15 +274,9 @@ public class Snow implements Visualization {
 	 *
 	 */
 	private void setupIgloo() {
-		igloo = new ObjModelMtlVBO(context, "obj/snow/snow_igloo_obj.obj", "obj/snow/snow_igloo_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF, false);
+		igloo = new ObjMtlVBO(context, "obj/snow/snow_igloo_obj.obj", "obj/snow/snow_igloo_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF, false);
 		for (int i = 0; i < nbIgloo; i++) {
-			double r = 5d * rand.nextDouble();
-			double theta;
-			/*if (Math.sin(90) == 1) {
-				theta = rand.nextDouble() * 360d;
-            } else {*/
-			theta = rand.nextDouble() * Math.PI * 2d;
-			//}
+			double r = 5d * rand.nextDouble(), theta = rand.nextDouble() * Math.PI * 2d;
 			mIglooTranslateVector[i][0] = (float) ((5d + r) * Math.cos(theta));
 			mIglooTranslateVector[i][1] = -1f;
 			mIglooTranslateVector[i][2] = (float) ((5d + r) * Math.sin(theta));
@@ -310,7 +292,7 @@ public class Snow implements Visualization {
 		mWhaleTranslateVector[1] = 3f;
 		mWhaleTranslateVector[2] = 10f;
 		mWhaleAngle = 0f;
-		whale = new ObjModelMtlVBO(context, "obj/snow/snow_baleine_obj.obj", "obj/snow/snow_baleine_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF, true);
+		whale = new ObjMtlVBO(context, "obj/snow/snow_baleine_obj.obj", "obj/snow/snow_baleine_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF, true);
 	}
 
 	/**
@@ -320,7 +302,7 @@ public class Snow implements Visualization {
 		mMountainsTranslateVector[0] = 0f;
 		mMountainsTranslateVector[1] = -3f;
 		mMountainsTranslateVector[2] = 0f;
-		mountains = new ObjModelMtlVBO(context, "obj/snow/snow_mountains_obj.obj", "obj/snow/snow_mountains_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF, false);
+		mountains = new ObjMtlVBO(context, "obj/snow/snow_mountains_obj.obj", "obj/snow/snow_mountains_mtl.mtl", LIGHTAUGMENTATION, DISTANCECOEFF, false);
 	}
 
 	/**
@@ -354,7 +336,7 @@ public class Snow implements Visualization {
 			Matrix.translateM(mModelMatrix, 0, mPingTranslateVector[i][0], mPingTranslateVector[i][1], mPingTranslateVector[i][2]);
 
 			float sum = 0f;
-			for (int j = freqArray.length * i / nbPing; j < freqArray.length * (i + 1) / nbPing; j++) {
+			for (int j = maxFreq * i / nbPing; j < maxFreq * (i + 1) / nbPing; j++) {
 				sum += freqArray[i];
 			}
 			sum = sum <= 10f ? sum : 10f;
@@ -390,7 +372,7 @@ public class Snow implements Visualization {
 			Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, mOctagoneRotationMatrix[i], 0);
 
 			float sum = 0f;
-			for (int j = freqArray.length * i / nbOctagone; j < freqArray.length * (i + 1) / nbOctagone; j++) {
+			for (int j = maxFreq * i / nbOctagone; j < maxFreq * (i + 1) / nbOctagone; j++) {
 				sum += freqArray[i];
 			}
 			float scale = mOctagoneScale[i] + sum * mOctagoneScale[i] + sum * i * mOctagoneFreqAttenuation * mOctagoneScale[i];
