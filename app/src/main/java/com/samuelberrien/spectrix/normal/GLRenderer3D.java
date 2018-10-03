@@ -53,7 +53,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 	private float rollAngle;
 	private float rollDelta;
 
-	private long lastTime;
+	//private long lastTime;
 
 	private RotationGestureDetector rotationGestureDetector;
 
@@ -99,7 +99,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 
 		initCamLookDirVec = visualization.getInitCamLookDirVec();
 
-		lastTime = System.currentTimeMillis();
+		//lastTime = System.currentTimeMillis();
 	}
 
 	@Override
@@ -143,8 +143,8 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 
 		visualization.draw(mProjectionMatrix.clone(), mViewMatrix.clone(), mLightPosInEyeSpace.clone(), mCameraPosition.clone());
 
-		System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - lastTime));
-		lastTime = System.currentTimeMillis();
+		//System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - lastTime));
+		//lastTime = System.currentTimeMillis();
 	}
 
 	private void updateLight(float[] xyz) {

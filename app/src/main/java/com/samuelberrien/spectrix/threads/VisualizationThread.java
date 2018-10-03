@@ -18,13 +18,13 @@ public abstract class VisualizationThread extends Thread {
 
 	private boolean isCanceled;
 
-	private long lastTime;
+	//private long lastTime;
 
 	VisualizationThread(String name, Visualization visualization) {
 		super(name);
 		this.visualization = visualization;
 		isCanceled = false;
-		lastTime = System.currentTimeMillis();
+		//lastTime = System.currentTimeMillis();
 	}
 
 	public void cancel() {
@@ -50,8 +50,8 @@ public abstract class VisualizationThread extends Thread {
 			} catch (InterruptedException ie) {
 				ie.printStackTrace();
 			}
-			System.out.println("Update/s : " + 1000L / (System.currentTimeMillis() - lastTime));
-			lastTime = System.currentTimeMillis();
+			//System.out.println("Update/s : " + 1000L / (System.currentTimeMillis() - lastTime));
+			//lastTime = System.currentTimeMillis();
 		}
 
 		onEnd();
@@ -64,5 +64,5 @@ public abstract class VisualizationThread extends Thread {
 	protected abstract float[] getFrequencyMagns();
 
 	protected abstract Long getTimeToWait();
-
+	
 }
