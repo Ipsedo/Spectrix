@@ -3,7 +3,7 @@ package com.samuelberrien.spectrix.visualizations.spectrum;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.drawable.obj.ObjModelVBO;
+import com.samuelberrien.spectrix.drawable.obj.ObjVBO;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 
 import java.util.Random;
@@ -29,7 +29,7 @@ public class Spectrum implements Visualization {
 	private float[][] mSquaresLandPosition;
 	private float[][] mSquaresLandModelMatrix;
 
-	private ObjModelVBO cubeVR;
+	private ObjVBO cubeVR;
 	private float[][] mCubeRotations;
 	private float[] mCubePosition;
 	private float[][] mCubeModelMatrix;
@@ -83,7 +83,7 @@ public class Spectrum implements Visualization {
 
 			Random r = new Random(System.currentTimeMillis());
 
-			cubeVR = new ObjModelVBO(context, "obj/cube.obj", 1.f, 1.f, 1.f, 1.f, 0.f);
+			cubeVR = new ObjVBO(context, "obj/cube.obj", 1.f, 1.f, 1.f, 1.f, 0.f);
 			for (int i = 0; i < nbSquare; i++) {
 
 				mCubeColors[nbSquare - 1 - i] = new float[]{r.nextFloat(), r.nextFloat(), r.nextFloat(), 1.f};

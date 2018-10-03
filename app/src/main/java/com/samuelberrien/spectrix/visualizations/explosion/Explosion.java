@@ -3,7 +3,7 @@ package com.samuelberrien.spectrix.visualizations.explosion;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.drawable.obj.ObjModelVBO;
+import com.samuelberrien.spectrix.drawable.obj.ObjVBO;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class Explosion implements Visualization {
 
 	private int nbMaxOctagonePerExplosion;
 
-	private ObjModelVBO octagone;
+	private ObjVBO octagone;
 	private List<Octagone> mOctagone;
 
 	private boolean isInit;
@@ -57,7 +57,7 @@ public class Explosion implements Visualization {
 		mCenterColor = new float[nbSameCenter * nbCenter][4];
 		nbMaxOctagonePerExplosion = !isVR ? 5 : 2;
 		mCenterPoint = new float[nbCenter * nbSameCenter][3];
-		octagone = new ObjModelVBO(this.context, "obj/octagone.obj", 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
+		octagone = new ObjVBO(this.context, "obj/octagone.obj", 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
 		maxOctagonSpeed = 1f;
 		mOctagone = Collections.synchronizedList(new ArrayList<Octagone>());
 

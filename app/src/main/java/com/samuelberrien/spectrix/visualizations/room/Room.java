@@ -3,7 +3,7 @@ package com.samuelberrien.spectrix.visualizations.room;
 import android.content.Context;
 import android.opengl.Matrix;
 
-import com.samuelberrien.spectrix.drawable.obj.ObjModelVBO;
+import com.samuelberrien.spectrix.drawable.obj.ObjVBO;
 import com.samuelberrien.spectrix.utils.core.Visualization;
 
 import java.util.Random;
@@ -27,74 +27,74 @@ public class Room implements Visualization {
 	private int mCounter = mMaxCounter;
 
 	private final float mCadreAtenuation = 0.8f;
-	private ObjModelVBO cadreD;
+	private ObjVBO cadreD;
 	private float[] mCadreDTranslateVector = new float[]{-4f, 6, -7.55f};
 	private float[] mCadreDModel = new float[16];
-	private ObjModelVBO cadreG;
+	private ObjVBO cadreG;
 	private float[] mCadreGTranslateVector = new float[]{4f, 6, -7.55f};
 	private float[] mCadreGModel = new float[16];
-	private ObjModelVBO cadreM;
+	private ObjVBO cadreM;
 	private float[] mCadreMTranslateVector = new float[]{0f, 6, -7.55f};
 	private float[] mCadreMModel = new float[16];
-	private ObjModelVBO cadreAD;
+	private ObjVBO cadreAD;
 	private float[] mCadreADTranslateVector = new float[]{-4f, 6, 7.55f};
 	private float[] mCadreADModel = new float[16];
-	private ObjModelVBO cadreAG;
+	private ObjVBO cadreAG;
 	private float[] mCadreAGTranslateVector = new float[]{4f, 6, 7.55f};
 	private float[] mCadreAGModel = new float[16];
-	private ObjModelVBO cadreAM;
+	private ObjVBO cadreAM;
 	private float[] mCadreAMTranslateVector = new float[]{0f, 6, 7.55f};
 	private float[] mCadreAMModel = new float[16];
 
 	private float mLampeChevetFreqAttenuation = 100f;
-	private ObjModelVBO lampeChevetD;
+	private ObjVBO lampeChevetD;
 	private float mLampeChevetDAngle = 0f;
 	private float[] mLampeChevetDRotationMatrix = new float[16];
 	private float[] mLampeChevetDTranslateVector = new float[]{5.0970f, 3.5283f, -6.6115f};
 	private float[] mLampeChevetDModel = new float[16];
-	private ObjModelVBO lampeChevetG;
+	private ObjVBO lampeChevetG;
 	private float mLampeChevetGAngle = 0f;
 	private float[] mLampeChevetGRotationMatrix = new float[16];
 	private float[] mLampeChevetGTranslateVector = new float[]{-5.0970f, 3.5283f, -6.6115f};
 	private float[] mLampeChevetGModel = new float[16];
 
-	private ObjModelVBO lampePlafond;
+	private ObjVBO lampePlafond;
 	private float mLampePlafondAtenuation = 50f;
 	private float[] mLampePlafondTranslateVector = new float[]{0f, 9.5462f, 0f};
 	private float[] mLampePlafondModel = new float[16];
 
-	private ObjModelVBO lit2Places;
+	private ObjVBO lit2Places;
 	private final float mLitVibrationAtenuation = 0.015f;
 	private float[] mLit2PlacesTranslateVector = new float[]{0f, 1.8046f, -3.8427f};
 	private float[] mLit2PlacesModel = new float[16];
 
-	private ObjModelVBO murs;
+	private ObjVBO murs;
 	private float[] mMursTranslateVector = new float[]{0f, 0f, 0f};
 	private float[] mMursModel = new float[16];
 
 	private final float mOreillerFreqAtenuation = 0.2f;
-	private ObjModelVBO oreillerD;
+	private ObjVBO oreillerD;
 	private float[] mOreillerDTranslateVector = new float[]{1.35f, 3.2184f, -6.1602f};
 	private float[] mOreillerDModel = new float[16];
-	private ObjModelVBO oreillerG;
+	private ObjVBO oreillerG;
 	private float[] mOreillerGTranslateVector = new float[]{-1.35f, 3.2184f, -6.1362f};
 	private float[] mOreillerGModel = new float[16];
 
-	private ObjModelVBO porte;
+	private ObjVBO porte;
 	private float mPorteVibrationAtenuation = 0.15f;
 	private float[] mPorteTranslateVector = new float[]{7.8f, 3.5f, 1.5f};
 	private float[] mPorteModel = new float[16];
 
-	private ObjModelVBO stores;
+	private ObjVBO stores;
 	private float mStoresVibrationAtenuation = 0.15f;
 	private float[] mStoresTranslateVector = new float[]{-7.6871f, 6.3401f, 0f};
 	private float[] mStoresModel = new float[16];
 
 	private float mTableChevetFreqAtenuation = 1.8f;
-	private ObjModelVBO tableChevetD;
+	private ObjVBO tableChevetD;
 	private float[] mTableChevetDTranslateVector = new float[]{5f, 1.3321f, -6.1209f};
 	private float[] mTableChevetDModel = new float[16];
-	private ObjModelVBO tableChevetG;
+	private ObjVBO tableChevetG;
 	private float[] mTableChevetGTranslateVector = new float[]{-5f, 1.3321f, -6.1209f};
 	private float[] mTableChevetGModel = new float[16];
 
@@ -108,23 +108,23 @@ public class Room implements Visualization {
 	public void init(Context context, boolean isVR) {
 		rand = new Random(System.currentTimeMillis());
 		scale = 1f;
-		cadreD = new ObjModelVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		cadreG = new ObjModelVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		cadreM = new ObjModelVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		cadreAD = new ObjModelVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		cadreAG = new ObjModelVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		cadreAM = new ObjModelVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		lampeChevetD = new ObjModelVBO(context, "obj/room/room_lampe_chevet.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		lampeChevetG = new ObjModelVBO(context, "obj/room/room_lampe_chevet.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		lampePlafond = new ObjModelVBO(context, "obj/room/room_lampe_plafond.obj", 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
-		lit2Places = new ObjModelVBO(context, "obj/room/room_lit_2_places.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		murs = new ObjModelVBO(context, "obj/room/room_murs.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		oreillerD = new ObjModelVBO(context, "obj/room/room_oreiller.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		oreillerG = new ObjModelVBO(context, "obj/room/room_oreiller.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		porte = new ObjModelVBO(context, "obj/room/room_porte.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		stores = new ObjModelVBO(context, "obj/room/room_stores.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		tableChevetD = new ObjModelVBO(context, "obj/room/room_table_chevet.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
-		tableChevetG = new ObjModelVBO(context, "obj/room/room_table_chevet.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		cadreD = new ObjVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		cadreG = new ObjVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		cadreM = new ObjVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		cadreAD = new ObjVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		cadreAG = new ObjVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		cadreAM = new ObjVBO(context, "obj/room/room_cadre.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		lampeChevetD = new ObjVBO(context, "obj/room/room_lampe_chevet.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		lampeChevetG = new ObjVBO(context, "obj/room/room_lampe_chevet.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		lampePlafond = new ObjVBO(context, "obj/room/room_lampe_plafond.obj", 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
+		lit2Places = new ObjVBO(context, "obj/room/room_lit_2_places.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		murs = new ObjVBO(context, "obj/room/room_murs.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		oreillerD = new ObjVBO(context, "obj/room/room_oreiller.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		oreillerG = new ObjVBO(context, "obj/room/room_oreiller.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		porte = new ObjVBO(context, "obj/room/room_porte.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		stores = new ObjVBO(context, "obj/room/room_stores.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		tableChevetD = new ObjVBO(context, "obj/room/room_table_chevet.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
+		tableChevetG = new ObjVBO(context, "obj/room/room_table_chevet.obj", rand.nextFloat(), rand.nextFloat(), rand.nextFloat(), LIGHTAUGMENTATION, DISTANCECOEFF);
 		isInit = true;
 	}
 
