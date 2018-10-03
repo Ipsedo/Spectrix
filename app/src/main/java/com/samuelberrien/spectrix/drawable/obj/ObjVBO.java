@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Created by samuel on 05/01/17.
  */
 
-public class ObjModelVBO {
+public class ObjVBO {
 
 	private static final int POSITION_SIZE = 3;
 
@@ -58,12 +58,12 @@ public class ObjModelVBO {
 	 * @param blue              the blue color of the object
 	 * @param lightAugmentation the light augmentation of the object
 	 */
-	public ObjModelVBO(Context context,
-					   int resId,
-					   float red,
-					   float green,
-					   float blue,
-					   float lightAugmentation, float distanceCoef) {
+	public ObjVBO(Context context,
+				  int resId,
+				  float red,
+				  float green,
+				  float blue,
+				  float lightAugmentation, float distanceCoef) {
 
 		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;
@@ -83,12 +83,12 @@ public class ObjModelVBO {
 		init(context);
 	}
 
-	public ObjModelVBO(Context context,
-					   String fileName,
-					   float red,
-					   float green,
-					   float blue,
-					   float lightAugmentation, float distanceCoef) {
+	public ObjVBO(Context context,
+				  String fileName,
+				  float red,
+				  float green,
+				  float blue,
+				  float lightAugmentation, float distanceCoef) {
 
 		lightCoef = lightAugmentation;
 		this.distanceCoef = distanceCoef;

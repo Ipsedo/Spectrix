@@ -24,7 +24,7 @@ import java.util.Random;
  * de l'auteur engendrera des poursuites judiciaires.
  */
 
-public class ObjModelMtlVBO {
+public class ObjMtlVBO {
 
 	private static final int POSITION_DATA_SIZE = 3;
 
@@ -79,9 +79,9 @@ public class ObjModelMtlVBO {
 	 * @param lightAugmentation The light augmentation
 	 * @param distanceCoef      The distance attenuation coefficient
 	 */
-	public ObjModelMtlVBO(Context context,
-						  int objResId, int mtlResId,
-						  float lightAugmentation, float distanceCoef, boolean randomColor) {
+	public ObjMtlVBO(Context context,
+					 int objResId, int mtlResId,
+					 float lightAugmentation, float distanceCoef, boolean randomColor) {
 
 		InputStream inputStream;
 		inputStream = context.getResources().openRawResource(mtlResId);
@@ -103,9 +103,9 @@ public class ObjModelMtlVBO {
 	 * @param lightAugmentation The light augmentation
 	 * @param distanceCoef      The distance attenuation coefficient
 	 */
-	public ObjModelMtlVBO(Context context,
-						  String objFileName, String mtlFileName,
-						  float lightAugmentation, float distanceCoef, boolean randomColor) {
+	public ObjMtlVBO(Context context,
+					 String objFileName, String mtlFileName,
+					 float lightAugmentation, float distanceCoef, boolean randomColor) {
 
 		InputStream inputStream;
 		try {
