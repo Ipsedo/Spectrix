@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">Spectrix</string>
     <string name="about_spectrix">
-        Spectrix is more than a simple music visualizer,\nit\'s a unique music experience !\n\nCredits :\n© Samuel Berrien\n\nhttps://ipsedo.github.io
+        Spectrix is more than a simple music visualizer,\nit\'s a unique music experience !\n\nSupport the developer on : github.com/Ipsedo\n\nhttps://ipsedo.com
     </string>
     <string name="choose_visu_str">Choose your visualization :</string>
 </resources>

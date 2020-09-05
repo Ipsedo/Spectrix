@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:keepScreenOn="true"
-    tools:context=".main.MainActivity">
+    tools:context=".MainActivity">
 
     <RelativeLayout
         android:id="@+id/layout_surface_view"
@@ -14,7 +14,7 @@
         android:layout_height="match_parent"
         android:background="@android:color/black">
 
-        <com.samuelberrien.spectrix.utils.ui.main.SpectrixToolBar
+        <com.samuelberrien.spectrix.ui.main.SpectrixToolBar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -24,7 +24,7 @@
             android:minHeight="56dp"
             app:titleTextAppearance="@style/titleStyle" />
 
-        <com.samuelberrien.spectrix.utils.ui.main.ShowToolBarButton
+        <com.samuelberrien.spectrix.ui.main.ShowToolBarButton
             android:id="@+id/show_toolbar_button"
             android:layout_width="25dp"
             android:layout_height="25dp"
@@ -145,7 +145,7 @@
                     android:fadingEdgeLength="25dp"
                     android:requiresFadingEdge="vertical">
 
-                    <com.samuelberrien.spectrix.utils.ui.expand.RadioExpand
+                    <com.samuelberrien.spectrix.ui.expand.RadioExpand
                         android:id="@+id/radio_expand_scroll_view_visualisations"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
