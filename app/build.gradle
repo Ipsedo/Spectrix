@@ -7,8 +7,9 @@ android {
         applicationId "com.samuelberrien.spectrix"
         minSdkVersion 19
         targetSdkVersion 29
-        versionCode 8
-        versionName '1.2e'
+        versionCode 11
+        versionName '1.2h'
+        ndk.abiFilters 'armeabi-v7a', 'arm64-v8a', 'x84_64'
         testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
     buildTypes {

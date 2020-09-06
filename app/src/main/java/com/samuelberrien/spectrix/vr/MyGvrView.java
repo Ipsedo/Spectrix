@@ -55,13 +55,9 @@ public class MyGvrView extends GvrView {
                 e.printStackTrace();
             }
         }
-        if (listeningStream) {
-            updateVrThread = new StreamVrThread(visualization);
-            updateVrThread.start();
-        } else {
-            updateVrThread = new MicVrThread(visualization);
-            updateVrThread.start();
-        }
+        if (listeningStream) updateVrThread = new StreamVrThread(visualization);
+        else updateVrThread = new MicVrThread(visualization);
+        updateVrThread.start();
     }
 
     private class StreamVrThread extends StreamThread {
