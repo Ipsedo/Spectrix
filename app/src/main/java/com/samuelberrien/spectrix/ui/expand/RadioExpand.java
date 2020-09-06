@@ -1,10 +1,11 @@
 package com.samuelberrien.spectrix.ui.expand;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.LinearLayout;
+
+import androidx.annotation.Nullable;
 
 import java.util.ArrayList;
 

@@ -1,8 +1,9 @@
 package com.samuelberrien.spectrix.ui.main;
 
 import android.content.Context;
-import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
+
+import androidx.appcompat.widget.AppCompatButton;
 
 /**
  * Created by samuel on 11/12/17.

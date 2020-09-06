@@ -8,6 +8,8 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="actionOverflowMenuStyle">@style/OverflowMenu</item>
+
+        <item name="android:adjustViewBounds">true</item>
     </style>
 
     <style name="titleStyle" parent="@style/Base.TextAppearance.AppCompat.Title">
@@ -20,7 +22,6 @@
     </style>
 
     <style name="OverflowMenu" parent="Widget.AppCompat.PopupMenu.Overflow">
-        <item name="android:windowDisablePreview">true</item>
         <item name="overlapAnchor">false</item>
         <item name="android:dropDownVerticalOffset">10dp</item>
         <item name="android:popupBackground">@color/main_color</item>
