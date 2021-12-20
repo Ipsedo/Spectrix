@@ -17,7 +17,8 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:configChanges="orientation|screenSize">
+            android:configChanges="orientation|screenSize"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <action android:name="android.intent.action.VIEW"/>
@@ -29,7 +30,8 @@
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:enableVrMode="true"
-            android:resizeableActivity="false">
+            android:resizeableActivity="false"
+            android:exported="false">
             <intent-filter>
                 <category android:name="com.google.intent.category.CARDBOARD"/>
                 <category android:name="com.google.intent.category.DAYDREAM"/>
