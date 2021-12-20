@@ -74,7 +74,7 @@ public class Explosion implements Visualization {
     @Override
     public void update(float[] freqArray) {
         if (fps < limitFPS) {
-            nbCenter--;
+            nbCenter = Math.max(1, nbCenter - 1);
         }
 
         deleteOldOctagone();
