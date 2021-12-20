@@ -8,16 +8,20 @@ import com.samuelberrien.spectrix.threads.StreamThread;
 import com.samuelberrien.spectrix.threads.VisualizationThread;
 import com.samuelberrien.spectrix.utils.Visualization;
 
+import javax.microedition.khronos.egl.EGL10;
+import javax.microedition.khronos.egl.EGLConfig;
+import javax.microedition.khronos.egl.EGLDisplay;
+
 /**
  * Created by samuel on 23/08/17.
  */
 
-public class MyGLSurfaceView extends GLSurfaceView {
+public class MyGLSurfaceView extends GLSurfaceView implements GLSurfaceView.EGLConfigChooser {
 
     private Visualization visualization;
     private VisualizationThread visualizationThread;
 
-    private GLRenderer3D glRenderer3D;
+    private GLRenderer glRenderer;
 
     private int currentListening;
 
@@ -27,14 +31,12 @@ public class MyGLSurfaceView extends GLSurfaceView {
         setPreserveEGLContextOnPause(true);
 
         this.visualization = visualization;
-        if (visualization.is3D()) {
-            glRenderer3D = new GLRenderer3D(getContext(), visualization, onVisualizationInitFinish);
-            setRenderer(glRenderer3D);
-            setOnTouchListener(glRenderer3D);
-        } else {
-            GLRenderer2D glRenderer2D = new GLRenderer2D(getContext(), visualization, onVisualizationInitFinish);
-            setRenderer(glRenderer2D);
-        }
+
+        setEGLConfigChooser(this);
+
+        glRenderer = new GLRenderer(getContext(), visualization, onVisualizationInitFinish);
+        setRenderer(glRenderer);
+        setOnTouchListener(glRenderer);
 
         this.currentListening = currentListening;
 
@@ -114,6 +116,32 @@ public class MyGLSurfaceView extends GLSurfaceView {
                 return;
         }
         throw new IllegalArgumentException("Wrong listening identifiant !");
+    }
+
+    @Override
+    public EGLConfig chooseConfig(EGL10 egl10, EGLDisplay eglDisplay) {
+        int[] attribs = {
+                EGL10.EGL_LEVEL, 0,
+                EGL10.EGL_RENDERABLE_TYPE, 4,  // EGL_OPENGL_ES2_BIT
+                EGL10.EGL_COLOR_BUFFER_TYPE, EGL10.EGL_RGB_BUFFER,
+                EGL10.EGL_RED_SIZE, 8,
+                EGL10.EGL_GREEN_SIZE, 8,
+                EGL10.EGL_BLUE_SIZE, 8,
+                EGL10.EGL_DEPTH_SIZE, 16,
+                EGL10.EGL_SAMPLE_BUFFERS, 1,
+                EGL10.EGL_SAMPLES, 4,  // 4x MSAA.
+                EGL10.EGL_NONE
+        };
+        EGLConfig[] configs = new EGLConfig[1];
+        int[] configCounts = new int[1];
+        egl10.eglChooseConfig(eglDisplay, attribs, configs, 1, configCounts);
+
+        if (configCounts[0] == 0) {
+            // Failed! Error handling.
+            return null;
+        } else {
+            return configs[0];
+        }
     }
 
     public interface OnVisualizationInitFinish {
