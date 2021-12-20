@@ -52,12 +52,11 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
         GLES20.glDisable(GLES20.GL_BLEND);
         GLES20.glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         visualization.init(context, true);
-        if (visualization.is3D()) {
-            GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-            GLES20.glEnable(GLES20.GL_CULL_FACE);
-            GLES20.glDepthFunc(GLES20.GL_LEQUAL);
-            GLES20.glDepthMask(true);
-        }
+
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+        GLES20.glEnable(GLES20.GL_CULL_FACE);
+        GLES20.glDepthFunc(GLES20.GL_LEQUAL);
+        GLES20.glDepthMask(true);
     }
 
     @Override
@@ -79,12 +78,11 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 
     @Override
     public void onDrawEye(Eye eye) {
-        if (visualization.is3D()) {
-            GLES20.glEnable(GLES20.GL_DEPTH_TEST);
-            GLES20.glEnable(GLES20.GL_CULL_FACE);
-            GLES20.glDepthFunc(GLES20.GL_LEQUAL);
-            GLES20.glDepthMask(true);
-        }
+        GLES20.glEnable(GLES20.GL_DEPTH_TEST);
+        GLES20.glEnable(GLES20.GL_CULL_FACE);
+        GLES20.glDepthFunc(GLES20.GL_LEQUAL);
+        GLES20.glDepthMask(true);
+
         GLES20.glDisable(GLES20.GL_BLEND);
         GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
 
