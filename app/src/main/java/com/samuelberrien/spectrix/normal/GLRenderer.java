@@ -18,7 +18,7 @@ import javax.microedition.khronos.opengles.GL10;
  * Created by samuel on 23/08/17.
  */
 
-public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDetector.OnRotationGestureListener, View.OnTouchListener {
+public class GLRenderer implements GLSurfaceView.Renderer, RotationGestureDetector.OnRotationGestureListener, View.OnTouchListener {
 
     private Visualization visualization;
 
@@ -59,7 +59,7 @@ public class GLRenderer3D implements GLSurfaceView.Renderer, RotationGestureDete
 
     private MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish;
 
-    GLRenderer3D(Context context, Visualization visualization, MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish) {
+    GLRenderer(Context context, Visualization visualization, MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish) {
         this.context = context;
 
         this.visualization = visualization;
