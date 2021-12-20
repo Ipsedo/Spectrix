@@ -94,11 +94,6 @@ public class Spectrum implements Visualization {
     }
 
     @Override
-    public boolean is3D() {
-        return true;
-    }
-
-    @Override
     public float[] getCameraPosition() {
         return new float[]{0.f, 0.f, 0.f};
     }

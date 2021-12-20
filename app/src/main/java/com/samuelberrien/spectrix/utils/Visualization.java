@@ -11,8 +11,6 @@ public interface Visualization {
 
     boolean isInit();
 
-    boolean is3D();
-
     void update(float[] freqArray);
 
     float[] getCameraPosition();

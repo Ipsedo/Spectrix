@@ -72,11 +72,6 @@ public class Explosion implements Visualization {
     }
 
     @Override
-    public boolean is3D() {
-        return true;
-    }
-
-    @Override
     public void update(float[] freqArray) {
         if (fps < limitFPS) {
             nbCenter--;

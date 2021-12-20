@@ -73,11 +73,6 @@ public class Icosahedron implements Visualization {
     }
 
     @Override
-    public boolean is3D() {
-        return true;
-    }
-
-    @Override
     public void update(float[] freqArray) {
 
         float invNbSameIco = 1f / nbSameIcosahedron;

@@ -135,11 +135,6 @@ public class Snow implements Visualization {
     }
 
     @Override
-    public boolean is3D() {
-        return true;
-    }
-
-    @Override
     public void update(float[] freqArray) {
         updatePing(freqArray);
         updateIgloo(freqArray);
