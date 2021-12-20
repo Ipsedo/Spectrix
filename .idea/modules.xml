@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Spectrix.iml" filepath="$PROJECT_DIR$/Spectrix.iml" group="Spectrix" />
-      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="Spectrix/app" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Spectrix.iml" filepath="$PROJECT_DIR$/.idea/Spectrix.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Spectrix.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Spectrix.app.iml" />
     </modules>
   </component>
 </project>
