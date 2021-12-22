@@ -17,10 +17,6 @@ public class MyGvrActivity extends GvrActivity {
 
         Visualization visualization = VisualizationHelper.getVisualization(getIntent().getIntExtra(MainActivity.ID_RENDERER, 0));
 
-		/*if (!visualization.is3D()) {
-			throw new IllegalArgumentException("Unsuported Visualization : it is not a 3D visualization !");
-		}*/
-
         this.gvrView = new MyGvrView(this,
                 visualization,
                 getIntent().getBooleanExtra(MainActivity.IS_STREAM, true));
