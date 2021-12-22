@@ -14,11 +14,11 @@ import com.samuelberrien.spectrix.utils.Visualization;
 
 public class MyGvrView extends GvrView {
 
-    private Visualization visualization;
-    private GLStereoRenderer glStereoRenderer;
+    private final Visualization visualization;
+    private final GLStereoRenderer glStereoRenderer;
     private VisualizationThread updateVrThread;
 
-    private boolean listeningStream;
+    private final boolean listeningStream;
 
     public MyGvrView(Context context, Visualization visualization, boolean listeningStream) {
         super(context);
