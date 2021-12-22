@@ -18,10 +18,8 @@ import javax.microedition.khronos.egl.EGLDisplay;
 
 public class MyGLSurfaceView extends GLSurfaceView implements GLSurfaceView.EGLConfigChooser {
 
-    private Visualization visualization;
+    private final Visualization visualization;
     private VisualizationThread visualizationThread;
-
-    private GLRenderer glRenderer;
 
     private int currentListening;
 
@@ -34,7 +32,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements GLSurfaceView.EGLC
 
         setEGLConfigChooser(this);
 
-        glRenderer = new GLRenderer(getContext(), visualization, onVisualizationInitFinish);
+        GLRenderer glRenderer = new GLRenderer(getContext(), visualization, onVisualizationInitFinish);
         setRenderer(glRenderer);
         setOnTouchListener(glRenderer);
 
@@ -92,7 +90,7 @@ public class MyGLSurfaceView extends GLSurfaceView implements GLSurfaceView.EGLC
 
     @Override
     public boolean performClick() {
-        return true;
+        return super.performClick();
     }
 
     public void setListening(int listeningId) {
