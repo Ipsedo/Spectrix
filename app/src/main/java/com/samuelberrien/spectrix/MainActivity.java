@@ -14,7 +14,6 @@ import android.text.util.Linkify;
 import android.util.TypedValue;
 import android.view.GestureDetector;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.SubMenu;
@@ -166,21 +165,21 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String permissions[], @NonNull int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_RECORD_AUDIO: {
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    setUpDrawer();
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        if (requestCode == MY_PERMISSIONS_REQUEST_RECORD_AUDIO) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                setUpDrawer();
+            } else {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
+                    showSorryDialog();
                 } else {
-                    if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.RECORD_AUDIO)) {
-                        showSorryDialog();
-                    } else {
-                        showEndDialog();
-                    }
+                    showEndDialog();
                 }
-                break;
             }
         }
+
     }
 
     private void showEndDialog() {
@@ -220,7 +219,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onConfigurationChanged(Configuration newConfig) {
+    public void onConfigurationChanged(@NonNull Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         drawerToggle.onConfigurationChanged(newConfig);
         switchOrientation(newConfig.orientation);
@@ -255,10 +254,9 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                drawerLayout.openDrawer(GravityCompat.START);
-                return true;
+        if (item.getItemId() == android.R.id.home) {
+            drawerLayout.openDrawer(GravityCompat.START);
+            return true;
         }
         return super.onOptionsItemSelected(item);
     }
@@ -399,16 +397,16 @@ public class MainActivity extends AppCompatActivity
 
     private class ToolBarGestureListener extends GestureDetector.SimpleOnGestureListener {
 
-        private int LimitSwipeSpeed;
+        private final int limitSwipeSpeed;
 
         ToolBarGestureListener() {
-            LimitSwipeSpeed = 10;
+            limitSwipeSpeed = 10;
         }
 
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             float yDelta = e2.getY() - e1.getY();
-            if (yDelta < 0 && Math.abs(velocityY) > LimitSwipeSpeed) {
+            if (yDelta < 0 && Math.abs(velocityY) > limitSwipeSpeed) {
                 hideToolBar();
                 return true;
             } else {
@@ -430,11 +428,10 @@ public class MainActivity extends AppCompatActivity
 
     private class ButtonGestureListener extends GestureDetector.SimpleOnGestureListener {
 
-
-        private int LimitSwipeSpeed;
+        private final int limitSwipeSpeed;
 
         ButtonGestureListener() {
-            LimitSwipeSpeed = 10;
+            limitSwipeSpeed = 10;
         }
 
         @Override
@@ -445,7 +442,7 @@ public class MainActivity extends AppCompatActivity
         @Override
         public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
             float yDelta = e2.getY() - e1.getY();
-            if (yDelta > 0 && Math.abs(velocityY) > LimitSwipeSpeed) {
+            if (yDelta > 0 && Math.abs(velocityY) > limitSwipeSpeed) {
                 showToolBar();
                 return true;
             } else {
