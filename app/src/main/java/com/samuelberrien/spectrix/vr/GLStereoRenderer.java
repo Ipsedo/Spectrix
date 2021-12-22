@@ -21,26 +21,22 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
 
     protected Context context;
 
-    private final float Z_NEAR = 1f;
-    private final float Z_FAR = 50f;
+    private static final float Z_NEAR = 1f;
+    private static final float Z_FAR = 50f;
 
-    private float[] mProjectionMatrix = new float[16];
     private final float[] mViewMatrix = new float[16];
 
-    private float[] mHeadView = new float[16];
-    private float[] mCamera = new float[16];
+    private final float[] mHeadView = new float[16];
+    private final float[] mCamera = new float[16];
 
     private final float[] mLightPosInModelSpace = new float[]{0.0f, 0.0f, 0.0f, 1.0f};
     protected final float[] mLightPosInEyeSpace = new float[4];
     private final float[] mLightModelMatrix = new float[16];
     private final float[] mLightPosInWorldSpace = new float[4];
 
-    private Visualization visualization;
+    private final Visualization visualization;
     private float[] freqArray;
 
-    /**
-     * @param context
-     */
     GLStereoRenderer(Context context, Visualization visualization) {
         this.context = context;
         this.visualization = visualization;
@@ -89,7 +85,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
         // Apply the eye transformation to the camera.
         Matrix.multiplyMM(mViewMatrix, 0, eye.getEyeView(), 0, mCamera, 0);
 
-        mProjectionMatrix = eye.getPerspective(Z_NEAR, Z_FAR);
+        float[] mProjectionMatrix = eye.getPerspective(Z_NEAR, Z_FAR);
 
         updateLight(visualization.getLightPosition());
 
