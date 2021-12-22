@@ -16,8 +16,6 @@ public final class VisualizationHelper {
 
     public static Visualization getVisualization(int index) {
         switch (index) {
-            case 0:
-                return new Spectrum();
             case 1:
                 return new Icosahedron();
             case 2:
@@ -26,6 +24,7 @@ public final class VisualizationHelper {
                 return new Snow();
             case 4:
                 return new Room();
+            case 0:
             default:
                 return new Spectrum();
         }
