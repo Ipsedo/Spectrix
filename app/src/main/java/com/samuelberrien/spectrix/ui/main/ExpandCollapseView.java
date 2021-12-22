@@ -14,7 +14,7 @@ public final class ExpandCollapseView {
     private final View v;
     private final int duration;
     private final int height;
-    private AnimationListener listener;
+    private final AnimationListener listener;
 
     public ExpandCollapseView(View v, int duration, int widthMesureSpec, int heightMesureSpec, AnimationListener animationListener) {
         this.v = v;
@@ -28,13 +28,11 @@ public final class ExpandCollapseView {
         int prevHeight = 0;
         //v.setVisibility(View.VISIBLE);
         ValueAnimator valueAnimator = ValueAnimator.ofInt(prevHeight, height);
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
+        valueAnimator.addUpdateListener((ValueAnimator animation) -> {
                 v.getLayoutParams().height = (int) animation.getAnimatedValue();
                 v.requestLayout();
-            }
         });
+
         valueAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -46,6 +44,7 @@ public final class ExpandCollapseView {
                 listener.onExpandStart(v);
             }
         });
+
         valueAnimator.setInterpolator(new DecelerateInterpolator());
         valueAnimator.setDuration(duration);
         valueAnimator.start();
@@ -54,13 +53,11 @@ public final class ExpandCollapseView {
     public void collapse() {
         ValueAnimator valueAnimator = ValueAnimator.ofInt(height, 0);
         valueAnimator.setInterpolator(new DecelerateInterpolator());
-        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
+        valueAnimator.addUpdateListener((ValueAnimator animation) -> {
                 v.getLayoutParams().height = (int) animation.getAnimatedValue();
                 v.requestLayout();
-            }
         });
+
         valueAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
@@ -72,6 +69,7 @@ public final class ExpandCollapseView {
                 listener.onCollapseStart(v);
             }
         });
+
         valueAnimator.setInterpolator(new DecelerateInterpolator());
         valueAnimator.setDuration(duration);
         valueAnimator.start();
