@@ -24,6 +24,6 @@ public class ShowToolBarButton extends AppCompatButton {
 
     @Override
     public boolean performClick() {
-        return true;
+        return super.performClick();
     }
 }
