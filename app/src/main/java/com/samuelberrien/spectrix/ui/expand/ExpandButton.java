@@ -33,11 +33,7 @@ public class ExpandButton extends LinearLayout {
         setOrientation(HORIZONTAL);
         setLayoutTransition(new LayoutTransition());
 
-        onExpandListener = new Runnable() {
-            @Override
-            public void run() {
-            }
-        };
+        onExpandListener = () -> {};
 
         mainButton = new Button(context);
         mainButton.setAllCaps(false);
@@ -49,19 +45,11 @@ public class ExpandButton extends LinearLayout {
         confirmButton.setBackground(ContextCompat.getDrawable(context, R.drawable.start_button));
         confirmButton.setText("GO");
 
-        confirmButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onConfirm.run();
-            }
-        });
+        confirmButton.setOnClickListener((View v) -> onConfirm.run());
 
-        mainButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        mainButton.setOnClickListener((View v) -> {
                 onExpandListener.run();
                 confirmButton.setVisibility(VISIBLE);
-            }
         });
 
         LayoutParams layoutParams = new LayoutParams(
