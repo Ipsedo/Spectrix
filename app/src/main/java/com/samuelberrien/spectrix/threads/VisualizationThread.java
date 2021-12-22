@@ -14,7 +14,7 @@ public abstract class VisualizationThread extends Thread {
     public static final int MIC_MUSIC = 1;
     public static final int NONE = 3;
 
-    private Visualization visualization;
+    private final Visualization visualization;
 
     private boolean isCanceled;
 
@@ -50,8 +50,6 @@ public abstract class VisualizationThread extends Thread {
             } catch (InterruptedException ie) {
                 ie.printStackTrace();
             }
-            //System.out.println("Update/s : " + 1000L / (System.currentTimeMillis() - lastTime));
-            //lastTime = System.currentTimeMillis();
         }
 
         onEnd();
