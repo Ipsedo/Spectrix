@@ -13,9 +13,9 @@ import com.samuelberrien.spectrix.utils.Visualization;
 
 public class MicThread extends VisualizationThread {
 
-    private AudioRecord audioRecord;
-    private int bufferSize;
-    private FFT fft;
+    private final AudioRecord audioRecord;
+    private final int bufferSize;
+    private final FFT fft;
 
     public MicThread(Visualization visualization) {
         super("MicThread", visualization);
@@ -27,8 +27,13 @@ public class MicThread extends VisualizationThread {
         bufferSize = 1024;
         fft = new FFT(bufferSize);
 
-        audioRecord = new AudioRecord(audioSource, sampleRateInHz, channelConfig, audioEncoding, bufferSize);
-        audioRecord.startRecording();
+        try {
+            audioRecord = new AudioRecord(audioSource, sampleRateInHz, channelConfig, audioEncoding, bufferSize);
+            audioRecord.startRecording();
+        } catch (SecurityException se) {
+            se.printStackTrace();
+            throw new RuntimeException("Error when create AudioRecord");
+        }
     }
 
     @Override
