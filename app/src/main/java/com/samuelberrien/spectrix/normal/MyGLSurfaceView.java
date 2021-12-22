@@ -2,6 +2,7 @@ package com.samuelberrien.spectrix.normal;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
+import android.view.MotionEvent;
 
 import com.samuelberrien.spectrix.threads.MicThread;
 import com.samuelberrien.spectrix.threads.StreamThread;
@@ -82,15 +83,15 @@ public class MyGLSurfaceView extends GLSurfaceView implements GLSurfaceView.EGLC
 
 	/*@Override
 	public boolean onTouchEvent(MotionEvent e) {
-		if (glRenderer3D != null)
-			glRenderer3D.onTouchEvent(e);
+		this.performClick();
 
 		return true;
 	}*/
 
     @Override
     public boolean performClick() {
-        return super.performClick();
+        super.performClick();
+        return true;
     }
 
     public void setListening(int listeningId) {

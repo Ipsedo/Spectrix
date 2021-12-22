@@ -26,7 +26,8 @@ public class SpectrixToolBar extends Toolbar {
 
     @Override
     public boolean performClick() {
-        return super.performClick();
+        super.performClick();
+        return true;
     }
 
 }
