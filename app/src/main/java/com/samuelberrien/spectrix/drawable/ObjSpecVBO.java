@@ -116,7 +116,7 @@ public class ObjSpecVBO {
     }
 
     private void bindBuffer() {
-        final int buffers[] = new int[1];
+        final int[] buffers = new int[1];
         GLES20.glGenBuffers(1, buffers, 0);
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);

@@ -47,8 +47,8 @@ public class ObjVBO {
     private int mDistanceCoefHandle;
     private int mLightCoefHandle;
 
-    private float lightCoef;
-    private float distanceCoef;
+    private final float lightCoef;
+    private final float distanceCoef;
 
     /**
      * @param context           the application context
@@ -137,7 +137,7 @@ public class ObjVBO {
     }
 
     private void bindBuffer() {
-        final int buffers[] = new int[1];
+        final int[] buffers = new int[1];
         GLES20.glGenBuffers(1, buffers, 0);
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);

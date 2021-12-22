@@ -42,14 +42,12 @@ public class ObjMtlVBO {
                     + COLOR_DATA_SIZE * 3
                     + SHININESS_DATA_SIZE) * BYTES_PER_FLOAT;
 
-    private HashMap<String, float[]> mtlAmbColor = new HashMap<>();
-    private HashMap<String, float[]> mtlDiffColor = new HashMap<>();
-    private HashMap<String, float[]> mtlSpecColor = new HashMap<>();
-    private HashMap<String, Float> mtlSpecShininess = new HashMap<>();
+    private final HashMap<String, float[]> mtlAmbColor = new HashMap<>();
+    private final HashMap<String, float[]> mtlDiffColor = new HashMap<>();
+    private final HashMap<String, float[]> mtlSpecColor = new HashMap<>();
+    private final HashMap<String, Float> mtlSpecShininess = new HashMap<>();
 
     private FloatBuffer packedDataBuffer;
-
-    private float[] randomDiffRGB = new float[3];
 
     private int packedDataBufferId;
 
@@ -67,8 +65,8 @@ public class ObjMtlVBO {
     private int mDistanceCoefHandle;
     private int mLightCoefHandle;
 
-    private float lightCoef;
-    private float distanceCoef;
+    private final float lightCoef;
+    private final float distanceCoef;
 
     private int nbVertex;
 
@@ -164,7 +162,7 @@ public class ObjMtlVBO {
     }
 
     private void bindBuffer() {
-        final int buffers[] = new int[1];
+        final int[] buffers = new int[1];
         GLES20.glGenBuffers(1, buffers, 0);
 
         GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, buffers[0]);
@@ -314,10 +312,6 @@ public class ObjMtlVBO {
                 specBlue = mtlSpecColor.get(mtlToUse.get(i))[2];
             }
 
-            randomDiffRGB[0] = diffRed;
-            randomDiffRGB[1] = diffGreen;
-            randomDiffRGB[2] = diffBlue;
-
             for (int j = 0; j < allVertexDrawOrderList.get(i).size(); j++) {
                 objPackedData.add(
                         currVertixsList.get(
@@ -373,12 +367,6 @@ public class ObjMtlVBO {
 
     }
 
-    public void changeColor() {
-        int tmp = mSpecColorHandle;
-        mSpecColorHandle = mDiffColorHandle;
-        mDiffColorHandle = tmp;
-    }
-
     public void draw(float[] mvpMatrix,
                      float[] mvMatrix,
                      float[] mLightPosInEyeSpace,
@@ -432,9 +420,5 @@ public class ObjMtlVBO {
         GLES20.glDrawArrays(GLES20.GL_TRIANGLES, 0, nbVertex);
 
         GLES20.glDisableVertexAttribArray(mPositionHandle);
-    }
-
-    public float[] getRandomMtlDiffRGB() {
-        return randomDiffRGB;
     }
 }
