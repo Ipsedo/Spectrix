@@ -20,7 +20,7 @@ import javax.microedition.khronos.opengles.GL10;
 
 public class GLRenderer implements GLSurfaceView.Renderer, RotationGestureDetector.OnRotationGestureListener, View.OnTouchListener {
 
-    private Visualization visualization;
+    private final Visualization visualization;
 
     protected Context context;
 
@@ -44,20 +44,20 @@ public class GLRenderer implements GLSurfaceView.Renderer, RotationGestureDetect
     private float mPreviousX;
     private float mPreviousY;
 
-    private float[] cameraRotation;
+    private final float[] cameraRotation;
 
     private boolean otherPointerUp;
 
-    private ScaleGestureDetector myScaleGestureDetector;
+    private final ScaleGestureDetector myScaleGestureDetector;
 
     private float rollAngle;
     private float rollDelta;
 
     //private long lastTime;
 
-    private RotationGestureDetector rotationGestureDetector;
+    private final RotationGestureDetector rotationGestureDetector;
 
-    private MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish;
+    private final MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish;
 
     GLRenderer(Context context, Visualization visualization, MyGLSurfaceView.OnVisualizationInitFinish onVisualizationInitFinish) {
         this.context = context;
@@ -142,9 +142,6 @@ public class GLRenderer implements GLSurfaceView.Renderer, RotationGestureDetect
         Matrix.perspectiveM(mProjectionMatrix, 0, projectionAngle, ratio, 1, 50f);
 
         visualization.draw(mProjectionMatrix.clone(), mViewMatrix.clone(), mLightPosInEyeSpace.clone(), mCameraPosition.clone());
-
-        //System.out.println("FPS : " + 1000L / (System.currentTimeMillis() - lastTime));
-        //lastTime = System.currentTimeMillis();
     }
 
     private void updateLight(float[] xyz) {
@@ -192,6 +189,7 @@ public class GLRenderer implements GLSurfaceView.Renderer, RotationGestureDetect
                 mPreviousY = event.getY(0) + 1f;
                 break;
             case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_POINTER_UP:
                 otherPointerUp = true;
                 break;
             case MotionEvent.ACTION_MOVE:
@@ -220,9 +218,6 @@ public class GLRenderer implements GLSurfaceView.Renderer, RotationGestureDetect
                 Matrix.multiplyMM(yaw, 0, yaw.clone(), 0, pitch, 0);
 
                 Matrix.multiplyMM(cameraRotation, 0, cameraRotation.clone(), 0, yaw, 0);
-                break;
-            case MotionEvent.ACTION_POINTER_UP:
-                otherPointerUp = true;
                 break;
             case MotionEvent.ACTION_POINTER_DOWN:
                 moyX = 0;
@@ -259,13 +254,12 @@ public class GLRenderer implements GLSurfaceView.Renderer, RotationGestureDetect
         public boolean onScale(ScaleGestureDetector detector) {
             float toAdd;
             if (detector.getScaleFactor() < 1f) {
-                toAdd = TOUCH_SCALE_FACTOR_ZOOM * 1f / detector.getScaleFactor();
+                toAdd = TOUCH_SCALE_FACTOR_ZOOM / detector.getScaleFactor();
             } else {
                 toAdd = -TOUCH_SCALE_FACTOR_ZOOM * detector.getScaleFactor();
             }
-            projectionAngle = toAdd + projectionAngle > 120f ?
-                    120f : toAdd + projectionAngle < 10f ?
-                    10f : toAdd + projectionAngle;
+
+            projectionAngle = Math.min(120.f, Math.max(10.f, toAdd + projectionAngle));
 
             return true;
         }
