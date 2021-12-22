@@ -13,10 +13,8 @@ import java.util.Random;
 
 public class Explosion implements Visualization {
 
-    private Context context;
-
-    private final float LIGHTAUGMENTATION = 1f;
-    private final float DISTANCECOEFF = 0f;
+    private static final float LIGHTAUGMENTATION = 1f;
+    private static final float DISTANCECOEFF = 0f;
 
     private Random rand;
 
@@ -48,7 +46,6 @@ public class Explosion implements Visualization {
 
     @Override
     public void init(Context context, boolean isVR) {
-        this.context = context;
         rand = new Random(System.currentTimeMillis());
         minDist = 5f;
         rangeDist = 2.5f;
@@ -57,9 +54,9 @@ public class Explosion implements Visualization {
         mCenterColor = new float[nbSameCenter * nbCenter][4];
         nbMaxOctagonePerExplosion = !isVR ? 5 : 2;
         mCenterPoint = new float[nbCenter * nbSameCenter][3];
-        octagone = new ObjVBO(this.context, "obj/octagone.obj", 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
+        octagone = new ObjVBO(context, "obj/octagone.obj", 1f, 1f, 1f, LIGHTAUGMENTATION, DISTANCECOEFF);
         maxOctagonSpeed = 1f;
-        mOctagone = Collections.synchronizedList(new ArrayList<Octagone>());
+        mOctagone = Collections.synchronizedList(new ArrayList<>());
 
         setupCenter();
 
@@ -101,8 +98,7 @@ public class Explosion implements Visualization {
     public void draw(float[] mProjectionMatrix, float[] mViewMatrix, float[] mLightPosInEyeSpace, float[] mCameraPosition) {
         float[] tmpModelViewMatrix = new float[16];
         float[] tmpModelViewProjectionMatrix = new float[16];
-        ArrayList<Octagone> octagones = new ArrayList<>();
-        octagones.addAll(mOctagone);
+        ArrayList<Octagone> octagones = new ArrayList<>(mOctagone);
         for (Octagone o : octagones) {
             Matrix.multiplyMM(tmpModelViewMatrix, 0, mViewMatrix, 0, o.getmOctagoneModelMatrix(), 0);
             Matrix.multiplyMM(tmpModelViewProjectionMatrix, 0, mProjectionMatrix, 0, tmpModelViewMatrix, 0);
@@ -136,12 +132,6 @@ public class Explosion implements Visualization {
         }
     }
 
-    /**
-     * @param center
-     * @param magn
-     * @param indiceFreq
-     * @param indCenter
-     */
     private void addNewOctagone(float[] center, float magn, int indiceFreq, int indCenter) {
         double phi = rand.nextDouble() * Math.PI * 2;
         double theta = rand.nextDouble() * Math.PI * 2;
@@ -163,7 +153,7 @@ public class Explosion implements Visualization {
         for (int i = 0; i < tmpFreqArray.length; i++) {
             float max = 0;
             for (int j = i * nbSameFreq; j < (i + 1) * nbSameFreq; j++) {
-                max = max < freqArray[j] ? freqArray[j] : max;
+                max = Math.max(freqArray[j], max);
             }
             tmpFreqArray[i] = max;
         }
