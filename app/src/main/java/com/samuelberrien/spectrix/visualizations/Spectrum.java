@@ -12,7 +12,7 @@ public class Spectrum implements Visualization {
 
     private boolean isInit;
 
-    private static int NbSquare = 256;
+    private static final int NbSquare = 256;
 
     private ObjVBO cubeVR;
     private float[][] mCubeRotations;
