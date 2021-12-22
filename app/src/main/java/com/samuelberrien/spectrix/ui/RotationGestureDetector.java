@@ -14,7 +14,7 @@ public class RotationGestureDetector {
     private float mAngle;
     private boolean reinitPositions;
 
-    private OnRotationGestureListener mListener;
+    private final OnRotationGestureListener mListener;
 
     public float getAngle() {
         return mAngle;
@@ -59,8 +59,6 @@ public class RotationGestureDetector {
                 }
                 break;
             case MotionEvent.ACTION_UP:
-                reinitPositions = true;
-                break;
             case MotionEvent.ACTION_POINTER_UP:
                 reinitPositions = true;
                 break;
