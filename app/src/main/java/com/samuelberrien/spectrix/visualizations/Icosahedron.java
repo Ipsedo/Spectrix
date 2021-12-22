@@ -16,7 +16,7 @@ public class Icosahedron implements Visualization {
 
     private Context context;
 
-    private final float DISTANCECOEFF = 0.001f;
+    private static final float DISTANCECOEFF = 0.001f;
 
     private Random rand;
 
@@ -84,7 +84,7 @@ public class Icosahedron implements Visualization {
         for (int i = 0; i < tmpFreqArray.length; i++) {
             float max = 0;
             for (int j = i * nbSameFreq; j < (i + 1) * nbSameFreq; j++) {
-                max = max < freqArray[j] ? freqArray[j] : max;
+                max = Math.max(freqArray[j], max);
             }
             tmpFreqArray[i] = max;
         }
@@ -164,7 +164,7 @@ public class Icosahedron implements Visualization {
         icosahedron = new ObjSpecVBO(context, "obj/icosahedron/icosahedron_obj.obj", DISTANCECOEFF);
         for (int i = 0; i < nbIcosahedron * nbSameIcosahedron; i++) {
 
-            mScale[i] = (nbIcosahedron - i / nbSameIcosahedron) * 0.005f + 0.5f;
+            mScale[i] = (nbIcosahedron - (float) i / nbSameIcosahedron) * 0.005f + 0.5f;
 
             float maxRange = rand.nextFloat() * rangeDist + minDist;
             double phi;
