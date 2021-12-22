@@ -12,7 +12,6 @@ public class StreamThread extends VisualizationThread {
 
     protected Visualizer visualizer;
 
-
     public StreamThread(Visualization visualization) {
         super("StreamThread", visualization);
 
