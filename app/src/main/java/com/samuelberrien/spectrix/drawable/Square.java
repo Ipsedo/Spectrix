@@ -1,4 +1,4 @@
-package com.samuelberrien.spectrix.visualizations;
+package com.samuelberrien.spectrix.drawable;
 
 import android.opengl.GLES20;
 
