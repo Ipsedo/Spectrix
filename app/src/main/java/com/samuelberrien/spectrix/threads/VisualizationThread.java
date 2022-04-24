@@ -1,5 +1,7 @@
 package com.samuelberrien.spectrix.threads;
 
+import androidx.core.util.Pair;
+
 import com.samuelberrien.spectrix.utils.Visualization;
 
 /**
@@ -18,13 +20,10 @@ public abstract class VisualizationThread extends Thread {
 
     private boolean isCanceled;
 
-    //private long lastTime;
-
     VisualizationThread(String name, Visualization visualization) {
         super(name);
         this.visualization = visualization;
         isCanceled = false;
-        //lastTime = System.currentTimeMillis();
     }
 
     public void cancel() {
@@ -59,7 +58,7 @@ public abstract class VisualizationThread extends Thread {
 
     protected abstract void onEnd();
 
-    protected abstract float[] getFrequencyMagns();
+    protected abstract Pair<float[], float[]> getFrequency();
 
     protected abstract Long getTimeToWait();
 

@@ -134,32 +134,32 @@ public class Room implements Visualization {
     }
 
     @Override
-    public void update(float[] freqArray) {
+    public void update(float[] magnArray, float[] phaseArray) {
         updateMurs();
 
-        updateCadreD(freqArray);
-        updateCadreG(freqArray);
-        updateCadreM(freqArray);
-        updateCadreAD(freqArray);
-        updateCadreAG(freqArray);
-        updateCadreAM(freqArray);
+        updateCadreD(magnArray);
+        updateCadreG(magnArray);
+        updateCadreM(magnArray);
+        updateCadreAD(magnArray);
+        updateCadreAG(magnArray);
+        updateCadreAM(magnArray);
 
-        updateLampeChevetD(freqArray);
-        updateLampeChevetG(freqArray);
+        updateLampeChevetD(magnArray);
+        updateLampeChevetG(magnArray);
 
-        updateLampePlafond(freqArray);
+        updateLampePlafond(magnArray);
 
-        updateLit2Places(freqArray);
+        updateLit2Places(magnArray);
 
-        updateOreillerD(freqArray);
-        updateOreillerG(freqArray);
+        updateOreillerD(magnArray);
+        updateOreillerG(magnArray);
 
-        updatePorte(freqArray);
+        updatePorte(magnArray);
 
-        updateStores(freqArray);
+        updateStores(magnArray);
 
-        updateTableChevetD(freqArray);
-        updateTableChevetG(freqArray);
+        updateTableChevetD(magnArray);
+        updateTableChevetG(magnArray);
 
         count();
     }

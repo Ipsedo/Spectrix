@@ -4,6 +4,8 @@ import android.media.AudioFormat;
 import android.media.AudioRecord;
 import android.media.MediaRecorder;
 
+import androidx.core.util.Pair;
+
 import com.samuelberrien.spectrix.utils.FFT;
 import com.samuelberrien.spectrix.utils.Visualization;
 
@@ -38,7 +40,8 @@ public class MicThread extends VisualizationThread {
 
     @Override
     protected void work(Visualization visualization) {
-        visualization.update(getFrequencyMagns());
+        Pair<float[], float[]> magnPhase = getFrequency();
+        visualization.update(magnPhase.first, magnPhase.second);
     }
 
     @Override
@@ -48,7 +51,7 @@ public class MicThread extends VisualizationThread {
     }
 
     @Override
-    protected float[] getFrequencyMagns() {
+    protected Pair<float[], float[]> getFrequency() {
         short[] buffer = new short[bufferSize];
         audioRecord.read(buffer, 0, bufferSize);
 
@@ -60,15 +63,18 @@ public class MicThread extends VisualizationThread {
 
         fft.fft(real, img);
 
-        float[] fft = new float[real.length];
-        for (int i = 0; i < fft.length; i++) {
+        float[] magn = new float[real.length];
+        float[] phase = new float[real.length];
+        for (int i = 0; i < magn.length; i++) {
             float x = (float) real[i];
             float y = (float) img[i];
-            fft[i] = x * x + y * y;
-            fft[i] = Math.min(fft[i] + (float) (0.9 * fft[i] * Math.tanh(i - 256.f)), 2.f);
+            magn[i] = x * x + y * y;
+            magn[i] = Math.min(magn[i] + (float) (0.9 * magn[i] * Math.tanh(i - 256.f)), 2.f);
+
+            phase[i] = (float) Math.atan(y / x);
         }
 
-        return fft;
+        return new Pair<>(magn, phase);
     }
 
     private int getValidSampleRates() {

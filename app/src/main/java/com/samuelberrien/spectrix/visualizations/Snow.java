@@ -135,13 +135,13 @@ public class Snow implements Visualization {
     }
 
     @Override
-    public void update(float[] freqArray) {
-        updatePing(freqArray);
-        updateIgloo(freqArray);
-        updateWhale(freqArray);
-        updateOctagone(freqArray);
+    public void update(float[] magnArray, float[] phaseArray) {
+        updatePing(magnArray);
+        updateIgloo(magnArray);
+        updateWhale(magnArray);
+        updateOctagone(magnArray);
         updateMountains();
-        updateTree(freqArray);
+        updateTree(magnArray);
         count();
     }
 

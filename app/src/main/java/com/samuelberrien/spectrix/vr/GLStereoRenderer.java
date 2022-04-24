@@ -35,12 +35,14 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
     private final float[] mLightPosInWorldSpace = new float[4];
 
     private final Visualization visualization;
-    private float[] freqArray;
+    private float[] magnArray;
+    private float[] phaseArray;
 
     GLStereoRenderer(Context context, Visualization visualization) {
         this.context = context;
         this.visualization = visualization;
-        freqArray = new float[Visualizer.getCaptureSizeRange()[1]];
+        magnArray = new float[Visualizer.getCaptureSizeRange()[1]];
+        phaseArray = new float[Visualizer.getCaptureSizeRange()[1]];
     }
 
     @Override
@@ -62,7 +64,7 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
         Matrix.setIdentityM(mCamera, 0);
         Matrix.setLookAtM(mCamera, 0, camPos[0], camPos[1], camPos[2], camDir[0] + camPos[0], camDir[1] + camPos[1], camDir[2] + camPos[2], 0.0f, 1.0f, 0.0f);
         headTransform.getHeadView(mHeadView, 0);
-        visualization.update(freqArray);
+        visualization.update(magnArray, phaseArray);
     }
 
     private void updateLight(float[] xyz) {
@@ -106,7 +108,8 @@ public class GLStereoRenderer implements GvrView.StereoRenderer {
     public void onRendererShutdown() {
     }
 
-    void updateFreqArray(float[] newFreqArray) {
-        freqArray = newFreqArray;
+    void updateFreqArray(float[] newMagnArray, float[] newPhaseArray) {
+        magnArray = newMagnArray;
+        phaseArray = newPhaseArray;
     }
 }

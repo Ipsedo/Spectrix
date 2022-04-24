@@ -11,7 +11,7 @@ public interface Visualization {
 
     boolean isInit();
 
-    void update(float[] freqArray);
+    void update(float[] magnArray, float[] phaseArray);
 
     float[] getCameraPosition();
 

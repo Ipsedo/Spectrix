@@ -73,7 +73,7 @@ public class Icosahedron implements Visualization {
     }
 
     @Override
-    public void update(float[] freqArray) {
+    public void update(float[] magnArray, float[] phaseArray) {
 
         float invNbSameIco = 1f / nbSameIcosahedron;
         float[] mModelMatrix = new float[16];
@@ -84,7 +84,7 @@ public class Icosahedron implements Visualization {
         for (int i = 0; i < tmpFreqArray.length; i++) {
             float max = 0;
             for (int j = i * nbSameFreq; j < (i + 1) * nbSameFreq; j++) {
-                max = Math.max(freqArray[j], max);
+                max = Math.max(magnArray[j], max);
             }
             tmpFreqArray[i] = max;
         }

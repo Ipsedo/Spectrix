@@ -2,6 +2,8 @@ package com.samuelberrien.spectrix.vr;
 
 import android.content.Context;
 
+import androidx.core.util.Pair;
+
 import com.google.vr.sdk.base.GvrView;
 import com.samuelberrien.spectrix.threads.MicThread;
 import com.samuelberrien.spectrix.threads.StreamThread;
@@ -68,7 +70,8 @@ public class MyGvrView extends GvrView {
 
         @Override
         protected void work(Visualization visualization) {
-            glStereoRenderer.updateFreqArray(getFrequencyMagns());
+            Pair<float[], float[]> magnPhase = getFrequency();
+            glStereoRenderer.updateFreqArray(magnPhase.first, magnPhase.second);
         }
     }
 
@@ -80,7 +83,8 @@ public class MyGvrView extends GvrView {
 
         @Override
         public void work(Visualization visualization) {
-            glStereoRenderer.updateFreqArray(getFrequencyMagns());
+            Pair<float[], float[]> magnPhase = getFrequency();
+            glStereoRenderer.updateFreqArray(magnPhase.first, magnPhase.second);
         }
     }
 }

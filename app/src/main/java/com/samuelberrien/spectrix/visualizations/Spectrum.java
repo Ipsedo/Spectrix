@@ -48,7 +48,7 @@ public class Spectrum implements Visualization {
     }
 
     @Override
-    public void update(float[] freqArray) {
+    public void update(float[] magnArray, float[] phaseArray) {
         float[] mModelMatrix = new float[16];
 
         float scaleH = 1.5f;
@@ -64,7 +64,7 @@ public class Spectrum implements Visualization {
 
             Matrix.multiplyMM(mModelMatrix, 0, mCubeRotations[idx1], 0, mModelMatrix.clone(), 0);
 
-            Matrix.scaleM(mModelMatrix, 0, scale, scaleH * freqArray[i], scale);
+            Matrix.scaleM(mModelMatrix, 0, scale, scaleH * magnArray[i], scale);
 
             mCubeModelMatrix[idx1] = mModelMatrix.clone();
 
@@ -74,7 +74,7 @@ public class Spectrum implements Visualization {
 
             Matrix.multiplyMM(mModelMatrix, 0, mCubeRotations[idx2], 0, mModelMatrix.clone(), 0);
 
-            Matrix.scaleM(mModelMatrix, 0, scale, scaleH * freqArray[i], scale);
+            Matrix.scaleM(mModelMatrix, 0, scale, scaleH * magnArray[i], scale);
 
             mCubeModelMatrix[idx2] = mModelMatrix.clone();
         }

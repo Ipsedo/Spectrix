@@ -69,13 +69,13 @@ public class Explosion implements Visualization {
     }
 
     @Override
-    public void update(float[] freqArray) {
+    public void update(float[] magnArray, float[] phaseArray) {
         if (fps < limitFPS) {
             nbCenter = Math.max(1, nbCenter - 1);
         }
 
         deleteOldOctagone();
-        createNewOctagones(freqArray);
+        createNewOctagones(magnArray);
         moveOctagone();
     }
 
@@ -170,9 +170,6 @@ public class Explosion implements Visualization {
         }
     }
 
-    /**
-     *
-     */
     private void deleteOldOctagone() {
         for (int i = mOctagone.size() - 1; i >= 0; i--) {
             if (mOctagone.get(i).getSpeedVectorNorm() < 0.2f) {
@@ -181,12 +178,87 @@ public class Explosion implements Visualization {
         }
     }
 
-    /**
-     *
-     */
     private void moveOctagone() {
         ArrayList<Octagone> octagones = new ArrayList<>(mOctagone);
         for (Octagone o : octagones)
             o.move();
+    }
+
+    public static class Octagone {
+
+        private final float mOctagoneScale;
+        private float mOctagoneAngle;
+        private final float[] mOctagoneRotationOrientation;
+        private final float[] mOctagoneRotationMatrix;
+        private float[] mOctagoneTranslateVector;
+        private float[] mOctagoneSpeedVector;
+        private float[] mOctagoneModelMatrix;
+        private final float[] mOctagoneColor;
+
+        public Octagone(float mOctagoneScale, float mOctagoneAngle, float[] mOctagoneRotationOrientation, float[] mOctagoneTranslateVector, float[] mOctagoneSpeedVector, float[] mOctagoneColor) {
+            this.mOctagoneAngle = mOctagoneAngle;
+            this.mOctagoneScale = mOctagoneScale;
+            this.mOctagoneRotationOrientation = mOctagoneRotationOrientation;
+            this.mOctagoneTranslateVector = mOctagoneTranslateVector;
+            this.mOctagoneSpeedVector = mOctagoneSpeedVector;
+            this.mOctagoneColor = mOctagoneColor;
+            this.mOctagoneRotationMatrix = new float[16];
+            this.mOctagoneModelMatrix = new float[16];
+        }
+
+        public void move() {
+            float[] tmp = this.mOctagoneSpeedVector;
+            this.mOctagoneSpeedVector = new float[]{
+                    tmp[0] * 0.5f,
+                    tmp[1] * 0.5f,
+                    tmp[2] * 0.5f
+            };
+
+            tmp = this.mOctagoneTranslateVector;
+
+            this.mOctagoneTranslateVector = new float[]{
+                    tmp[0] + this.mOctagoneSpeedVector[0],
+                    tmp[1] + this.mOctagoneSpeedVector[1],
+                    tmp[2] + this.mOctagoneSpeedVector[2]
+            };
+
+            this.mOctagoneAngle = this.mOctagoneAngle + 1f;
+
+            float[] mModelMatrix = new float[16];
+            Matrix.setIdentityM(mModelMatrix, 0);
+
+            Matrix.translateM(
+                    mModelMatrix, 0,
+                    this.mOctagoneTranslateVector[0],
+                    this.mOctagoneTranslateVector[1],
+                    this.mOctagoneTranslateVector[2]
+            );
+
+            Matrix.setRotateM(
+                    this.mOctagoneRotationMatrix, 0,
+                    this.mOctagoneAngle,
+                    this.mOctagoneRotationOrientation[0],
+                    this.mOctagoneRotationOrientation[1],
+                    this.mOctagoneRotationOrientation[2]
+            );
+
+            float[] tmpMat = mModelMatrix.clone();
+            Matrix.multiplyMM(mModelMatrix, 0, tmpMat, 0, this.mOctagoneRotationMatrix, 0);
+            Matrix.scaleM(mModelMatrix, 0, this.mOctagoneScale, this.mOctagoneScale, this.mOctagoneScale);
+
+            this.mOctagoneModelMatrix = mModelMatrix.clone();
+        }
+
+        public float[] getmOctagoneModelMatrix() {
+            return this.mOctagoneModelMatrix;
+        }
+
+        public float[] getmOctagoneColor() {
+            return this.mOctagoneColor;
+        }
+
+        public double getSpeedVectorNorm() {
+            return Matrix.length(this.mOctagoneSpeedVector[0], this.mOctagoneSpeedVector[1], this.mOctagoneSpeedVector[2]);
+        }
     }
 }

@@ -2,6 +2,8 @@ package com.samuelberrien.spectrix.threads;
 
 import android.media.audiofx.Visualizer;
 
+import androidx.core.util.Pair;
+
 import com.samuelberrien.spectrix.utils.Visualization;
 
 /**
@@ -22,7 +24,8 @@ public class StreamThread extends VisualizationThread {
 
     @Override
     protected void work(Visualization visualization) {
-        visualization.update(getFrequencyMagns());
+        Pair<float[], float[]> magnPhase = getFrequency();
+        visualization.update(magnPhase.first, magnPhase.second);
     }
 
     @Override
@@ -31,19 +34,23 @@ public class StreamThread extends VisualizationThread {
     }
 
     @Override
-    protected float[] getFrequencyMagns() {
+    protected Pair<float[], float[]> getFrequency() {
         byte[] bytes = new byte[visualizer.getCaptureSize()];
         visualizer.getFft(bytes);
-        float[] fft = new float[bytes.length / 2];
+        float[] magn = new float[bytes.length / 2];
+        float[] phase = new float[bytes.length / 2];
 
         float inv128f = 1f / 128f;
-        for (int i = 0; i < fft.length; i++) {
+        for (int i = 0; i < magn.length; i++) {
             float real = (float) (bytes[i * 2]) * inv128f;
             float imag = (float) (bytes[i * 2 + 1]) * inv128f;
-            fft[i] = (real * real) + (imag * imag);
-            fft[i] += fft[i] * i * 0.3f;
+
+            magn[i] = (real * real) + (imag * imag);
+            magn[i] += magn[i] * i * 0.3f;
+
+            phase[i] = (float) Math.atan(imag / real);
         }
-        return fft;
+        return new Pair<>(magn, phase);
     }
 
     @Override
