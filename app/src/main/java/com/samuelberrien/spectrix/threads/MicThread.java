@@ -16,6 +16,7 @@ public class MicThread extends VisualizationThread {
     private final AudioRecord audioRecord;
     private final int bufferSize;
     private final FFT fft;
+    private final int sampleRate;
 
     public MicThread(Visualization visualization) {
         super("MicThread", visualization);
@@ -23,12 +24,12 @@ public class MicThread extends VisualizationThread {
         int audioSource = MediaRecorder.AudioSource.MIC;    // Audio source is the device MIC
         int channelConfig = AudioFormat.CHANNEL_IN_MONO;    // Recording in mono
         int audioEncoding = AudioFormat.ENCODING_PCM_16BIT; // Records in 16bit
-        int sampleRateInHz = getValidSampleRates();
+        sampleRate = getValidSampleRates();
         bufferSize = 1024;
         fft = new FFT(bufferSize);
 
         try {
-            audioRecord = new AudioRecord(audioSource, sampleRateInHz, channelConfig, audioEncoding, bufferSize);
+            audioRecord = new AudioRecord(audioSource, sampleRate, channelConfig, audioEncoding, bufferSize);
             audioRecord.startRecording();
         } catch (SecurityException se) {
             se.printStackTrace();
@@ -61,11 +62,14 @@ public class MicThread extends VisualizationThread {
         fft.fft(real, img);
 
         float[] fft = new float[real.length];
+
+        float maxMagn = 0.f;
+
         for (int i = 0; i < fft.length; i++) {
             float x = (float) real[i];
             float y = (float) img[i];
-            fft[i] = x * x + y * y;
-            fft[i] = Math.min(fft[i] + (float) (0.9 * fft[i] * Math.tanh(i - 256.f)), 2.f);
+
+            fft[i] = (x * x + y * y) * getBarkScale(i, bufferSize);
         }
 
         return fft;
@@ -85,6 +89,11 @@ public class MicThread extends VisualizationThread {
 
     @Override
     protected Long getTimeToWait() {
-        return 10L;
+        return 30L;
+    }
+
+    @Override
+    protected int getSampleRate() {
+        return sampleRate;
     }
 }

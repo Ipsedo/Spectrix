@@ -41,7 +41,8 @@ public class StreamThread extends VisualizationThread {
             float real = (float) (bytes[i * 2]) * inv128f;
             float imag = (float) (bytes[i * 2 + 1]) * inv128f;
             fft[i] = (real * real) + (imag * imag);
-            fft[i] += fft[i] * i * 0.3f;
+            //fft[i] += fft[i] * i * 0.3f;
+            fft[i] = fft[i] * getBarkScale(i, fft.length);
         }
         return fft;
     }
@@ -49,5 +50,10 @@ public class StreamThread extends VisualizationThread {
     @Override
     protected Long getTimeToWait() {
         return 30L;
+    }
+
+    @Override
+    protected int getSampleRate() {
+        return visualizer.getSamplingRate() / 1000;
     }
 }

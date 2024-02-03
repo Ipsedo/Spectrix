@@ -55,6 +55,21 @@ public abstract class VisualizationThread extends Thread {
         onEnd();
     }
 
+    private static double arcsinh(double x) {
+        return Math.log(x + Math.sqrt(x * x + 1));
+    }
+
+    protected float getBarkScale(int frequencyIndex, int frequencyNumber) {
+
+        int minHertz = 0;
+        int maxHertz = getSampleRate() / 2;
+
+        double currHertz = frequencyIndex * (maxHertz - minHertz) / (double) frequencyNumber;
+        double barkScale = 6. * arcsinh(currHertz / 600.);
+
+        return (float) barkScale;
+    }
+
     protected abstract void work(Visualization visualization);
 
     protected abstract void onEnd();
@@ -62,5 +77,7 @@ public abstract class VisualizationThread extends Thread {
     protected abstract float[] getFrequencyMagns();
 
     protected abstract Long getTimeToWait();
+
+    protected abstract int getSampleRate();
 
 }
