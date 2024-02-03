@@ -63,8 +63,6 @@ public class MicThread extends VisualizationThread {
 
         float[] fft = new float[real.length];
 
-        float maxMagn = 0.f;
-
         for (int i = 0; i < fft.length; i++) {
             float x = (float) real[i];
             float y = (float) img[i];
